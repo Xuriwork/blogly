@@ -6,7 +6,8 @@ import { Redirect, Link } from 'react-router-dom';
 
 import IronImage from 'react-image-lazy-load-component';
 import Loading from '../../helpers/Loading';
-import Placeholder from '../../assets/images/LazyLoadPlaceholder.png';
+import PostImagePlaceholderLightMode from '../../assets/images/LazyLoadPlaceholderLightMode.png';
+import PostImagePlaceholderDarkMode from '../../assets/images/LazyLoadPlaceholderDarkMode.png';
 import ProfilePlaceHolder from '../../assets/images/user.svg';
 import { PostMoreActionsModal } from './PostMoreActionsModal';
 
@@ -65,6 +66,19 @@ const Post = (props) => {
     return <Loading />
   };
 
+  const PostImagePlaceholder = () => {
+    const theme = localStorage.getItem('theme');
+
+      switch (theme) {
+        case 'dark-mode' : 
+          return PostImagePlaceholderDarkMode;
+        case 'light-mode' : 
+          return PostImagePlaceholderLightMode;
+        default : 
+          return PostImagePlaceholderDarkMode;
+      }
+  }
+
   return (
     <div className='main'>
       <section>
@@ -73,7 +87,7 @@ const Post = (props) => {
             <IronImage 
               src={post.coverImageURL} 
               alt={post.coverImageAlt} 
-              placeholder={Placeholder} 
+              placeholder={PostImagePlaceholder()} 
             />
           </div>
           <div className='post-content'>
@@ -85,11 +99,11 @@ const Post = (props) => {
                   className='profile-picture'
                 />
                 <span className='usertag-span'>{authorInfo.name}</span>
+                {
+                  auth.uid === post.authorId ?
+                  null : (<button>Follow</button>)
+                }
                 <PostMoreActionsModal />
-              {
-                auth.uid === post.authorId ?
-                null : (<button>Follow</button>)
-              }
             </div>
             <em>{post.datePretty}</em>
             <p>{post.body}</p>

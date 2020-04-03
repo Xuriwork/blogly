@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { postComment, deleteComment } from '../../store/actions/commentsActions';
 import { connect, useSelector } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
-import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import { ErrorCircle } from '@styled-icons/boxicons-solid/ErrorCircle';
@@ -19,11 +18,9 @@ export const Comments = (props) => {
     const slug = match.params.slug;
     const firestore = useFirestore();
     const profile = useSelector(state => state.firebase.profile);
-    const [authorInfo, setAuthorInfo] = useState(null);
-
-    const { register, handleSubmit, reset } = useForm();
 
     const [comments, setComments] = useState([]);
+    const [content, setContent] = useState('');
     const [loading, setLoading] = useState(true);
     
     useEffect(() => {
@@ -36,42 +33,31 @@ export const Comments = (props) => {
         .orderBy('createdAt', 'desc')
         .onSnapshot((snapshot) => {
             let _comments = [];
-            snapshot.forEach(commentSnapshot => {
+            snapshot.forEach(async commentSnapshot => {
                 const thisComment = commentSnapshot.data();
                 _comments.push({commentData: thisComment, commentId: commentSnapshot.id});
             });
             setComments(_comments);
-
-            comments.forEach((comment) => {
-                comment
-                .commentData
-                .authorRef
-                .get()
-                .then(snapshot => {
-                    const { name, profilePictureURL } = snapshot.data();
-                    setAuthorInfo({name, profilePictureURL});
-                    setLoading(false);
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-            })
-
+            setLoading(false);
+            
         }, (error) => {
             console.log(error);
+
         });
 
         return () => listener();
-    
-    }, [firestore, slug, comments]);
+    }, [firestore, slug]);
 
-    const postComment = (formData) => {
+    const handleSubmit = async (event) => {
+        event.preventDefault();
 
         if (auth.isEmpty) {
             toast.error('You are not authenticated 😕');
             return;
         }
-        props.postComment({formData, slug, reset});
+
+        await props.postComment({content, slug});
+        document.getElementById('form').reset();  
     };
 
     const deleteComment = (commentId, authorId) => {
@@ -91,6 +77,10 @@ export const Comments = (props) => {
         props.deleteComment({commentId, authorId, slug});  
     };
 
+    const handleChange = (event) => {
+        setContent(event.target.value);
+    }
+
     const back = () => {
         history.goBack();
     };
@@ -99,7 +89,12 @@ export const Comments = (props) => {
         return <Loading />;
     };
 
-    
+    const keyPressed = (event) => {
+        if (event.key === 'Enter') {
+            console.log(event)
+            handleSubmit();
+        }
+    }
 
     return (
         <div className='main' style={{ width: '600px', maxWidth: '90%' }}>
@@ -123,17 +118,19 @@ export const Comments = (props) => {
                     <span className='usertag-span'>{auth?.displayName}</span>
                 </div>
                 <div>
-                    <form onSubmit={handleSubmit(postComment)}>
+                    <form id='form'>
                         <textarea 
                             name='content'
-                            rows='3' 
-                            disabled={!auth}
-                            style={{ margin: '10px 0' }}
+                            id='content' 
                             placeholder='Add to the conversation!'
-                            ref={register({ required: true })}
+                            rows='3' 
+                            style={{ margin: '10px 0' }}
+                            disabled={!auth.uid} 
+                            onChange={handleChange}
+                            onKeyPress={keyPressed}
                         /> 
                         <span style={{ width: '90%' }}>
-                            <button>Comment</button>
+                            <button onClick={handleSubmit}>Comment</button>
                         </span>
                     </form>
                 </div>
@@ -142,12 +139,12 @@ export const Comments = (props) => {
             <div key={comment.commentId} className='long-container' style={{ padding: '15px 0' }}>
                 <div style={{ height: '30px' }}>
                     <img 
-                        src={authorInfo.profilePictureURL ?? ProfilePlaceHolder} 
+                        src={comment.commentData.authorProfilePicture ?? ProfilePlaceHolder} 
                         alt='Profile' 
                         className='profile-picture'
                     />
                     <div className='commentMetadata' style={{ flexDirection: 'column', alignItems: 'flex-start', justifyItems: 'center' }}>
-                        <span className='usertag-span'>{authorInfo.name}</span>
+                        <span className='usertag-span'>{comment.commentData.author}</span>
                         <span>{moment(comment.commentData.createdAt?.toDate()).fromNow()}</span>
                     </div>
                 </div>

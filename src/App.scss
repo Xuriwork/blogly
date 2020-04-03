@@ -8,7 +8,7 @@
     --light-mode: #fafaff;
     --dark-mode: #27292D;
     --light-mode-card: #fff;
-    --dark-mode-card: rgb(48, 49, 51);
+    --dark-mode-card: #303133;
     --light-mode-nav-bg: #3b4764;
     --dark-mode-nav-bg: #57668a;
     --dark-mode-text: #d3d2d2;
@@ -369,7 +369,7 @@ $main-font-family: Barlow, sans-serif;
     input[type='text'], input[type='email'], input[type='password'], textarea {
         background-color: var(--input-bg);
         color: var(--input-color);
-        opacity: 90%;
+        opacity: 0.9;
         width: 90%;
         border: none;
         padding: 0 5px;
@@ -533,7 +533,7 @@ $main-font-family: Barlow, sans-serif;
         align-items: center;
         justify-content: center;
         width: 90%;
-        margin-top: 20px;
+        margin: 20px 0;
 
         p {
             margin-top: 10px;

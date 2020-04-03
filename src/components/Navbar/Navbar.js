@@ -19,6 +19,20 @@ const Navbar = (props) => {
 
 
   useEffect(() => {
+
+    const theme = localStorage.getItem('theme');
+    const slider = document.getElementById('slider');
+    const mobileSlider = document.getElementById('mobile-slider');
+
+    if (theme === 'dark-mode') {
+      if (slider) {
+        slider.checked = true;
+      }
+      if (mobileSlider) {
+        mobileSlider.checked = true;
+      }
+    }
+
     document.addEventListener('click', (event) => {
 
     if (event.target.matches('#mobile-link')) {
@@ -156,7 +170,7 @@ const Navbar = (props) => {
               <Link to='/create-post' id='mobile-link'>Create post</Link>
               <Link to='/blogmarks' id='mobile-link'>Blogmarks</Link>
               <Link to='/settings' id='mobile-link'>Settings</Link>
-              <span className='sign-out-link' id='mobile-link'>Sign Out</span>
+              <span className='sign-out-link' id='mobile-link' onClick={signOut}>Sign Out</span>
             </>
           }
         </div>

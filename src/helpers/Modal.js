@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 
 export const Modal = (props) => {
 
+    const body = document.body;
     const [isVisible, setVisible] = useState(false);
 
     const openModalHandler = () => {
+        body.style.overflow = 'hidden';
         setVisible(true);
     }
 
     const closeModalHandler = () => {
+        body.style.overflow = 'auto';
         setVisible(false);
     }
 
@@ -20,7 +23,7 @@ export const Modal = (props) => {
     window.onclick = (event) => {
         const modal = document.getElementById('modal')
         if (event.target === modal) {
-            setVisible(false);
+            closeModalHandler();
         }
     }
 

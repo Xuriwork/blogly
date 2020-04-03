@@ -5,7 +5,8 @@ import moment from 'moment';
 import { useFirestore } from 'react-redux-firebase';
 import Loading from '../helpers/Loading';
 import IronImage from 'react-image-lazy-load-component';
-import Placeholder from '../assets/images/LazyLoadPlaceholder.png';
+import PostImagePlaceholderLightMode from '../assets/images/LazyLoadPlaceholderLightMode.png';
+import PostImagePlaceholderDarkMode from '../assets/images/LazyLoadPlaceholderDarkMode.png';
 import ProfilePlaceHolder from '../assets/images/user.svg';
 
 const Home = () => {
@@ -13,7 +14,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
   const [authorInfo, setAuthorInfo] = useState(null);
-
+ 
   useEffect(() => {
 
     const listener = firestore
@@ -43,6 +44,20 @@ const Home = () => {
 
   }, [firestore])
 
+
+  const PostImagePlaceholder = () => {
+  const theme = localStorage.getItem('theme');
+
+    switch (theme) {
+      case 'dark-mode' : 
+        return PostImagePlaceholderDarkMode;
+      case 'light-mode' : 
+        return PostImagePlaceholderLightMode;
+      default : 
+        return PostImagePlaceholderLightMode;
+    }
+  }
+
   if (loading) {
     return <Loading />
   };
@@ -57,7 +72,7 @@ const Home = () => {
               <IronImage 
                 src={post.coverImageURL} 
                 alt={post.coverImageAlt} 
-                placeholder={Placeholder} 
+                placeholder={PostImagePlaceholder()} 
               />
               <div className='card-content'>
                 <span className='card-title'>

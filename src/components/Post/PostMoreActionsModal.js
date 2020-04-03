@@ -5,25 +5,27 @@ import { Edit } from '@styled-icons/typicons/Edit';
 
 export const PostMoreActionsModal = (props) => {
 
+    const body = document.body;
     const [isVisible, setVisible] = useState(false);
 
     const openModalHandler = () => {
+        body.style.overflow = 'hidden';
         setVisible(true);
     }
 
     const closeModalHandler = () => {
+        body.style.overflow = 'auto';
         setVisible(false);
     }
 
     window.onclick = (event) => {
         const modal = document.getElementById('modal')
         if (event.target === modal) {
-            setVisible(false);
+            closeModalHandler();
         }
     }
 
     const copyLinkWhatsup = () => {
-
         const dummy = document.createElement('input'),
         currentURL = window.location.href;
         document.body.appendChild(dummy);

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector, connect } from 'react-redux';
 import { useFirebase } from 'react-redux-firebase';
@@ -12,12 +12,24 @@ import { uploadProfilePicture } from '../store/actions/updateProfileActions';
 import { DarkLightModeContext } from '../helpers/DarkLightModeContext';
 
 export const Settings = (props) => {
-     const { auth } = props;
+    const { auth } = props;
     const { register, handleSubmit } = useForm();
     const profile = useSelector(state => state.firebase.profile);
     const handleToggleTheme = useContext(DarkLightModeContext);
 
     const userStorageRef = useFirebase().storage().ref(`user_profile_pictures/${auth.uid}`);
+
+      useEffect(() => {
+
+      const theme = localStorage.getItem('theme');
+      const settingsSlider = document.getElementById('settings-slider');
+
+      if (theme === 'dark-mode') {
+        if (settingsSlider) {
+          settingsSlider.checked = true;
+        }
+      }
+    })
 
     const handleUpdateSettings = async (settingsInfo) => {
         await props.updateSettings(settingsInfo);

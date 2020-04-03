@@ -30,9 +30,9 @@ export const signUp = (props) => {
         firebase
         .auth()
         .createUserWithEmailAndPassword(creds.email_address, creds.password)
-        .then((response) => {
-            response.user.updateProfile({displayName: creds.name + '#' + randomTagNumber})
-            firestore.collection('users').doc(response.user.uid).set(
+        .then( async (response) => {
+            await response.user.updateProfile({displayName: creds.name + '#' + randomTagNumber})
+            await firestore.collection('users').doc(response.user.uid).set(
                 {
                     name: creds.name,
                     usertag: creds.name + '#' + randomTagNumber,
