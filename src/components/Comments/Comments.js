@@ -34,7 +34,7 @@ export const Comments = (props) => {
         .onSnapshot((snapshot) => {
             let _comments = [];
             snapshot.forEach(async commentSnapshot => {
-                const thisComment = commentSnapshot.data();
+                const thisComment = commentSnapshot.data();   
                 _comments.push({commentData: thisComment, commentId: commentSnapshot.id});
             });
             setComments(_comments);
@@ -48,16 +48,29 @@ export const Comments = (props) => {
         return () => listener();
     }, [firestore, slug]);
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    const reset = () => document.getElementById('form').reset();
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        
         if (auth.isEmpty) {
             toast.error('You are not authenticated 😕');
             return;
         }
+        props.postComment({content, slug});
+        reset();
+    };
 
-        await props.postComment({content, slug});
-        document.getElementById('form').reset();  
+    const handleChange = (event) => {
+        setContent(event.target.value);
+    };
+
+    const handleKeyPressed = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            props.postComment({content, slug});
+            reset();
+        }
     };
 
     const deleteComment = (commentId, authorId) => {
@@ -77,10 +90,6 @@ export const Comments = (props) => {
         props.deleteComment({commentId, authorId, slug});  
     };
 
-    const handleChange = (event) => {
-        setContent(event.target.value);
-    }
-
     const back = () => {
         history.goBack();
     };
@@ -88,13 +97,6 @@ export const Comments = (props) => {
     if (loading) {
         return <Loading />;
     };
-
-    const keyPressed = (event) => {
-        if (event.key === 'Enter') {
-            console.log(event)
-            handleSubmit();
-        }
-    }
 
     return (
         <div className='main' style={{ width: '600px', maxWidth: '90%' }}>
@@ -127,7 +129,7 @@ export const Comments = (props) => {
                             style={{ margin: '10px 0' }}
                             disabled={!auth.uid} 
                             onChange={handleChange}
-                            onKeyPress={keyPressed}
+                            onKeyPress={handleKeyPressed}
                         /> 
                         <span style={{ width: '90%' }}>
                             <button onClick={handleSubmit}>Comment</button>

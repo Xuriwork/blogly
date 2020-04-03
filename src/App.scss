@@ -1055,6 +1055,8 @@ $main-font-family: Barlow, sans-serif;
         }
 
         .post-component {
+            grid-template-rows: 300px auto;
+
             .post-content {
                 padding: 20px;
             }
