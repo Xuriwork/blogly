@@ -1,0 +1,53 @@
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+admin.initializeApp();
+
+// // Create and Deploy Your First Cloud Functions
+// // https://firebase.google.com/docs/functions/write-firebase-functions
+
+// const createNotification = (notification => {
+//     return admin.firestore().collection('notifications')
+//         .add(notification)
+//         .then(doc =>  console.log('Notification added', doc))
+// });
+
+// exports.postPublished = functions.firestore
+//     .document('posts/{postId}')
+//     .onCreate(doc => {
+
+//         const post = doc.data();
+//         const notification = {
+//             content: 'published a post',
+//             author: `${post.author}`,
+//             timestamp: admin.firestore.FieldValue.serverTimestamp(),
+//         }
+
+//         console.log(post);
+
+//         return createNotification(notification);
+// });
+
+// exports.userCreatedAnAccount = functions.auth.user()
+//     .onCreate(user => {
+//         console.log(user)
+
+//         const usersRef = admin.firestore().collection('users').doc(user.uid);
+//         return usersRef.set(
+//             { createdAt: admin.firestore.FieldValue.serverTimestamp(), email: user.email }, 
+//             { merge: true }
+//         )
+//         .then(doc =>  console.log('User document successful added', doc))
+//         .catch((error) => console.error('Error updating user document: ', error));
+// });
+
+exports.getPosts = functions.https.onRequest((req, res) => {
+    admin.firestore().collection('posts').get()
+        .then(snapshot => {
+            let posts = [];
+            snapshot.forEach(doc => {
+                posts.push(doc.data());
+            });
+            return res.json(posts)
+        })
+        .catch(error => console.error(error))
+})

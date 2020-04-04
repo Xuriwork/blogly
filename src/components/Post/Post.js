@@ -53,18 +53,6 @@ const Post = (props) => {
       return () => listener();
     }
   }, [post, firestore])
-  
-  if (!isLoaded(currentPost)) {
-    return <Loading />
-  };
-  
-  if (isEmpty(post)) {
-    return <Redirect to='/404' />;
-  };
-
-  if (loading) {
-    return <Loading />
-  };
 
   const PostImagePlaceholder = () => {
     const theme = localStorage.getItem('theme');
@@ -77,7 +65,38 @@ const Post = (props) => {
         default : 
           return PostImagePlaceholderDarkMode;
       }
-  }
+  };
+
+  // const handleLike = () => {
+  //   const increment = firestore.FieldValue.increment(1);
+  //   const postRef = firestore.collection('eposts').doc(post.slug)
+
+  //   //postRef.update({'likes': increment});
+
+  //   const batch = firestore;
+  //   batch.set(postRef, { likeCount: increment });
+  //   batch.update(postRef, { likeCount: increment });
+  //   batch.commit();
+  // }
+
+  // const handleUnlike = () => {
+  //   const decrement = firestore.FieldValue.increment(-1);
+  //   const postRef = firestore.collection('posts').doc(post.slug)
+
+  //   postRef.update({'likes': decrement});
+  // }
+
+  if (!isLoaded(currentPost)) {
+    return <Loading />
+  };
+  
+  if (isEmpty(post)) {
+    return <Redirect to='/404' />;
+  };
+
+  if (loading) {
+    return <Loading />
+  };
 
   return (
     <div className='main'>
@@ -111,7 +130,7 @@ const Post = (props) => {
         </div>
         <hr />
         <Link 
-          to={`/${post.slug}/comments`} 
+          to={`/p/${post.slug}/comments`} 
           className='long-container long-container-post' 
         >
           See comments ({numberOfComments})

@@ -10,7 +10,7 @@ export const createPost = (post) => {
 
         const newPost = {
             author: author, 
-            authorId: authorId, 
+            authorId, 
             authorRef: firestore.collection('users').doc(authorId),
             title: post.title,
             slug: slugify,

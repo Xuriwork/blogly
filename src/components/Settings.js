@@ -22,11 +22,11 @@ export const Settings = (props) => {
       useEffect(() => {
 
       const theme = localStorage.getItem('theme');
-      const settingsSlider = document.getElementById('settings-slider');
+      const slider = document.getElementById('settings-slider');
 
       if (theme === 'dark-mode') {
-        if (settingsSlider) {
-          settingsSlider.checked = true;
+        if (slider) {
+            slider.checked = true;
         }
       }
     })
@@ -72,7 +72,7 @@ export const Settings = (props) => {
                     <span className='test' style={{ marginBottom: 10 }}>
                         <label style={{ marginRight: 10 }}>Dark Mode</label>
                         <label id='switch'>
-                            <input type='checkbox' id='settingsSlider' onChange={handleToggleTheme} />
+                            <input type='checkbox' id='settings-slider' onChange={handleToggleTheme} />
                             <span className='slider round'></span>
                         </label>
                     </span>

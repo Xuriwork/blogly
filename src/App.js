@@ -1,8 +1,7 @@
 import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import './App.scss';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import 'notyf/notyf.min.css';
 
 import Navbar from './components/Navbar/Navbar';
 import Home from './components/Home';
@@ -22,11 +21,9 @@ import { UserIsAuthenticated } from './helpers/ProtectedRoutes';
 const App = (props) => {
 
   const history = createBrowserHistory();
-  toast.configure({ pauseOnHover: false });
 
     return (
           <>
-
             <Router history={history}>
             <Navbar />
               <Switch>
@@ -37,13 +34,12 @@ const App = (props) => {
                 <Route path='/profile' component={UserIsAuthenticated(Profile)} />
                 <Route path='/edit-profile' component={UserIsAuthenticated(EditProfile)} />
                 <Route path='/404' component={NotFound} />
-                <Route path='/:slug/comments' component={Comments} />
+                <Route path='/p/:slug/comments' component={Comments} />
                 <Route path='/settings' component={UserIsAuthenticated(Settings)} />
                 <Route path='/p/:slug' exact component={Post} />
                 <Route path='*' exact={true} component={NotFound} />
               </Switch>
             </Router>
-
           </>
     );
 }
