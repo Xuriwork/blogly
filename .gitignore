@@ -28,3 +28,6 @@ yarn-error.log*
 !Modal.js
 !ProtectedRoutes.js
 /functions
+
+firestore.rules
+firestore.indexes.json

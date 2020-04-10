@@ -8,7 +8,6 @@ import { updateProfileInfo, uploadProfilePicture } from '../../store/actions/upd
 
 import { Upload } from '@styled-icons/heroicons-outline/Upload';
 import Loading from '../../helpers/Loading';
-import ProfilePlaceHolder from '../../assets/images/user.svg';
 
 export const EditProfile = (props) => {
     const { auth } = props;
@@ -42,7 +41,7 @@ export const EditProfile = (props) => {
                 <div className='upper-container'>
                     <div className='image-container'>
                         <img 
-                            src={profile.profilePictureURL ?? ProfilePlaceHolder} 
+                            src={profile.userImageURL} 
                             alt='profile' 
                             className='profile-picture'
                         />

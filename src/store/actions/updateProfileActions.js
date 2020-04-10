@@ -29,7 +29,7 @@ export const uploadProfilePicture = (props) => {
         .child(image)
         .getDownloadURL()
         .then((url) => {
-            firebase.updateProfile({ profilePictureURL: url })
+            firebase.updateProfile({ userImageURL: url })
             dispatch({ 
                 type: 'UPLOAD_PROFILE_PICTURE_SUCCESS',
                 payload: url,

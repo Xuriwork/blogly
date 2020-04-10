@@ -40,7 +40,7 @@ const SignUp = (props) => {
                         name='name' 
                         ref={register({ required: true, minLength: 4, maxLength: 20 })} />
                     <label>Email Address</label>
-                    <input type='email' name='email_address' ref={register} />
+                    <input type='email' name='email' ref={register} />
                     <label>Password</label>
                     <input 
                         type='password' 

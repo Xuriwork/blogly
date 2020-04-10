@@ -17,7 +17,7 @@ admin.initializeApp();
 
 //         const post = doc.data();
 //         const notification = {
-//             content: 'published a post',
+//             content: ' published a post',
 //             author: `${post.author}`,
 //             timestamp: admin.firestore.FieldValue.serverTimestamp(),
 //         }
@@ -25,6 +25,24 @@ admin.initializeApp();
 //         console.log(post);
 
 //         return createNotification(notification);
+// });
+
+// exports.postPublished = functions.firestore
+//     .document('posts/{postId}')
+//     .onCreate(doc => {
+
+//         const post = doc.data();
+//         const notification = {
+//             content: ' published a post',
+//             author: `${post.author}`,
+//             timestamp: admin.firestore.FieldValue.serverTimestamp(),
+//         }
+
+//         console.log(post);
+
+//     return admin.firestore().collection('notifications')
+//         .add(notification)
+//         .then(doc =>  console.log('Notification added', doc))
 // });
 
 // exports.userCreatedAnAccount = functions.auth.user()

@@ -1,11 +1,11 @@
 export const signIn = (data) => {
     return (dispatch, getState, {getFirebase}) => {
         const firebase = getFirebase();
-        const { email_address, password } = data.creds;
+        const { email, password } = data.creds;
  
         firebase
         .auth()
-        .signInWithEmailAndPassword(email_address, password)
+        .signInWithEmailAndPassword(email, password)
         .then(() => {
             dispatch({ type: 'SIGNIN_SUCCESS' });
             data.props.history.push('/');
@@ -29,13 +29,13 @@ export const signUp = (props) => {
         
         firebase
         .auth()
-        .createUserWithEmailAndPassword(creds.email_address, creds.password)
-        .then( async (response) => {
-            await response.user.updateProfile({displayName: creds.name + '#' + randomTagNumber})
+        .createUserWithEmailAndPassword(creds.email, creds.password)
+        .then(async (response) => {
+            await response.user.updateProfile({displayName: creds.username + '#' + randomTagNumber})
             await firestore.collection('users').doc(response.user.uid).set(
                 {
-                    name: creds.name,
-                    usertag: creds.name + '#' + randomTagNumber,
+                    name: creds.username,
+                    usertag: creds.username + '#' + randomTagNumber,
                     createdAt: '',
                 },
                 { merge: true }
@@ -76,13 +76,13 @@ export const signOut = () => {
     }
 }
 
-export const sendPasswordResetEmail = ({ email_address }) => {
+export const sendPasswordResetEmail = ({ email }) => {
     return (dispatch, getState, {getFirebase}) => {
         const firebase = getFirebase();
         
         firebase
         .auth()
-        .sendPasswordResetEmail(email_address)
+        .sendPasswordResetEmail(email)
         .then(() => {
             dispatch({ type: 'PASSWORD_RESET_EMAIL_SENT' });
         })

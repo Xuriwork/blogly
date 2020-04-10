@@ -7,7 +7,6 @@ import moment from 'moment';
 
 import BellIcon from './BellIcon';
 import Message from '../../assets/images/messagingicon.svg';
-import ProfilePlaceHolder from '../../assets/images/user.svg';
 import BloglyIcon from '../../assets/images/BloglyIcon.svg';
 import HamburgerMenu from 'react-hamburger-menu';
 import CheeseburgerMenu from 'cheeseburger-menu';
@@ -120,7 +119,7 @@ const Navbar = (props) => {
               </div>
               <div className='dropdown'>
                 <img 
-                  src={profile.profilePictureURL ?? ProfilePlaceHolder} 
+                  src={auth.photoURL} 
                   alt='Profile' 
                   className='profile-picture'
                 />
@@ -160,7 +159,7 @@ const Navbar = (props) => {
               ) : 
             <> 
               <img 
-                src={profile.profilePictureURL ?? ProfilePlaceHolder} 
+                src={auth.photoURL} 
                 alt='Profile' 
                 className='profile-picture' 
                 style={{ width: '80px' }}

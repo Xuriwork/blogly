@@ -7,7 +7,6 @@ import Loading from '../helpers/Loading';
 import IronImage from 'react-image-lazy-load-component';
 import PostImagePlaceholderLightMode from '../assets/images/LazyLoadPlaceholderLightMode.png';
 import PostImagePlaceholderDarkMode from '../assets/images/LazyLoadPlaceholderDarkMode.png';
-import ProfilePlaceHolder from '../assets/images/user.svg';
 
 const Home = () => {
   const firestore = useFirestore();
@@ -93,7 +92,7 @@ const Home = () => {
                 </p>
                 <span className='usertag-span-home'>
                   <img 
-                    src={authorInfo.profilePictureURL ?? ProfilePlaceHolder} 
+                    src={authorInfo.userImageURL} 
                     alt='Profile' 
                     className='profile-picture' 
                   />

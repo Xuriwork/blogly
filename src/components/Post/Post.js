@@ -8,7 +8,6 @@ import IronImage from 'react-image-lazy-load-component';
 import Loading from '../../helpers/Loading';
 import PostImagePlaceholderLightMode from '../../assets/images/LazyLoadPlaceholderLightMode.png';
 import PostImagePlaceholderDarkMode from '../../assets/images/LazyLoadPlaceholderDarkMode.png';
-import ProfilePlaceHolder from '../../assets/images/user.svg';
 import { PostMoreActionsModal } from './PostMoreActionsModal';
 
 const Post = (props) => {
@@ -67,25 +66,6 @@ const Post = (props) => {
       }
   };
 
-  // const handleLike = () => {
-  //   const increment = firestore.FieldValue.increment(1);
-  //   const postRef = firestore.collection('eposts').doc(post.slug)
-
-  //   //postRef.update({'likes': increment});
-
-  //   const batch = firestore;
-  //   batch.set(postRef, { likeCount: increment });
-  //   batch.update(postRef, { likeCount: increment });
-  //   batch.commit();
-  // }
-
-  // const handleUnlike = () => {
-  //   const decrement = firestore.FieldValue.increment(-1);
-  //   const postRef = firestore.collection('posts').doc(post.slug)
-
-  //   postRef.update({'likes': decrement});
-  // }
-
   if (!isLoaded(currentPost)) {
     return <Loading />
   };
@@ -113,11 +93,11 @@ const Post = (props) => {
             <h1>{post.title}</h1>
             <div className='author-post-details'>
                <img 
-                  src={authorInfo.profilePictureURL ?? ProfilePlaceHolder} 
+                  src={authorInfo.userImageURL} 
                   alt='Profile' 
                   className='profile-picture'
                 />
-                <span className='usertag-span'>{authorInfo.name}</span>
+                <span className='usertag-span'>{authorInfo.username}</span>
                 {
                   auth.uid === post.authorId ?
                   null : (<button>Follow</button>)

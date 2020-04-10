@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import { useSelector, connect } from 'react-redux';
 import { useFirebase } from 'react-redux-firebase';
 import FileUploader from 'react-firebase-file-uploader';
-import ProfilePlaceHolder from '../assets/images/user.svg';
 import { Twitter } from '@styled-icons/boxicons-logos/Twitter';
 import { Github } from '@styled-icons/boxicons-logos/Github';
 import { Upload } from '@styled-icons/heroicons-outline/Upload';
@@ -50,7 +49,7 @@ export const Settings = (props) => {
                 <div>
                     <div className='profile-picture-section'>
                         <img 
-                            src={profile.profilePictureURL ?? ProfilePlaceHolder} 
+                            src={profile.userImageURL} 
                             alt='profile' 
                             className='profile-picture'
                         />
@@ -79,7 +78,7 @@ export const Settings = (props) => {
                     <label>Email</label>
                     <input type='text' name='email' defaultValue={profile.email} ref={register} />
                     <label>Name</label>
-                    <input type='text' name='name' defaultValue={profile.name} ref={register} />
+                    <input type='text' name='name' defaultValue={profile.username} ref={register} />
                     <label>Usertag</label>
                     <input type='text' name='usertag' disabled defaultValue={profile.usertag} />
                     <label>Bio</label>

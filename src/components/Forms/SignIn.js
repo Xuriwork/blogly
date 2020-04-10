@@ -34,7 +34,7 @@ const SignIn = (props) => {
                         </span> ) : null
                     }
                     <label>Email Address</label>
-                    <input type='email' name='email_address' ref={register} />
+                    <input type='email' name='email' ref={register} />
                     <label>Password</label>
                     <input type='password' name='password' ref={register} />
                     <span style={{ marginBottom: '15px', width: '70%' }}>
@@ -72,7 +72,7 @@ const mapDispatchToProps = (dispatch, store) => {
 
     return {
         signIn: (creds) => dispatch(signIn(creds)),
-        sendPasswordResetEmail: (email_address) => dispatch(sendPasswordResetEmail(email_address))
+        sendPasswordResetEmail: (email) => dispatch(sendPasswordResetEmail(email))
     }
 }
 

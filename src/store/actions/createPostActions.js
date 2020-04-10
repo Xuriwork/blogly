@@ -5,13 +5,14 @@ export const createPost = (post) => {
         const profile = getState().firebase.profile;
         const author = profile.name;
         const authorId = getState().firebase.auth.uid;
+        const authorProfilePictureURL = getState().firebase.auth.photoURL;
 
         const slugify = post.title.toLowerCase().trim().replace(/&/g, '-and-').replace(/[\s\W-]+/g, '-');
 
         const newPost = {
-            author: author, 
+            author, 
             authorId, 
-            authorRef: firestore.collection('users').doc(authorId),
+            authorProfilePictureURL,
             title: post.title,
             slug: slugify,
             coverImageURL: post.coverImageURL,

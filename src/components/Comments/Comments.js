@@ -1,15 +1,15 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { postComment, deleteComment } from '../../store/actions/commentsActions';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import { useForm } from 'react-hook-form';
 import moment from 'moment';
 import NotyfContext from '../../helpers/NotyfContext';
 import { ErrorCircle } from '@styled-icons/boxicons-solid/ErrorCircle';
 import { Error } from  '@styled-icons/boxicons-solid/Error';
+import ProfilePlaceHolder from '../../assets/images/user.svg';
 
 import { Modal } from '../../helpers/Modal';
-import ProfilePlaceHolder from '../../assets/images/user.svg';
 
 import Loading from '../../helpers/Loading';
 
@@ -18,7 +18,6 @@ export const Comments = (props) => {
     const { auth, match, history, commentError } = props;
     const slug = match.params.slug;
     const firestore = useFirestore();
-    const profile = useSelector(state => state.firebase.profile);
     const notyf = useContext(NotyfContext);
 
     const { register, handleSubmit, reset } = useForm();
@@ -98,7 +97,7 @@ export const Comments = (props) => {
             <div className='long-container' style={{ padding: '10px 0' }}>
                 <div>
                     <img 
-                        src={profile.profilePictureURL ?? ProfilePlaceHolder} 
+                        src={auth.isEmpty ? ProfilePlaceHolder : auth.photoURL} 
                         alt='Profile' 
                         className='profile-picture' 
                     />
@@ -124,7 +123,7 @@ export const Comments = (props) => {
             <div key={comment.commentId} className='long-container' style={{ padding: '15px 0' }}>
                 <div style={{ height: '30px' }}>
                     <img 
-                        src={comment.commentData.authorProfilePicture ?? ProfilePlaceHolder} 
+                        src={comment.commentData.authorProfilePicture} 
                         alt='Profile' 
                         className='profile-picture'
                     />

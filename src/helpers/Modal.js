@@ -8,24 +8,24 @@ export const Modal = (props) => {
     const openModalHandler = () => {
         body.style.overflow = 'hidden';
         setVisible(true);
-    }
+    };
 
     const closeModalHandler = () => {
         body.style.overflow = 'auto';
         setVisible(false);
-    }
+    };
 
     const actionHandler = () => {
         props.buttonAction();
         closeModalHandler();
-    }
+    };
 
     window.onclick = (event) => {
         const modal = document.getElementById('modal')
         if (event.target === modal) {
             closeModalHandler();
-        }
-    }
+        };
+    };
 
     return (
         <span>

@@ -96,6 +96,10 @@ $main-font-family: Barlow, sans-serif;
         scrollbar-color: $base-color var(--bg); 
     }
 
+    .test {
+        background-color: #4f7aca;
+    }
+
     body {
         background: var(--bg);
         width: 100%;
@@ -426,8 +430,7 @@ $main-font-family: Barlow, sans-serif;
         top: 0px;
         box-sizing: border-box;
         border-radius: 5px;
-        animation: show .2s;
-        transform: scale(1);
+        animation: show 0.2s;
 
 
         @keyframes show {

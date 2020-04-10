@@ -5,8 +5,6 @@ import { isLoaded } from 'react-redux-firebase';
 import Loading from '../../helpers/Loading';
 import moment from 'moment';
 
-import ProfilePlaceHolder from '../../assets/images/user.svg';
-
 export const Profile = (props, ownProps) => {
     const profile = useSelector(state => state.firebase.profile);
 
@@ -20,7 +18,7 @@ export const Profile = (props, ownProps) => {
                 <div className='upper-container'>
                     <div className='image-container'>
                         <img 
-                          src={profile.profilePictureURL ?? ProfilePlaceHolder} 
+                          src={profile.userImageURL} 
                           alt='profile' 
                           className='profile-picture'
                         />
