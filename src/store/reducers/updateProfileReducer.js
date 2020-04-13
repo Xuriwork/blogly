@@ -1,8 +1,8 @@
-const initState = {
+const initialState = {
     updateProfileError: null,
 }
 
-const updateProfileReducer = (state = initState, action) => {
+const updateProfileReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'UPDATE_PROFILE' : 
             return { 

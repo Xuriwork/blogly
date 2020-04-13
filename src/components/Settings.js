@@ -8,7 +8,7 @@ import { Github } from '@styled-icons/boxicons-logos/Github';
 import { Upload } from '@styled-icons/heroicons-outline/Upload';
 import { updateSettings } from '../store/actions/settingsActions';
 import { uploadProfilePicture } from '../store/actions/updateProfileActions';
-import { DarkLightModeContext } from '../helpers/DarkLightModeContext';
+import { DarkLightModeContext } from '../utils/DarkLightModeContext';
 
 export const Settings = (props) => {
     const { auth } = props;

@@ -56,7 +56,7 @@ $main-font-family: Barlow, sans-serif;
     align-items: center;
 }
 
-%beautfiul-3d-button {
+%blue-3d-button {
     position: relative;
     vertical-align: top;
     width: 70%;
@@ -74,11 +74,16 @@ $main-font-family: Barlow, sans-serif;
     box-shadow: inset 0 -2px #3d6bc0;
   }
   
-%beautfiul-3d-button-hover {
+%blue-3d-button-hover {
     top: 1px;
     outline: none;
     -webkit-box-shadow: none;
     box-shadow: none;
+}
+
+%blue-3d-button-disabled {
+    background-color: #4e85ebb6;
+    border-bottom: 2px solid #1d30556e;
 }
 
 %profile-picture-size-35 {
@@ -173,13 +178,12 @@ $main-font-family: Barlow, sans-serif;
         color: #fff;
         background-color: rgb(248, 125, 125);
         border: 1px solid #a11f1f;
-        padding: 5px 40px;
+        padding: 8px 15px;
         margin: 20px 0px;
         border-radius: 5px;
         font-size: 1em;
         font-family: $main-font-family;
         max-width: 95%;
-        box-sizing: border-box;
     }
 
     nav {
@@ -866,11 +870,16 @@ $main-font-family: Barlow, sans-serif;
             border-bottom: 0 none;
             box-shadow: 0 1px 5px rgba(150, 150, 150, 0.4);
             border-radius: 5px;
+
+            .error-span {
+                width: 70%;
+                color: #f53d3d;
+                margin-bottom: 15px;
+            }
             
             div {
                 @extend %flex-complete-center;
-                flex-direction: column;
-                
+                flex-direction: column;                
 
                 label {
                     margin-bottom: 5px;
@@ -879,6 +888,7 @@ $main-font-family: Barlow, sans-serif;
                 input {
                     border: var(--input-border);
                     line-height: 2.6;
+                    margin-bottom: 0;
                 }
 
                 input, label {
@@ -890,10 +900,14 @@ $main-font-family: Barlow, sans-serif;
                 }
 
                 button {
-                    @extend %beautfiul-3d-button;
+                    @extend %blue-3d-button;
 
                     &:hover {
-                        @extend %beautfiul-3d-button-hover;
+                        @extend %blue-3d-button-hover;
+                    }
+
+                    &:disabled {
+                        @extend %blue-3d-button-disabled;
                     }
                 }
             }

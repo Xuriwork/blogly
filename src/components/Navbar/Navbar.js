@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useFirestoreConnect } from 'react-redux-firebase';
-import { signOut } from '../../store/actions/authAction';
+import { signOut } from '../../store/actions/userActions';
 import moment from 'moment';
 
 import BellIcon from './BellIcon';
@@ -10,12 +9,12 @@ import Message from '../../assets/images/messagingicon.svg';
 import BloglyIcon from '../../assets/images/BloglyIcon.svg';
 import HamburgerMenu from 'react-hamburger-menu';
 import CheeseburgerMenu from 'cheeseburger-menu';
-import { DarkLightModeContext } from '../../helpers/DarkLightModeContext';
+import { DarkLightModeContext } from '../../utils/DarkLightModeContext';
 
 const Navbar = (props) => {
   const [menu, setMenu] = useState(false);
   const handleToggleTheme = useContext(DarkLightModeContext);
-
+  const { auth, notifications, user } = props;
 
   useEffect(() => {
 
@@ -43,13 +42,9 @@ const Navbar = (props) => {
     }, false);
   });
 
-  useFirestoreConnect([
-    { collection: 'notifications', limit: 3, orderBy: ['timestamp', 'desc'] }
-  ]);
-
-  const auth = useSelector(state => state.firebase.auth);
   const profile = useSelector(state => state.firebase.profile);
-  const notifications = useSelector(state => state.firestore.ordered.notifications);
+
+  console.log(props)
 
   const signOut = () => {
     props.signOut();
@@ -178,12 +173,21 @@ const Navbar = (props) => {
   );
 }
 
+const mapStateToProps = (state) => {
+    console.log(state)
+    return {
+        auth: state.firebase.auth,
+        user: state.userReducer,
+        notifications: state.userReducer.notifications
+    }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
     signOut: () => dispatch(signOut())
   }
 } 
 
-export default connect(null, mapDispatchToProps)(Navbar);
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
 
 

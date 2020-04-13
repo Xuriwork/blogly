@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { createPost, handleUploadCoverImage } from '../../store/actions/createPostActions';
 
 import JoditEditor from 'jodit-react';
-import { Modal } from '../../helpers/Modal';
+import { Modal } from '../../utils/Modal';
 import { useForm } from 'react-hook-form';
 import { Progress } from 'react-sweet-progress';
 import { ErrorCircle } from '@styled-icons/boxicons-solid/ErrorCircle';

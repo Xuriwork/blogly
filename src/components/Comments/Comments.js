@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import { useForm } from 'react-hook-form';
 import moment from 'moment';
-import NotyfContext from '../../helpers/NotyfContext';
+import NotyfContext from '../../utils/NotyfContext';
 import { ErrorCircle } from '@styled-icons/boxicons-solid/ErrorCircle';
 import { Error } from  '@styled-icons/boxicons-solid/Error';
 import ProfilePlaceHolder from '../../assets/images/user.svg';
 
-import { Modal } from '../../helpers/Modal';
+import { Modal } from '../../utils/Modal';
 
-import Loading from '../../helpers/Loading';
+import Loading from '../../utils/Loading';
 
 export const Comments = (props) => {
 

@@ -16,33 +16,37 @@ import EditProfile from './components/Profile/EditProfile';
 import Settings from './components/Settings';
 
 import { createBrowserHistory } from 'history';
-import { UserIsAuthenticated } from './helpers/ProtectedRoutes';
+import { UserIsAuthenticated } from './utils/ProtectedRoutes';
 
 const App = (props) => {
-
   const history = createBrowserHistory();
 
-    return (
-          <>
-            <Router history={history}>
-            <Navbar />
-              <Switch>
-                <Route exact path='/' component={Home} />
-                <Route path='/sign-in' component={SignIn} />
-                <Route path='/sign-up' component={SignUp} />
-                <Route path='/create-post' component={UserIsAuthenticated(CreatePost)} />
-                <Route path='/profile' component={UserIsAuthenticated(Profile)} />
-                <Route path='/edit-profile' component={UserIsAuthenticated(EditProfile)} />
-                <Route path='/404' component={NotFound} />
-                <Route path='/p/:slug/comments' component={Comments} />
-                <Route path='/settings' component={UserIsAuthenticated(Settings)} />
-                <Route path='/p/:slug' exact component={Post} />
-                <Route path='*' exact={true} component={NotFound} />
-              </Switch>
-            </Router>
-          </>
-    );
-}
+  return (
+    <>
+      <Router history={history}>
+        <Navbar />
+        <Switch>
+          <Route exact path='/' component={Home} />
+          <Route path='/sign-in' component={SignIn} />
+          <Route path='/sign-up' component={SignUp} />
+          <Route
+            path='/create-post'
+            component={UserIsAuthenticated(CreatePost)}
+          />
+          <Route path='/profile' component={UserIsAuthenticated(Profile)} />
+          <Route
+            path='/edit-profile'
+            component={UserIsAuthenticated(EditProfile)}
+          />
+          <Route path='/404' component={NotFound} />
+          <Route path='/p/:slug/comments' component={Comments} />
+          <Route path='/settings' component={UserIsAuthenticated(Settings)} />
+          <Route path='/p/:slug' exact component={Post} />
+          <Route path='*' exact={true} component={NotFound} />
+        </Switch>
+      </Router>
+    </>
+  );
+};
 
-
-  export default App;
+export default App;

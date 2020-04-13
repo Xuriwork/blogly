@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import { isLoaded } from 'react-redux-firebase';
-import Loading from '../../helpers/Loading';
+import Loading from '../../utils/Loading';
 import moment from 'moment';
 
 export const Profile = (props, ownProps) => {

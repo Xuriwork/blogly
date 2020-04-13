@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { getFirestore } from 'redux-firestore';
 import { getFirebase } from 'react-redux-firebase';
@@ -6,10 +6,16 @@ import rootReducer from './reducers/rootReducer';
 
 const initialState = {}
 
+const middlewares = [
+  thunk.withExtraArgument({getFirebase, getFirestore})
+]
+
 export default () => {
   return createStore(
     rootReducer,
     initialState,
-    applyMiddleware(thunk.withExtraArgument({getFirebase, getFirestore}))
+    compose(
+      applyMiddleware(...middlewares), 
+      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
   )
 }

@@ -7,7 +7,7 @@ import FileUploader from 'react-firebase-file-uploader';
 import { updateProfileInfo, uploadProfilePicture } from '../../store/actions/updateProfileActions';
 
 import { Upload } from '@styled-icons/heroicons-outline/Upload';
-import Loading from '../../helpers/Loading';
+import Loading from '../../utils/Loading';
 
 export const EditProfile = (props) => {
     const { auth } = props;

@@ -8,45 +8,62 @@ import { Provider, useSelector } from 'react-redux';
 import { ReactReduxFirebaseProvider, isLoaded } from 'react-redux-firebase';
 import { createFirestoreInstance } from 'redux-firestore';
 import createReduxStore from './store/createReduxStore';
-import { DarkLightModeProvider } from './helpers/DarkLightModeContext';
+import { DarkLightModeProvider } from './utils/DarkLightModeContext';
 
-import firebase from './helpers/Firebase';
-import Loading from './helpers/Loading';
+import firebase from './utils/Firebase';
+import Loading from './utils/Loading';
+
+import axios from 'axios';
+import jwtDecode from 'jwt-decode';
+import { SET_AUTHENTICATED, SET_UNAUTHENTICATED } from './store/types';
+import { getUserData } from './store/actions/userActions';
 
 const store = createReduxStore();
 
 const rrfConfig = {
   userProfile: 'users',
-  useFirestoreForProfile: true
-}
+  useFirestoreForProfile: true,
+};
 
 const rrfProps = {
-   firebase,
-   config: rrfConfig,
-   dispatch: store.dispatch,
-   createFirestoreInstance,
+  firebase,
+  config: rrfConfig,
+  dispatch: store.dispatch,
+  createFirestoreInstance,
+};
+
+axios.defaults.baseURL = 'https://us-central1-blogly-xuri.cloudfunctions.net/api';
+
+const token = localStorage.userToken;
+if (token) {
+  const decodedToken = jwtDecode(token);
+  if (decodedToken.exp * 1000 < Date.now()) {
+    window.location.href = '/sign-in';
+    store.dispatch({ type: SET_UNAUTHENTICATED });
+  } else {
+    store.dispatch({ type: SET_AUTHENTICATED });
+    axios.defaults.headers.common['Authorization'] = token;
+    store.dispatch(getUserData());
+  }
 }
 
 const AuthIsLoaded = ({ children }) => {
-    const auth = useSelector(state => state.firebase.auth);
-    if (!isLoaded(auth)) {
-        return (
-            <Loading />
-        );
-    }
-    return children;
-}
+  const auth = useSelector((state) => state.firebase.auth);
+  if (!isLoaded(auth)) return <Loading />;
+  return children;
+};
 
 ReactDOM.render(
-    <Provider store={store}>
-        <ReactReduxFirebaseProvider {...rrfProps}>
-            <DarkLightModeProvider>
-            <AuthIsLoaded>
-                <App />
-            </AuthIsLoaded>
-            </DarkLightModeProvider>
-        </ReactReduxFirebaseProvider> 
-    </Provider>,
-document.getElementById('root'));
+  <Provider store={store}>
+    <DarkLightModeProvider>
+      <ReactReduxFirebaseProvider {...rrfProps}>
+        <AuthIsLoaded>
+          <App />
+        </AuthIsLoaded>
+      </ReactReduxFirebaseProvider>
+    </DarkLightModeProvider>
+  </Provider>,
+  document.getElementById('root')
+);
 
 serviceWorker.register();

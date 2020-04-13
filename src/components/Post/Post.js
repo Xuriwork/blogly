@@ -5,7 +5,7 @@ import { useFirestore, firestoreConnect, isLoaded, isEmpty } from 'react-redux-f
 import { Redirect, Link } from 'react-router-dom';
 
 import IronImage from 'react-image-lazy-load-component';
-import Loading from '../../helpers/Loading';
+import Loading from '../../utils/Loading';
 import PostImagePlaceholderLightMode from '../../assets/images/LazyLoadPlaceholderLightMode.png';
 import PostImagePlaceholderDarkMode from '../../assets/images/LazyLoadPlaceholderDarkMode.png';
 import { PostMoreActionsModal } from './PostMoreActionsModal';
