@@ -83,7 +83,7 @@ export const Comments = (props) => {
     };
 
     return (
-        <div className='main' style={{ width: '600px', maxWidth: '90%' }}>
+        <main className='main' style={{ width: '600px', maxWidth: '90%' }}>
             { 
                 commentError !== null ? (
                 <span className='error-message'>
@@ -155,7 +155,7 @@ export const Comments = (props) => {
                 </span>
             </div>
             )}
-        </div>
+        </main>
     )
 }
 

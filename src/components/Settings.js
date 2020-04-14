@@ -68,7 +68,7 @@ export const Settings = (props) => {
                         </button>
                         <button className='delete-button'>Remove photo</button>
                     </div>
-                    <span className='test' style={{ marginBottom: 10 }}>
+                    <span style={{ marginBottom: 10 }}>
                         <label style={{ marginRight: 10 }}>Dark Mode</label>
                         <label id='switch'>
                             <input type='checkbox' id='settings-slider' onChange={handleToggleTheme} />

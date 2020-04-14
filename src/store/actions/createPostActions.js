@@ -1,14 +1,16 @@
 import { customAlphabet } from 'nanoid/non-secure';
+import axios from 'axios';
+import { CREATE_POST_SUCCESS, SET_ERRORS } from '../types';
+import { isEmpty } from '../../utils/validators';
 
 export const createPost = (post) => {
   return (dispatch, getState, { getFirebase }) => {
-    const firebase = getFirebase();
     const firestore = getFirebase().firestore();
-    const profile = getState().firebase.profile;
-    const author = profile.name;
-    const authorId = getState().firebase.auth.uid;
-    const authorProfilePictureURL = getState().firebase.auth.photoURL;
     const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyz', 12);
+
+    if (isEmpty(post.title || post.slug || post.body || post.coverImageURL)) {
+        return dispatch({ type: SET_ERRORS, payload: 'Fields must not be empty' });
+    }
 
     const slugify = post.title
       .toLowerCase()
@@ -24,27 +26,29 @@ export const createPost = (post) => {
     const slug = createSlug();
 
     const newPost = {
-      author,
-      authorId,
-      authorProfilePictureURL,
-      title: post.title,
       slug,
+      title: post.title,
+      body: post.body,
       coverImageURL: post.coverImageURL,
       coverImageAlt: post.coverImageAlt,
-      body: post.body,
-      createdAt: new Date(),
     };
+
+    axios.post('/create-post', newPost).then((res) => {
+      dispatch({ type: CREATE_POST_SUCCESS, payload: res.data });
+    });
 
     firestore
       .collection('posts')
-      .doc(`${slugify}`)
+      .doc(slug)
       .set(newPost)
       .then(() => {
-        dispatch({ type: 'CREATE_POST_SUCCESS' });
+        dispatch({ type: CREATE_POST_SUCCESS });
       })
       .catch((error) => {
+        console.log(error);
+        console.log(error.message);
         dispatch({
-          type: 'CREATE_POST_ERROR',
+          type: SET_ERRORS,
           payload: error.message,
         });
       });
@@ -58,7 +62,7 @@ export const handleUploadCoverImage = (props) => {
 
     const postImageRef = firebase
       .storage()
-      .ref(`blog_posts_images/${props.newPost.slug}`)
+      .ref(`blog_posts_images`)
       .child(imageData.name)
       .put(imageData);
 
@@ -76,7 +80,7 @@ export const handleUploadCoverImage = (props) => {
       () => {
         firebase
           .storage()
-          .ref(`blog_posts_images/${props.newPost.slug}`)
+          .ref(`blog_posts_images`)
           .child(imageData.name)
           .getDownloadURL()
           .then((url) => {

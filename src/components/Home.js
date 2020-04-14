@@ -12,7 +12,6 @@ const Home = () => {
   const firestore = useFirestore();
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
-  const [authorInfo, setAuthorInfo] = useState(null);
  
   useEffect(() => {
 
@@ -25,16 +24,7 @@ const Home = () => {
         _posts.push(postSnapshot.data())
       });
       setPosts(_posts);
-
-      _posts.forEach(post => {
-        post
-        .authorRef
-        .get()
-        .then(snapshot => {
-          setAuthorInfo(snapshot.data());
-          setLoading(false);
-        })
-      })
+      setLoading(false);
     }, (error) => {
         console.error(error);
     });
@@ -62,7 +52,7 @@ const Home = () => {
   };
   
   return (
-    <div className='main'>
+    <main className='main'>
       <div className='home-component'>
       {posts && posts.map(post => (
           <span key={post.slug}>
@@ -92,7 +82,7 @@ const Home = () => {
                 </p>
                 <span className='usertag-span-home'>
                   <img 
-                    src={authorInfo.userImageURL} 
+                    src={post.authorProfilePictureURL} 
                     alt='Profile' 
                     className='profile-picture' 
                   />
@@ -104,7 +94,7 @@ const Home = () => {
           </span>
         ))}
       </div>
-    </div>
+    </main>
   );
 };
 
