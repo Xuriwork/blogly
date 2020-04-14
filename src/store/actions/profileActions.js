@@ -1,3 +1,5 @@
+import { UPDATE_PROFILE_SUCCESS, UPDATE_PROFILE_ERROR, UPLOAD_PROFILE_PICTURE_SUCCESS, UPLOAD_PROFILE_PICTURE_ERROR } from '../types';
+
 export const updateProfileInfo = (profileInfo) => {
     return (dispatch, getState, {getFirebase}) => {
         const firebase = getFirebase();
@@ -7,13 +9,13 @@ export const updateProfileInfo = (profileInfo) => {
         })
         .then(() => {
             dispatch({ 
-                type: 'UPDATE_PROFILE_SUCCESS', 
+                type: UPDATE_PROFILE_SUCCESS, 
                 payload: profileInfo,
             })
         })
         .catch((error) => {
             dispatch({ 
-                type: 'UPDATE_PROFILE_ERROR', 
+                type: UPDATE_PROFILE_ERROR, 
                 payload: error.message,
             });
         })
@@ -23,21 +25,23 @@ export const updateProfileInfo = (profileInfo) => {
 export const uploadProfilePicture = (props) => {
     return (dispatch, getState, {getFirebase}) => {
         const firebase = getFirebase();
-        const { image, userStorageRef } = props;
-
+        const { imageName, userStorageRef } = props;
+        
+        console.log(imageName)
         userStorageRef
-        .child(image)
+        .child(imageName)
         .getDownloadURL()
         .then((url) => {
             firebase.updateProfile({ userImageURL: url })
+            firebase.auth().currentUser.updateProfile({ photoURL: url })
             dispatch({ 
-                type: 'UPLOAD_PROFILE_PICTURE_SUCCESS',
+                type: UPLOAD_PROFILE_PICTURE_SUCCESS,
                 payload: url,
             });
         })
         .catch((error) => {
             dispatch({ 
-                type: 'UPLOAD_PROFILE_PICTURE_ERROR', 
+                type: UPLOAD_PROFILE_PICTURE_ERROR, 
                 payload: error.message,
             });
         })

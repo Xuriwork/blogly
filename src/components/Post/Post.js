@@ -15,7 +15,6 @@ const Post = (props) => {
   const { auth, post } = props;
 
   const [authorInfo, setAuthorInfo] = useState(null);
-  const [numberOfComments, setNumberOfComments] = useState(0);
   const [loading, setLoading] = useState(true);
   const firestore = useFirestore();
 
@@ -33,7 +32,6 @@ const Post = (props) => {
         snapshot.forEach(commentSnapshot => {
           _comments.push(commentSnapshot.data());
         });
-        setNumberOfComments(_comments.length);
       }, (error) => {
           console.log(error);
       });
@@ -113,7 +111,7 @@ const Post = (props) => {
           to={`/p/${post.slug}/comments`} 
           className='long-container long-container-post' 
         >
-          See comments ({numberOfComments})
+          See comments ({post.commentCount})
         </Link>
       </section>
     </div>

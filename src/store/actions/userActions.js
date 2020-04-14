@@ -82,7 +82,7 @@ export const signUp = ({ creds, history }) => {
     if (!valid) return dispatch({ payload: errors });
 
     const defaultUserProfileImagePath =
-      'https://firebasestorage.googleapis.com/v0/b/blogly-xuri.appspot.com/o/user_profile_pictures%2Fdefaults%2Fdefault_user_profile_image.svg?alt=media';
+      'https://firebasestorage.googleapis.com/v0/b/blogly-xuri.appspot.com/o/users%2Fdefault_user_profile_image.svg?alt=media';
 
     let userId;
     firestore
@@ -117,7 +117,7 @@ export const signUp = ({ creds, history }) => {
           usertag: newUser.usertag,
           username: newUser.username,
           userImageURL: defaultUserProfileImagePath,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          createdAt: new Date(),
         };
         firestore.collection('users').doc(userId).set(userInfo);
         return data.user.getIdToken();

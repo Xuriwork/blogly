@@ -38,7 +38,6 @@ const token = localStorage.userToken;
 if (token) {
   const decodedToken = jwtDecode(token);
   if (decodedToken.exp * 1000 < Date.now()) {
-    window.location.href = '/sign-in';
     store.dispatch({ type: SET_UNAUTHENTICATED });
   } else {
     store.dispatch({ type: SET_AUTHENTICATED });

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { signOut } from '../../store/actions/userActions';
 import moment from 'moment';
@@ -14,7 +14,7 @@ import { DarkLightModeContext } from '../../utils/DarkLightModeContext';
 const Navbar = (props) => {
   const [menu, setMenu] = useState(false);
   const handleToggleTheme = useContext(DarkLightModeContext);
-  const { auth, notifications, user } = props;
+  const { auth, notifications } = props;
 
   useEffect(() => {
 
@@ -41,10 +41,6 @@ const Navbar = (props) => {
     return () => document.removeEventListener('click', event);
     }, false);
   });
-
-  const profile = useSelector(state => state.firebase.profile);
-
-  console.log(props)
 
   const signOut = () => {
     props.signOut();
@@ -174,7 +170,6 @@ const Navbar = (props) => {
 }
 
 const mapStateToProps = (state) => {
-    console.log(state)
     return {
         auth: state.firebase.auth,
         user: state.userReducer,

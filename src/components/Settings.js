@@ -7,7 +7,7 @@ import { Twitter } from '@styled-icons/boxicons-logos/Twitter';
 import { Github } from '@styled-icons/boxicons-logos/Github';
 import { Upload } from '@styled-icons/heroicons-outline/Upload';
 import { updateSettings } from '../store/actions/settingsActions';
-import { uploadProfilePicture } from '../store/actions/updateProfileActions';
+import { uploadProfilePicture } from '../store/actions/profileActions';
 import { DarkLightModeContext } from '../utils/DarkLightModeContext';
 
 export const Settings = (props) => {
@@ -34,11 +34,11 @@ export const Settings = (props) => {
         await props.updateSettings(settingsInfo);
     }
 
-    const handleUploadProfilePicture = async image => {
-        await props.uploadProfilePicture({image, userStorageRef});
+    const handleUploadProfilePicture = async (imageName) => {
+        await props.uploadProfilePicture({imageName, userStorageRef});
     };
 
-    const handleChangeProfilePicture = () => {
+    const handleSelectProfilePicture = () => {
         const fileInput = document.getElementById('imageInput');
         fileInput.click();
     };
@@ -62,7 +62,7 @@ export const Settings = (props) => {
                             id='imageInput' 
                             hidden='hidden'
                         /> 
-                        <button onClick={handleChangeProfilePicture}>
+                        <button onClick={handleSelectProfilePicture}>
                             <Upload size='20' title='Upload profile picture button' style={{ marginRight: '5px' }} />
                             Upload new picture
                         </button>

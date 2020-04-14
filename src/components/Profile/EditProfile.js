@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { connect, useSelector } from 'react-redux';
 import { useFirebase, isLoaded } from 'react-redux-firebase';
 import FileUploader from 'react-firebase-file-uploader';
-import { updateProfileInfo, uploadProfilePicture } from '../../store/actions/updateProfileActions';
+import { updateProfileInfo, uploadProfilePicture } from '../../store/actions/profileActions';
 
 import { Upload } from '@styled-icons/heroicons-outline/Upload';
 import Loading from '../../utils/Loading';
@@ -14,7 +14,7 @@ export const EditProfile = (props) => {
 
     const firebase = useFirebase();
     const currentUser = auth.uid;
-    const userStorageRef = firebase.storage().ref(`user_profile_pictures/${currentUser}`);
+    const userStorageRef = firebase.storage().ref(`users/${currentUser}/user_profile_picture`);
     const profile = useSelector(state => state.firebase.profile);
     const { register, handleSubmit } = useForm();
 
@@ -22,11 +22,11 @@ export const EditProfile = (props) => {
         props.updateProfileInfo(profileInfo);
     };
 
-    const handleUploadProfilePicture = async imageData => {
-        await props.uploadProfilePicture({imageData, currentUser, userStorageRef});
+    const handleUploadProfilePicture = async (imageName) => {
+        await props.uploadProfilePicture({imageName, userStorageRef});
     };
 
-    const handleImageUpload = () => {
+    const handleSelectProfilePicture = () => {
         const fileInput = document.getElementById('imageInput');
         fileInput.click();
     };
@@ -60,14 +60,14 @@ export const EditProfile = (props) => {
                         <FileUploader
                             accept='image/png, image/jpeg'
                             name='photo'
-                            randomizeFilename
+                            filename={auth.uid}
                             storageRef={userStorageRef}
                             onUploadSuccess={handleUploadProfilePicture} 
                             id='imageInput' 
                             hidden='hidden'
                         /> 
                         <div>
-                            <button onClick={handleImageUpload} className='lower-hierarchy-button-color'>
+                            <button onClick={handleSelectProfilePicture} className='lower-hierarchy-button-color'>
                                 <Upload size='20' title='Upload profile picture button' style={{ marginRight: '5px' }} />
                                 Upload Profile Picture
                             </button>

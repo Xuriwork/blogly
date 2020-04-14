@@ -1,7 +1,7 @@
 export const updateSettings = (settingsInfo) => {
     return (dispatch, getState, {getFirebase}) => {
         const firestore = getFirebase().firestore();
-        const currentUserUid = getState().firebase.auth.uid;
+        const userId = getState().firebase.auth.uid;
 
         const removeEmptyStrings = (obj) => {
             const newObj = {};
@@ -17,7 +17,7 @@ export const updateSettings = (settingsInfo) => {
 
         firestore
         .collection('users')
-        .doc(currentUserUid)
+        .doc(userId)
         .update(userData)
 
     }
