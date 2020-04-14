@@ -39,9 +39,9 @@ const App = (props) => {
             component={UserIsAuthenticated(EditProfile)}
           />
           <Route path='/404' component={NotFound} />
-          <Route path='/p/:slug/comments' component={Comments} />
+          <Route path='/p/:postId/comments' component={Comments} />
           <Route path='/settings' component={UserIsAuthenticated(Settings)} />
-          <Route path='/p/:slug' exact component={Post} />
+          <Route path='/p/:postId' exact component={Post} />
           <Route path='*' exact={true} component={NotFound} />
         </Switch>
       </Router>

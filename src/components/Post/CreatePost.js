@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {
   createPost,
   handleUploadCoverImage,
-} from '../../store/actions/createPostActions';
+} from '../../store/actions/postActions';
 
 import JoditEditor from 'jodit-react';
 import { Modal } from '../../utils/Modal';
@@ -15,7 +15,6 @@ import 'react-sweet-progress/lib/style.css';
 import 'rodal/lib/rodal.css';
 
 export const CreatePost = (props) => {
-  const { createPostError } = props;
   const { handleSubmit, register, errors } = useForm();
   const [errorMessage, setErrorMessage] = useState(null);
   const [coverImageURL, setCoverImageURL] = useState('');
@@ -60,10 +59,10 @@ export const CreatePost = (props) => {
 
   return (
     <main className='main'>
-      {createPostError !== null ? (
+      {props.errors !== null ? (
         <span className='error-message'>
           <ErrorCircle size='30' title='error' style={{ marginRight: 5 }} />
-          {createPostError}
+          {props.errors}
         </span>
       ) : null}
       {errorMessage !== null ? (
@@ -176,8 +175,9 @@ export const CreatePost = (props) => {
 };
 
 const mapStateToProps = (state) => {
+  console.log(state)
   return {
-    createPostError: state.createPost.createPostError,
+    errors: state.uiReducer.errors,
   };
 };
 

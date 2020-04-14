@@ -15,7 +15,7 @@ const Home = () => {
  
   useEffect(() => {
 
-    const listener = firestore
+    let unsubscribe = firestore
     .collection('posts')
     .orderBy('createdAt', 'desc')
     .onSnapshot(snapshot => {
@@ -28,8 +28,7 @@ const Home = () => {
     }, (error) => {
         console.error(error);
     });
-
-    return () => listener();
+    return () => unsubscribe();
 
   }, [firestore])
 

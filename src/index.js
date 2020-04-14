@@ -13,11 +13,6 @@ import { DarkLightModeProvider } from './utils/DarkLightModeContext';
 import firebase from './utils/Firebase';
 import Loading from './utils/Loading';
 
-import axios from 'axios';
-import jwtDecode from 'jwt-decode';
-import { SET_AUTHENTICATED, SET_UNAUTHENTICATED } from './store/types';
-import { getUserData } from './store/actions/userActions';
-
 const store = createReduxStore();
 
 const rrfConfig = {
@@ -32,22 +27,9 @@ const rrfProps = {
   createFirestoreInstance,
 };
 
-axios.defaults.baseURL = 'https://us-central1-blogly-xuri.cloudfunctions.net/api';
-
-const token = localStorage.userToken;
-if (token) {
-  const decodedToken = jwtDecode(token);
-  if (decodedToken.exp * 1000 < Date.now()) {
-    store.dispatch({ type: SET_UNAUTHENTICATED });
-  } else {
-    store.dispatch({ type: SET_AUTHENTICATED });
-    axios.defaults.headers.common['Authorization'] = token;
-    store.dispatch(getUserData());
-  }
-}
-
 const AuthIsLoaded = ({ children }) => {
   const auth = useSelector((state) => state.firebase.auth);
+  
   if (!isLoaded(auth)) return <Loading />;
   return children;
 };

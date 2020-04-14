@@ -1,32 +1,10 @@
-import axios from 'axios';
 import {
   SET_AUTHENTICATED,
   PASSWORD_RESET_EMAIL_SENT,
   SET_UNAUTHENTICATED,
-  SET_ERRORS,
-  CLEAR_ERRORS,
-  SET_USER,
+  SET_ERRORS
 } from '../types';
 import { validateUserSignUpData } from '../../utils/validators.js';
-
-export const getUserData = () => (dispatch) => {
-  axios
-    .get('/user')
-    .then((res) => {
-      console.log(res.data);
-      dispatch({
-        type: SET_USER,
-        payload: res.data,
-      });
-    })
-    .catch((error) => console.log(error));
-};
-
-const setAuthorizationHeader = (token) => {
-  const userToken = `Bearer ${token}`;
-  localStorage.setItem('userToken', userToken);
-  axios.defaults.headers.common['Authorization'] = userToken;
-};
 
 export const signIn = ({ creds, history }) => {
   return (dispatch, getState, { getFirebase }) => {
@@ -41,7 +19,6 @@ export const signIn = ({ creds, history }) => {
         return data.user.getIdToken();
       })
       .then((token) => {
-        setAuthorizationHeader(token);
         dispatch({ type: SET_AUTHENTICATED });
         history.push('/');
       })
@@ -119,15 +96,7 @@ export const signUp = ({ creds, history }) => {
           userImageURL: defaultUserProfileImagePath,
           createdAt: new Date(),
         };
-        firestore.collection('users').doc(userId).set(userInfo);
-        return data.user.getIdToken();
-      })
-      .then((token) => {
-        setAuthorizationHeader(token);
-        dispatch({ type: SET_AUTHENTICATED });
-        dispatch({ type: CLEAR_ERRORS });
-        console.log('test2');
-        //history.push('/');
+        return firestore.collection('users').doc(userId).set(userInfo);
       })
       .catch((error) => {
         dispatch({
@@ -147,8 +116,6 @@ export const signOut = () => {
       .signOut()
       .then(() => {
         dispatch({ type: SET_UNAUTHENTICATED });
-        localStorage.removeItem('userToken');
-        delete axios.defaults.headers.common['Authorization'];
       })
       .catch((error) => {
         dispatch({

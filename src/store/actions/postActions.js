@@ -1,5 +1,4 @@
 import { customAlphabet } from 'nanoid/non-secure';
-import axios from 'axios';
 import { CREATE_POST_SUCCESS, SET_ERRORS } from '../types';
 import { isEmpty } from '../../utils/validators';
 
@@ -9,7 +8,10 @@ export const createPost = (post) => {
     const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyz', 12);
 
     if (isEmpty(post.title || post.slug || post.body || post.coverImageURL)) {
-        return dispatch({ type: SET_ERRORS, payload: 'Fields must not be empty' });
+      return dispatch({
+        type: SET_ERRORS,
+        payload: 'Fields must not be empty',
+      });
     }
 
     const slugify = post.title
@@ -33,10 +35,6 @@ export const createPost = (post) => {
       coverImageAlt: post.coverImageAlt,
     };
 
-    axios.post('/create-post', newPost).then((res) => {
-      dispatch({ type: CREATE_POST_SUCCESS, payload: res.data });
-    });
-
     firestore
       .collection('posts')
       .doc(slug)
@@ -46,7 +44,6 @@ export const createPost = (post) => {
       })
       .catch((error) => {
         console.log(error);
-        console.log(error.message);
         dispatch({
           type: SET_ERRORS,
           payload: error.message,
@@ -89,5 +86,40 @@ export const handleUploadCoverImage = (props) => {
         dispatch({ type: 'UPLOAD_POST_IMAGE_SUCCESS' });
       }
     );
+  };
+};
+
+export const deletePost = (post) => {
+  return (dispatch, getState, { getFirebase }) => {
+    const firestore = getFirebase().firestore();
+    const userId = getState().firebase.auth.uid;
+
+    const postDocumentRef = firestore.collection('posts').doc(post.postId);
+
+    postDocumentRef
+      .get()
+      .then((doc) => {
+        if (!doc.exists) {
+          return dispatch({ type: SET_ERRORS, payload: 'Post not found' });
+        }
+        if (doc.data().authorId !== userId) {
+          return dispatch({
+            type: SET_ERRORS,
+            payload: 'Unauthorized permission',
+          });
+        } else {
+          return postDocumentRef.delete();
+        }
+      })
+      .then(() => {
+        return dispatch({
+          type: SET_ERRORS,
+          payload: 'Post successfully deleted',
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        return dispatch({ type: SET_ERRORS, error: error.message });
+      });
   };
 };

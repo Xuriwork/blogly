@@ -1,12 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { compose } from 'redux';
+import React from 'react';
 import { useSelector, connect } from 'react-redux';
-import {
-  useFirestore,
-  firestoreConnect,
-  isLoaded,
-  isEmpty,
-} from 'react-redux-firebase';
+import { useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import { Redirect, Link } from 'react-router-dom';
 
 import IronImage from 'react-image-lazy-load-component';
@@ -16,36 +10,19 @@ import PostImagePlaceholderDarkMode from '../../assets/images/LazyLoadPlaceholde
 import { PostMoreActionsModal } from './PostMoreActionsModal';
 
 const Post = (props) => {
-  const { auth, post } = props;
+  const { auth } = props;
 
-  const [loading, setLoading] = useState(true);
-  const firestore = useFirestore();
+  useFirestoreConnect([
+    {
+      collection: 'posts',
+      doc: props.match.params.postId,
+    },
+  ]);
 
-  const currentPost = useSelector(
-    ({ firestore: { ordered } }) => ordered.posts
+  const post = useSelector(
+    ({ firestore: { data } }) =>
+      data.posts && data.posts[props.match.params.postId]
   );
-
-  useEffect(() => {
-    if (post) {
-      const listener = firestore
-        .collection('posts')
-        .doc(post.slug)
-        .collection('comments')
-        .onSnapshot(
-          (snapshot) => {
-            let _comments = [];
-            snapshot.forEach((commentSnapshot) => {
-              _comments.push(commentSnapshot.data());
-            });
-            setLoading(false);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-      return () => listener();
-    }
-  }, [post, firestore]);
 
   const PostImagePlaceholder = () => {
     const theme = localStorage.getItem('theme');
@@ -60,16 +37,12 @@ const Post = (props) => {
     }
   };
 
-  if (!isLoaded(currentPost)) {
+  if (!isLoaded(post)) {
     return <Loading />;
   }
 
   if (isEmpty(post)) {
     return <Redirect to='/404' />;
-  }
-
-  if (loading) {
-    return <Loading />;
   }
 
   return (
@@ -101,27 +74,19 @@ const Post = (props) => {
         </div>
         <hr />
         <Link
-          to={`/p/${post.slug}/comments`}
+          to={`/p/${post.postId}/comments`}
           className='long-container long-container-post'>
           See comments ({post.commentCount})
         </Link>
       </section>
-      </main>
+    </main>
   );
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const slug = ownProps.match.params.slug;
-  const posts = state.firestore.data.posts;
-  const post = posts ? posts[slug] : null;
-
   return {
     auth: state.firebase.auth,
-    post: post,
   };
 };
 
-export default compose(
-  connect(mapStateToProps),
-  firestoreConnect((props) => [{ collection: 'posts', doc: props.slug }])
-)(Post);
+export default connect(mapStateToProps)(Post);

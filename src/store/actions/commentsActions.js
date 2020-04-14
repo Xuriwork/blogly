@@ -11,7 +11,7 @@ export const postComment = ({ content, slug }) => {
     const firebase = getFirebase();
     const firestore = getFirebase().firestore();
     const username = getState().firebase.profile.username;
-    const authorId = getState().firebase.auth.uid;
+    const userId = getState().firebase.auth.uid;
     const authorProfilePicture = getState().firebase.profile.userImageURL;
     const increment = firebase.firestore.FieldValue.increment(1);
 
@@ -22,11 +22,10 @@ export const postComment = ({ content, slug }) => {
 
     const newComment = {
       author: username,
-      authorId,
+      authorId: userId,
       authorProfilePicture,
       content,
-      createdAt: new Date(),
-      authorRef: firestore.collection('users').doc(authorId),
+      createdAt: new Date()
     };
 
     postCommentsRef
