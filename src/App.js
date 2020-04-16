@@ -11,6 +11,7 @@ import CreatePost from './components/Post/CreatePost';
 import NotFound from './components/NotFound';
 import SignIn from './components/Forms/SignIn';
 import SignUp from './components/Forms/SignUp';
+import ForgotPassword from './components/Forms/ForgotPassword';
 import Profile from './components/Profile/Profile';
 import EditProfile from './components/Profile/EditProfile';
 import Settings from './components/Settings';
@@ -42,6 +43,7 @@ const App = (props) => {
           <Route path='/p/:postId/comments' component={Comments} />
           <Route path='/settings' component={UserIsAuthenticated(Settings)} />
           <Route path='/p/:postId' exact component={Post} />
+          <Route path='/forgot-password' component={ForgotPassword} />
           <Route path='*' exact={true} component={NotFound} />
         </Switch>
       </Router>

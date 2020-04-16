@@ -10,7 +10,7 @@ const updateProfileReducer = (state = initialState, action) => {
                 updateProfileError: null,
             };
         case 'UPDATE_PROFILE_ERROR' : 
-            console.log('UPDATE_PROFILE_ERROR', action.payload);
+            console.error('UPDATE_PROFILE_ERROR', action.payload);
             return {
                 ...state,
                 updateProfileError: action.payload,
@@ -21,7 +21,7 @@ const updateProfileReducer = (state = initialState, action) => {
                 updateProfileError: null,
             }
         case 'UPLOAD_PROFILE_PICTURE_ERROR' :
-            console.log('UPLOAD_PROFILE_PICTURE_ERROR', action.payload);
+            console.error('UPLOAD_PROFILE_PICTURE_ERROR', action.payload);
             return {
                 ...state,
                 updateProfileError: action.payload,

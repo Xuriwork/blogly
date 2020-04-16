@@ -1,8 +1,9 @@
 import {
-  SET_AUTHENTICATED,
   PASSWORD_RESET_EMAIL_SENT,
   SET_UNAUTHENTICATED,
-  SET_ERRORS
+  SET_USER_POSTS,
+  SET_USER_LIKES,
+  SET_ERRORS,
 } from '../types';
 import { validateUserSignUpData } from '../../utils/validators.js';
 
@@ -14,13 +15,9 @@ export const signIn = ({ creds, history }) => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then((data) => {
-        console.log(data.user.getIdToken());
-        return data.user.getIdToken();
-      })
-      .then((token) => {
-        dispatch({ type: SET_AUTHENTICATED });
+      .then(() => {
         history.push('/');
+        window.location.reload(true);
       })
       .catch((error) => {
         if (error.code === 'auth/user-not-found') {
@@ -29,11 +26,12 @@ export const signIn = ({ creds, history }) => {
             payload:
               'There is no existing user record corresponding to the provided identifier.',
           });
+        } else {
+          dispatch({
+            type: SET_ERRORS,
+            payload: error.message,
+          });
         }
-        dispatch({
-          type: SET_ERRORS,
-          payload: error.message,
-        });
       });
   };
 };
@@ -98,6 +96,10 @@ export const signUp = ({ creds, history }) => {
         };
         return firestore.collection('users').doc(userId).set(userInfo);
       })
+      .then(() => {
+        history.push('/');
+        window.location.reload(true);
+      })
       .catch((error) => {
         dispatch({
           type: SET_ERRORS,
@@ -141,6 +143,61 @@ export const sendPasswordResetEmail = ({ email }) => {
           type: SET_ERRORS,
           payload: error.message,
         });
+      });
+  };
+};
+
+export const getUserData = () => {
+  return (dispatch, getState, { getFirebase }) => {
+    const firestore = getFirebase().firestore();
+    const userId = getState().firebase.auth.uid;
+
+    let userData = {};
+
+    firestore
+      .collection('users')
+      .doc(userId)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          return firestore
+            .collection('posts')
+            .where('authorId', '==', userId)
+            .orderBy('createdAt', 'desc')
+            .get()
+            .then((docs) => {
+              userData.posts = [];
+              docs.forEach((doc) => {
+                userData.posts.push({
+                  body: doc.data().body,
+                  author: doc.data().author,
+                  authorProfilePictureURL: doc.data().authorProfilePictureURL,
+                  likeCount: doc.data().likeCount,
+                  commentCount: doc.data().commentCount,
+                  createdAt: doc.data().createdAt,
+                  postId: doc.id,
+                });
+              });
+              dispatch({ type: SET_USER_POSTS, payload: userData.posts });
+            })
+        } else {
+          return console.error('User not found');
+        }
+      })
+      .then(() => {
+        return firestore
+          .collection('likes')
+          .where('userId', '==', userId)
+          .onSnapshot((docs) => {
+            userData.likes = [];
+            docs.forEach((doc) => {
+              userData.likes.push(doc.data());
+            });
+            dispatch({ type: SET_USER_LIKES, payload: userData.likes });
+          })
+      })
+      .catch((error) => {
+        console.error(error);
       });
   };
 };

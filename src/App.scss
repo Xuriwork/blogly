@@ -203,7 +203,7 @@ button {
   border-radius: 5px;
   font-size: 1em;
   font-family: $main-font-family;
-  max-width: 95%;
+  max-width: 90%;
 }
 
 nav {
@@ -349,16 +349,12 @@ nav {
   position: relative;
   z-index: 3;
 
-  &:hover .dropdown-content {
-    display: block;
-  }
-
   span:hover {
     cursor: pointer;
   }
 
   .dropdown-content {
-    display: none;
+    display: block;
     position: absolute;
     background-color: #f9f9f9;
     min-width: 140px;
@@ -649,6 +645,25 @@ textarea {
     }
   }
 
+  .like-component {
+    background-color: #fafaff;
+    box-sizing: border-box;
+    height: 40px;
+
+    button {
+      background-color: #fafaff;
+      font-weight: bold;
+      height: 100%;
+      border-radius: 0;
+      margin-left: 0;
+      border: 1px solid #31313144;
+    }
+
+    span:nth-of-type(1) {
+      color: rgb(75, 105, 243);
+    }
+  }
+
   p {
     line-height: 1.8;
     margin-top: 10px;
@@ -833,6 +848,7 @@ hr {
   height: 93vh;
   width: 100%;
   flex-direction: column;
+  text-align: center;
 
   h1 {
     font-size: 4.5em;
@@ -913,7 +929,7 @@ hr {
       button {
         @extend %blue-3d-button;
 
-        &:hover {
+        &:hover:not([disabled]) {
           @extend %blue-3d-button-hover;
         }
 
@@ -994,7 +1010,7 @@ hr {
     width: 100%;
 
     img,
-    button {
+    button:nth-of-type(1) {
       margin-right: 10px;
     }
 
@@ -1014,15 +1030,24 @@ hr {
     align-items: flex-start;
   }
 
+  input, textarea {
+    border-bottom: 2px solid #68ade6;
+
+    &:disabled {
+      border-bottom: none;
+    }
+  }
+
   input,
   textarea,
   label {
     max-width: 500px;
-    text-align: left;
+    width: 100%;
   }
 
   label {
     margin-bottom: 4px;
+    text-align: left;
   }
 
   input {
@@ -1031,6 +1056,12 @@ hr {
 
   textarea {
     margin-bottom: 0;
+    height: 60px;
+
+    + span {
+      margin-top: 5px;
+      width: 100%;
+    }
   }
 
   button {
@@ -1097,6 +1128,12 @@ hr {
   .settings-component {
     span:nth-of-type(1) {
       margin: 0 auto;
+    }
+
+    > div {
+      width: 80%;
+      display: flex;
+      align-items: center;
     }
 
     .profile-picture-section {

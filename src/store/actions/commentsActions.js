@@ -6,7 +6,7 @@ import {
   SET_ERRORS,
 } from '../types';
 
-export const postComment = ({ content, slug }) => {
+export const postComment = ({ content, postId }) => {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
     const firestore = getFirebase().firestore();
@@ -17,7 +17,7 @@ export const postComment = ({ content, slug }) => {
 
     const postCommentsRef = firestore
       .collection('posts')
-      .doc(slug)
+      .doc(postId)
       .collection('comments');
 
     const newComment = {
@@ -25,7 +25,7 @@ export const postComment = ({ content, slug }) => {
       authorId: userId,
       authorProfilePicture,
       content,
-      createdAt: new Date()
+      createdAt: new Date(),
     };
 
     postCommentsRef
@@ -36,7 +36,7 @@ export const postComment = ({ content, slug }) => {
       .then(() => {
         return firestore
           .collection('posts')
-          .doc(slug)
+          .doc(postId)
           .update({ commentCount: increment });
       })
       .catch((error) => {
@@ -50,24 +50,22 @@ export const postComment = ({ content, slug }) => {
 
 export const deleteComment = (props) => {
   return (dispatch, getState, { getFirebase }) => {
-    const { commentId, slug } = props;
+    const { commentId, postId } = props;
     const firebase = getFirebase();
     const firestore = getFirebase().firestore();
-    const increment = firebase.firestore.FieldValue.increment(-1);
+    const decrement = firebase.firestore.FieldValue.increment(-1);
 
     const batch = firestore.batch();
 
-    const postRef = firestore.collection('posts').doc(slug);
+    const postDocumentRef = firestore.collection('posts').doc(postId);
 
     const postCommentsRef = firestore
       .collection('posts')
-      .doc(slug)
+      .doc(postId)
       .collection('comments')
       .doc(commentId);
 
-    firestore
-      .collection('posts')
-      .doc(slug)
+    postDocumentRef
       .get()
       .then((doc) => {
         if (!doc.exists) {
@@ -79,7 +77,7 @@ export const deleteComment = (props) => {
       })
       .then(() => {
         batch.delete(postCommentsRef);
-        batch.update(postRef, { commentCount: increment });
+        batch.update(postDocumentRef, { commentCount: decrement });
         batch.commit();
         dispatch({ type: COMMENT_DELETION_SUCCESS });
       })

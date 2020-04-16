@@ -39,3 +39,28 @@ export const validateUserSignUpData = (data) => {
         valid: Object.keys(errors).length === 0 ? true : false
     }
 };
+
+export const formatUserDetails = (data) => {
+
+    let userDetails = {};
+
+    if (!isEmpty(data.email.trim())) userDetails.email = data.email;
+    if (!isEmpty(data.username.trim())) userDetails.username = data.username;
+    if (!isEmpty(data.bio.trim())) userDetails.bio = data.bio;
+
+    if (!isEmpty(data.onlinePortfolio.trim())) {
+        if (data.onlinePortfolio.trim().substring(0, 4) !== 'http') {
+            userDetails.onlinePortfolio = `http://${data.onlinePortfolio}`;
+        } else userDetails.onlinePortfolio = data.onlinePortfolio;
+    }
+
+    if (!isEmpty(data.personalWebsite.trim())) {
+        if (data.personalWebsite.trim().substring(0, 4) !== 'http') {
+            userDetails.personalWebsite = `http://${data.personalWebsite}`;
+        } else userDetails.personalWebsite = data.personalWebsite;
+    }
+
+    console.log(userDetails)
+    
+    return userDetails;
+}

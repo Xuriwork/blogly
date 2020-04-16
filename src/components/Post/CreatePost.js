@@ -175,7 +175,6 @@ export const CreatePost = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state)
   return {
     errors: state.uiReducer.errors,
   };

@@ -13,11 +13,11 @@ import { DarkLightModeContext } from '../../utils/DarkLightModeContext';
 
 const Navbar = (props) => {
   const [menu, setMenu] = useState(false);
+  const [mobileMenu, setMobileMenu] = useState(false);
   const handleToggleTheme = useContext(DarkLightModeContext);
   const { auth, notifications } = props;
 
   useEffect(() => {
-
     const theme = localStorage.getItem('theme');
     const slider = document.getElementById('slider');
     const mobileSlider = document.getElementById('mobile-slider');
@@ -31,15 +31,18 @@ const Navbar = (props) => {
       }
     }
 
-    document.addEventListener('click', (event) => {
+    document.addEventListener(
+      'click',
+      (event) => {
+        if (event.target.matches('#mobile-link')) {
+          setMobileMenu(false);
+          return;
+        }
 
-    if (event.target.matches('#mobile-link')) {
-      setMenu(false);
-      return;
-    }
-
-    return () => document.removeEventListener('click', event);
-    }, false);
+        return () => document.removeEventListener('click', event);
+      },
+      false
+    );
   });
 
   const signOut = () => {
@@ -47,12 +50,16 @@ const Navbar = (props) => {
     setMenu(false);
   };
 
-  const openMenu = () => {
-    setMenu(true)
+  const closeMenu = () => {
+    setMobileMenu(false);
   };
 
-  const closeMenu = () => {
-    setMenu(false)
+  const toggle = () => {
+    setMenu(!menu);
+  };
+
+  const toggleMobile = () => {
+    setMobileMenu(!mobileMenu);
   };
 
   return (
@@ -62,8 +69,8 @@ const Navbar = (props) => {
           <img className='site-logo' src={BloglyIcon} alt='Blogly Icon' />
         </Link>
         <HamburgerMenu
-          isOpen={menu}
-          menuClicked={openMenu}
+          isOpen={mobileMenu}
+          menuClicked={toggleMobile}
           width={25}
           height={16}
           strokeWidth={2}
@@ -77,112 +84,160 @@ const Navbar = (props) => {
         <img className='site-logo desktop' src={BloglyIcon} alt='Blogly Icon' />
       </Link>
       <div className='right-nav-bar desktop'>
-          { 
-            auth.isEmpty ? ( 
-              <React.Fragment>
-                <Link to='/sign-in'><button>Sign In</button></Link>
-                <Link to='/sign-up' className='sign-up'><span>Sign Up</span></Link>
-                <label id='switch' style={{ marginLeft: 20 }}>
-                    <input type='checkbox' onChange={handleToggleTheme} id='slider' />
-                    <span className='slider round'></span>
-                </label>
-              </React.Fragment>
-             ) 
-              : 
-            <React.Fragment>
-              <Link to='/create-post'><button>Create post</button></Link>
-              <img src={Message} alt='Message Icon' style={{ marginRight: '30px' }} /> 
-              <div className='dropdown'>
-                <span>
-                  <BellIcon 
-                    width={30} 
-                    numberOfNotifications={notifications?.length} 
-                  />
-                </span>
-                <div className='dropdown-content' style={{ width: '220px', fontSize: '0.7em' }}>
-                  {notifications?.map((notification) =>
-                  <span key={notification.id} className='dropdown-items'>
-                    {notification.author} {' '} {notification.content}<br/>
-                    <span className='key-info'>{moment(notification.timestamp.toDate()).fromNow()}</span>
-                  </span>
-                  )}
-                </div>
-              </div>
-              <div className='dropdown'>
-                <img 
-                  src={auth.photoURL} 
-                  alt='Profile' 
-                  className='profile-picture'
+        {auth.isEmpty ? (
+          <React.Fragment>
+            <Link to='/sign-in'>
+              <button>Sign In</button>
+            </Link>
+            <Link to='/sign-up' className='sign-up'>
+              <span>Sign Up</span>
+            </Link>
+            <label id='switch' style={{ marginLeft: 20 }}>
+              <input type='checkbox' onChange={handleToggleTheme} id='slider' />
+              <span className='slider round'></span>
+            </label>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <Link to='/create-post'>
+              <button>Create post</button>
+            </Link>
+            <img
+              src={Message}
+              alt='Message Icon'
+              style={{ marginRight: '30px' }}
+            />
+            <div className='dropdown'>
+              <span>
+                <BellIcon
+                  width={30}
+                  numberOfNotifications={notifications?.length}
                 />
+              </span>
+              <div
+                className='dropdown-content'
+                style={{ width: '220px', fontSize: '0.7em' }}>
+                {notifications?.map((notification) => (
+                  <span key={notification.id} className='dropdown-items'>
+                    {notification.author} {notification.content}
+                    <br />
+                    <span className='key-info'>
+                      {moment(notification.timestamp.toDate()).fromNow()}
+                    </span>
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className='dropdown'>
+              <img
+                src={auth.photoURL}
+                alt='Profile'
+                className='profile-picture'
+                onClick={toggle}
+              />
+              {menu ? (
                 <div className='dropdown-content'>
-                  <Link to='/profile' className='dropdown-items key-info'>{'@'+auth.displayName}</Link>
+                  <Link to='/profile' className='dropdown-items key-info'>
+                    {'@' + auth.displayName}
+                  </Link>
                   <span className='dropdown-items'>
                     <label id='switch' style={{ marginLeft: -5 }}>
-                      <input type='checkbox' onChange={handleToggleTheme} id='slider' />
+                      <input
+                        type='checkbox'
+                        onChange={handleToggleTheme}
+                        id='slider'
+                      />
                       <span className='slider round'></span>
                     </label>
                   </span>
-                  <Link to='/profile' className='dropdown-items'>Profile</Link>
-                  <Link to='/blogmarks' className='dropdown-items'>Blogmarks</Link>
-                  <Link to='/settings' className='dropdown-items'>Settings</Link>
-                  <span className='dropdown-items sign-out-link' onClick={signOut}>Sign Out</span>
+                  <Link to='/profile' className='dropdown-items'>
+                    Profile
+                  </Link>
+                  <Link to='/blogmarks' className='dropdown-items'>
+                    Blogmarks
+                  </Link>
+                  <Link to='/settings' className='dropdown-items'>
+                    Settings
+                  </Link>
+                  <span
+                    className='dropdown-items sign-out-link'
+                    onClick={signOut}>
+                    Sign Out
+                  </span>
                 </div>
-              </div>
-            </React.Fragment>
-          }
+              ) : null}
+            </div>
+          </React.Fragment>
+        )}
       </div>
-      <CheeseburgerMenu 
-        isOpen={menu}
-        closeCallback={closeMenu} 
-      >
+      <CheeseburgerMenu isOpen={mobileMenu} closeCallback={closeMenu}>
         <div className='overlay-content'>
-          { 
-            auth.isEmpty ? 
-              ( 
-                <React.Fragment>
-                  <label id='switch' style={{ marginBottom: '10px' }}>
-                    <input type='checkbox' onChange={handleToggleTheme} id='mobile-slider' />
-                    <span className='slider round'></span>
-                  </label>
-                  <Link to='/sign-in' id='mobile-link'>Sign In</Link>
-                  <Link to='/sign-up' id='mobile-link'>Sign Up</Link>
-                </React.Fragment> 
-              ) : 
-            <> 
-              <img 
-                src={auth.photoURL} 
-                alt='Profile' 
-                className='profile-picture' 
+          {auth.isEmpty ? (
+            <React.Fragment>
+              <label id='switch' style={{ marginBottom: '10px' }}>
+                <input
+                  type='checkbox'
+                  onChange={handleToggleTheme}
+                  id='mobile-slider'
+                />
+                <span className='slider round'></span>
+              </label>
+              <Link to='/sign-in' id='mobile-link'>
+                Sign In
+              </Link>
+              <Link to='/sign-up' id='mobile-link'>
+                Sign Up
+              </Link>
+            </React.Fragment>
+          ) : (
+            <>
+              <img
+                src={auth.photoURL}
+                alt='Profile'
+                className='profile-picture'
                 style={{ width: '80px' }}
               />
-              <Link to='/profile' style={{ color: '#4e85eb' }} id='mobile-link'>{'@'+auth.displayName}</Link>
-              <Link to='/profile' id='mobile-link'>Profile</Link>
-              <Link to='/create-post' id='mobile-link'>Create post</Link>
-              <Link to='/blogmarks' id='mobile-link'>Blogmarks</Link>
-              <Link to='/settings' id='mobile-link'>Settings</Link>
-              <span className='sign-out-link' id='mobile-link' onClick={signOut}>Sign Out</span>
+              <Link to='/profile' style={{ color: '#4e85eb' }} id='mobile-link'>
+                {'@' + auth.displayName}
+              </Link>
+              <Link to='/profile' id='mobile-link'>
+                Profile
+              </Link>
+              <Link to='/create-post' id='mobile-link'>
+                Create post
+              </Link>
+              <Link to='/blogmarks' id='mobile-link'>
+                Blogmarks
+              </Link>
+              <Link to='/settings' id='mobile-link'>
+                Settings
+              </Link>
+              <span
+                className='sign-out-link'
+                id='mobile-link'
+                onClick={signOut}>
+                Sign Out
+              </span>
             </>
-          }
+          )}
         </div>
       </CheeseburgerMenu>
     </nav>
   );
-}
+};
 
 const mapStateToProps = (state) => {
-    return {
-        auth: state.firebase.auth,
-        user: state.userReducer,
-        notifications: state.userReducer.notifications
-    }
-}
+  return {
+    auth: state.firebase.auth,
+    user: state.userReducer,
+    notifications: state.userReducer.notifications,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signOut: () => dispatch(signOut())
-  }
-} 
+    signOut: () => dispatch(signOut()),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
-
-

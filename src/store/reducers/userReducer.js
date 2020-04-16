@@ -1,32 +1,36 @@
 import {
-  SET_USER,
+  SET_USER_POSTS,
+  SET_USER_LIKES,
+  SET_USER_NOTIFICATIONS,
   MARK_NOTIFICATIONS_READ,
-  SET_AUTHENTICATED,
   SET_UNAUTHENTICATED,
   PASSWORD_RESET_EMAIL_SENT,
 } from '../types';
 
 const initialState = {
-  authenticated: false,
   loading: false,
-  userData: {},
+  posts: [],
   likes: [],
   notifications: [],
 };
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_AUTHENTICATED:
+    case SET_USER_LIKES:
       return {
         ...state,
-        authenticated: true,
+        likes: action.payload
       };
-    case SET_USER:
+    case SET_USER_POSTS : 
       return {
-        authenticated: true,
-        loading: false,
-        ...action.payload,
+        ...state,
+        posts: action.payload
       };
+      case SET_USER_NOTIFICATIONS : 
+      return {
+        ...state,
+        notifications: action.payload
+      }
     case SET_UNAUTHENTICATED:
       return initialState;
     case PASSWORD_RESET_EMAIL_SENT:

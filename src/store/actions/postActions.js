@@ -43,7 +43,7 @@ export const createPost = (post) => {
         dispatch({ type: CREATE_POST_SUCCESS });
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
         dispatch({
           type: SET_ERRORS,
           payload: error.message,
@@ -120,6 +120,90 @@ export const deletePost = (post) => {
       .catch((error) => {
         console.error(error);
         return dispatch({ type: SET_ERRORS, error: error.message });
+      });
+  };
+};
+
+export const likePost = (postId) => {
+  return (dispatch, getState, { getFirebase }) => {
+    const firestore = getFirebase().firestore();
+    const userId = getState().firebase.auth.uid;
+    const firebase = getFirebase();
+    const postDocumentRef = firestore.collection('posts').doc(postId);
+
+    const increment = firebase.firestore.FieldValue.increment(1);
+
+    const likeDocument = firestore
+      .collection('likes')
+      .where('userId', '==', userId)
+      .where('postId', '==', postId)
+      .limit(1);
+
+    likeDocument
+      .get()
+      .then((doc) => {
+        if (doc.empty) {
+          return firestore
+            .collection('likes')
+            .add({
+              postId,
+              userId,
+              liked: true,
+              timestamp: new Date(),
+            })
+            .then(() => {
+              return postDocumentRef.update({
+                likeCount: increment,
+              });
+            });
+        } else {
+          dispatch({
+            type: SET_ERRORS,
+            payload: 'This post has already been liked',
+          });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        return dispatch({ type: SET_ERRORS, payload: error.message });
+      });
+  };
+};
+
+export const unlikePost = (postId) => {
+  return (dispatch, getState, { getFirebase }) => {
+    const firestore = getFirebase().firestore();
+    const userId = getState().firebase.auth.uid;
+    const firebase = getFirebase();
+    const postDocumentRef = firestore.collection('posts').doc(postId);
+    const decrement = firebase.firestore.FieldValue.increment(-1);
+
+    const likeDocument = firestore
+      .collection('likes')
+      .where('userId', '==', userId)
+      .where('postId', '==', postId)
+      .limit(1);
+
+    likeDocument
+      .get()
+      .then((data) => {
+        if (data.empty) {
+          return dispatch({ type: SET_ERRORS, payload: 'Post not liked' });
+        } else {
+          return firestore
+            .collection('likes')
+            .doc(data.docs[0].id)
+            .delete()
+            .then(() => {
+              return postDocumentRef.update({
+                likeCount: decrement,
+              });
+            });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        return dispatch({ type: SET_ERRORS, payload: error.message });
       });
   };
 };

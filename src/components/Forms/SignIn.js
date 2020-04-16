@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { Redirect } from 'react-router-dom';
-import { signIn, sendPasswordResetEmail } from '../../store/actions/userActions';
+import { Redirect, Link } from 'react-router-dom';
+import { signIn } from '../../store/actions/userActions';
 import { ErrorCircle } from '@styled-icons/boxicons-solid/ErrorCircle';
 
 const SignIn = (props) => {
@@ -13,24 +13,20 @@ const SignIn = (props) => {
     await props.signIn({ creds, history });
   };
 
-  const sendPasswordResetEmail = (data) => {
-    props.sendPasswordResetEmail(data);
-  };
-
   if (!auth.isEmpty) {
     return <Redirect to='/' />;
-  };
+  }
 
   return (
     <div className='signin-component'>
+      {errors ? (
+        <span className='error-message'>
+          <ErrorCircle size='30' title='error' style={{ marginRight: 5 }} />
+          {errors}
+        </span>
+      ) : null}
       <form onSubmit={handleSubmit(handleSignIn)}>
         <div>
-          {errors ? (
-            <span className='error-message'>
-              <ErrorCircle size='30' title='error' style={{ marginRight: 5 }} />
-              {errors}
-            </span>
-          ) : null}
           <label>Email Address</label>
           <input type='email' name='email' ref={register} />
           <label>Password</label>
@@ -38,15 +34,15 @@ const SignIn = (props) => {
           <span style={{ marginBottom: '15px', width: '70%' }}>
             <p>
               Forget your password?{' '}
-              <span
+              <Link
+                to='/forgot-password'
                 style={{
                   fontWeight: 'bold',
                   color: '#f55353',
                   cursor: 'pointer',
-                }}
-                onClick={handleSubmit(sendPasswordResetEmail)}>
+                }}>
                 Click here
-              </span>
+              </Link>
             </p>
           </span>
           <button disabled={loading}>Sign In</button>
@@ -60,7 +56,7 @@ const mapStateToProps = (state) => {
   return {
     errors: state.uiReducer.errors,
     auth: state.firebase.auth,
-    loading: state.uiReducer.loading
+    loading: state.uiReducer.loading,
   };
 };
 
@@ -69,7 +65,6 @@ const mapDispatchToProps = (dispatch, store) => {
 
   return {
     signIn: (creds) => dispatch(signIn(creds)),
-    sendPasswordResetEmail: (email) => dispatch(sendPasswordResetEmail(email))
   };
 };
 

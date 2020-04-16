@@ -6,7 +6,7 @@ import FileUploader from 'react-firebase-file-uploader';
 import { Twitter } from '@styled-icons/boxicons-logos/Twitter';
 import { Github } from '@styled-icons/boxicons-logos/Github';
 import { Upload } from '@styled-icons/heroicons-outline/Upload';
-import { updateSettings } from '../store/actions/settingsActions';
+import { updateProfileInfo } from '../store/actions/profileActions';
 import { uploadProfilePicture } from '../store/actions/profileActions';
 import { DarkLightModeContext } from '../utils/DarkLightModeContext';
 
@@ -30,8 +30,8 @@ export const Settings = (props) => {
       }
     })
 
-    const handleUpdateSettings = async (settingsInfo) => {
-        await props.updateSettings(settingsInfo);
+    const handleUpdateSettings = async (profileInfo) => {
+        await props.updateProfileInfo({profileInfo, history: props.history});
     }
 
     const handleUploadProfilePicture = async (imageName) => {
@@ -76,11 +76,11 @@ export const Settings = (props) => {
                         </label>
                     </span>
                     <label>Email</label>
-                    <input type='text' name='email' defaultValue={profile.email} ref={register} />
+                    <input type='text' name='email' defaultValue={profile.email} ref={register} disabled />
                     <label>Name</label>
-                    <input type='text' name='name' defaultValue={profile.username} ref={register} />
+                    <input type='text' name='username' defaultValue={profile.username} ref={register} />
                     <label>Usertag</label>
-                    <input type='text' name='usertag' disabled defaultValue={profile.usertag} />
+                    <input type='text' name='usertag' defaultValue={profile.usertag} disabled />
                     <label>Bio</label>
                     <textarea name='bio' ref={register} defaultValue={profile.bio}  />
                     <span>Let the world know who you are.</span>
@@ -107,6 +107,8 @@ export const Settings = (props) => {
                         </button>
                     </div>
                     <hr />
+                    <label>Current Password</label>
+                    <input type='password' name='currentPassword' ref={register} />
                     <button className='save-profile-button' onClick={handleSubmit(handleUpdateSettings)}>Save Profile</button>
                 </div>
             </div>
@@ -117,13 +119,14 @@ export const Settings = (props) => {
 const mapStateToProps = (state) => {
     return {
       auth: state.firebase.auth,
+      errors: state.uiReducer.errors
     }
 } 
 
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateSettings: (updateSettingsInfo) => dispatch(updateSettings(updateSettingsInfo)),
+        updateProfileInfo: (data) => dispatch(updateProfileInfo(data)),
         uploadProfilePicture: (image) => dispatch(uploadProfilePicture(image)),
     }
 }
