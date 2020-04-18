@@ -12,7 +12,6 @@ import CheeseburgerMenu from 'cheeseburger-menu';
 import { DarkLightModeContext } from '../../utils/DarkLightModeContext';
 
 const Navbar = (props) => {
-  const [menu, setMenu] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
   const handleToggleTheme = useContext(DarkLightModeContext);
   const { auth, notifications } = props;
@@ -47,15 +46,11 @@ const Navbar = (props) => {
 
   const signOut = () => {
     props.signOut();
-    setMenu(false);
+    setMobileMenu(false);
   };
 
   const closeMenu = () => {
     setMobileMenu(false);
-  };
-
-  const toggle = () => {
-    setMenu(!menu);
   };
 
   const toggleMobile = () => {
@@ -133,9 +128,7 @@ const Navbar = (props) => {
                 src={auth.photoURL}
                 alt='Profile'
                 className='profile-picture'
-                onClick={toggle}
               />
-              {menu ? (
                 <div className='dropdown-content'>
                   <Link to='/profile' className='dropdown-items key-info'>
                     {'@' + auth.displayName}
@@ -165,7 +158,6 @@ const Navbar = (props) => {
                     Sign Out
                   </span>
                 </div>
-              ) : null}
             </div>
           </React.Fragment>
         )}

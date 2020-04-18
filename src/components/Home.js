@@ -54,8 +54,8 @@ const Home = () => {
     <main className='main'>
       <div className='home-component'>
       {posts && posts.map(post => (
-          <span key={post.slug}>
-            <Link to={`/p/${post.slug}`}>
+          <span key={post.postId}>
+            <Link to={`/p/${post.postId}`}>
             <section className='card'>
               <IronImage 
                 src={post.coverImageURL} 

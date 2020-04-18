@@ -6,6 +6,9 @@ export const createPost = (post) => {
   return (dispatch, getState, { getFirebase }) => {
     const firestore = getFirebase().firestore();
     const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyz', 12);
+    const username = getState().firebase.profile.username;
+    const userId = getState().firebase.auth.uid;
+    const authorProfilePictureURL = getState().firebase.profile.userImageURL;
 
     if (isEmpty(post.title || post.slug || post.body || post.coverImageURL)) {
       return dispatch({
@@ -25,19 +28,25 @@ export const createPost = (post) => {
       return `${slugify}-${slugId}`;
     };
 
-    const slug = createSlug();
+    const postId = createSlug();
 
     const newPost = {
-      slug,
+      author: username,
+      authorId: userId,
+      authorProfilePictureURL,
+      postId,
       title: post.title,
       body: post.body,
       coverImageURL: post.coverImageURL,
       coverImageAlt: post.coverImageAlt,
+      createdAt: new Date(),
+      commentCount: 0,
+      likeCount: 0
     };
 
     firestore
       .collection('posts')
-      .doc(slug)
+      .doc(postId)
       .set(newPost)
       .then(() => {
         dispatch({ type: CREATE_POST_SUCCESS });

@@ -49,10 +49,12 @@ const Post = (props) => {
   };
 
   const handleLikePost = () => {
+    if (auth.isEmpty) return;
     props.likePost(props.match.params.postId);
   };
 
   const handleUnlikePost = () => {
+    if (auth.isEmpty) return;
     props.unlikePost(props.match.params.postId);
   };
 

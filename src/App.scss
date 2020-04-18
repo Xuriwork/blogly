@@ -11,6 +11,8 @@
   --dark-mode: #27292d;
   --light-mode-card: #fff;
   --dark-mode-card: #303133;
+  --light-mode-card-bottom-header: #ecececdc;
+  --dark-mode-card-bottom-header: #3e3f41;
   --light-mode-nav-bg: #3b4764;
   --dark-mode-nav-bg: #57668a;
   --dark-mode-text: #d3d2d2;
@@ -28,6 +30,7 @@
 .light-mode {
   --bg: var(--light-mode);
   --card-bg: var(--light-mode-card);
+  --card-bottom-header: var(--light-mode-card-bottom-header);
   --nav-bg: var(--light-mode-nav-bg);
   --text: var(--light-mode-text);
   --modal-bg: var(--light-mode-modal-bg);
@@ -39,12 +42,13 @@
 .dark-mode {
   --bg: var(--dark-mode);
   --card-bg: var(--dark-mode-card);
+  --card-bottom-header: var(--dark-mode-card-bottom-header);
   --nav-bg: var(--dark-mode-nav-bg);
   --text: var(--dark-mode-text);
   --modal-bg: var(--dark-mode-modal-bg);
   --input-bg: var(--dark-mode-input-bg);
   --input-color: var(--dark-mode-input-color);
-  --input-border: var(--dark-mode-input-border);
+  --input-border: var(--dark-mode-card-input-border);
 }
 
 $base-color: #4e85eb;
@@ -206,6 +210,10 @@ button {
   max-width: 90%;
 }
 
+.notyf {
+  font-family: 'Noto Sans', sans-serif;
+}
+
 nav {
   @extend %flex-complete-center;
   height: 8vh;
@@ -354,7 +362,7 @@ nav {
   }
 
   .dropdown-content {
-    display: block;
+    display: none;
     position: absolute;
     background-color: #f9f9f9;
     min-width: 140px;
@@ -375,7 +383,16 @@ nav {
         background-color: #e9e9e9 !important;
         border-radius: 5px;
       }
+
+      &:focus {
+        background-color: #e9e9e9 !important;
+        border-radius: 5px;
+      }
     }
+  }
+
+  &:hover .dropdown-content {
+    display: block;
   }
 }
 
@@ -484,6 +501,7 @@ textarea {
       box-sizing: border-box;
       width: 100%;
       align-items: flex-start;
+      margin: auto 0;
 
       p {
         padding: 0 20px;
@@ -496,6 +514,11 @@ textarea {
         align-items: center;
         width: 100%;
         margin: 4px 0;
+        font-size: 1.1em;
+
+        &:hover {
+          cursor: pointer;
+        }
 
         &:nth-last-child(1) {
           color: #f53d3d;
@@ -646,7 +669,7 @@ textarea {
   }
 
   .like-component {
-    background-color: #fafaff;
+    background-color: var(--card-bottom-header);
     box-sizing: border-box;
     height: 40px;
 
@@ -654,7 +677,7 @@ textarea {
       background-color: #fafaff;
       font-weight: bold;
       height: 100%;
-      border-radius: 0;
+      border-radius: 5px 0 0 5px;
       margin-left: 0;
       border: 1px solid #31313144;
     }
