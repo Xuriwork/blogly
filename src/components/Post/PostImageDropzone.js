@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
 
-export const PostImageDropzone = (props) => {
+export const PostImageDropzone = React.memo((props) => {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
 
   const files = acceptedFiles.map((file) => (
@@ -25,4 +25,4 @@ export const PostImageDropzone = (props) => {
     </section>
     </div>
   );
-};
+});

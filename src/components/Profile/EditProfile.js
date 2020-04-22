@@ -9,7 +9,7 @@ import { updateProfileInfo, uploadProfilePicture } from '../../store/actions/pro
 import { Upload } from '@styled-icons/heroicons-outline/Upload';
 import Loading from '../../utils/Loading';
 
-export const EditProfile = (props) => {
+export const EditProfile = React.memo((props) => {
     const { auth } = props;
 
     const firebase = useFirebase();
@@ -36,7 +36,6 @@ export const EditProfile = (props) => {
     };
 
     return (
-        <div className='main'>
             <div className='profile-page-component'>
                 <div className='upper-container'>
                     <div className='image-container'>
@@ -60,7 +59,9 @@ export const EditProfile = (props) => {
                         <FileUploader
                             accept='image/png, image/jpeg'
                             name='photo'
-                            filename={auth.uid}
+                            randomizeFilename
+                            maxHeight={90}
+                            maxWidth={90}
                             storageRef={userStorageRef}
                             onUploadSuccess={handleUploadProfilePicture} 
                             id='imageInput' 
@@ -79,9 +80,8 @@ export const EditProfile = (props) => {
                     </div>
                 </div>
             </div>
-        </div>
     )
-}
+});
 
 const mapStateToProps = (state) => {
     return {

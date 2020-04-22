@@ -25,6 +25,7 @@
   --dark-mode-input-color: #fff;
   --light-mode-input-border: 1px solid #c6c9c9;
   --dark-mode-input-border: 1px solid #9c9c9c57;
+  --dark-mode-jodit-input-bg: #48454D;
 }
 
 .light-mode {
@@ -51,8 +52,8 @@
   --input-border: var(--dark-mode-card-input-border);
 }
 
-$base-color: #4e85eb;
-$button-hover-color: #4f7aca;
+$base-color: #1E90FF;
+$button-hover-color: #2089f1;
 $main-font-family: Barlow, sans-serif;
 
 %flex-complete-center {
@@ -106,37 +107,21 @@ $main-font-family: Barlow, sans-serif;
   scrollbar-color: $base-color var(--bg);
 }
 
-html,
-body,
-#app,
-#app > div,
-main {
-  height: 100% !important;
-
-  main {
-    height: 100%;
-  }
+::-webkit-scrollbar {
+  width: 5px;
 }
-
-main {
-  @extend %flex-complete-center;
+::-webkit-scrollbar-track {
+  background: #3c65b348;
+}
+::-webkit-scrollbar-thumb {
+  background-color: $base-color;
+  border-radius: 20px;
+  border: 3px solid $base-color;
 }
 
 body {
   background: var(--bg);
   width: 100%;
-
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-  &::-webkit-scrollbar-track {
-    background: #3c65b348;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: $base-color;
-    border-radius: 20px;
-    border: 3px solid $base-color;
-  }
 }
 
 h1,
@@ -210,13 +195,13 @@ button {
   max-width: 90%;
 }
 
-.notyf {
+.notyf, .window-title {
   font-family: 'Noto Sans', sans-serif;
 }
 
 nav {
   @extend %flex-complete-center;
-  height: 8vh;
+  height: 75px;
   width: 100%;
   background: var(--nav-bg);
   padding: 0px 40px;
@@ -283,7 +268,7 @@ nav {
   }
 }
 
-#switch {
+.switch {
   position: relative;
   display: inline-block;
   width: 50px;
@@ -422,14 +407,18 @@ textarea {
 
 .input-width {
   width: 90%;
+  max-height: 500px;
 }
 
-.main {
-  @extend %flex-complete-center;
-  padding: 10px 0;
-  max-width: 1000px;
-  margin: auto;
+main {
+  display: flex;
+  align-items: center;
   flex-direction: column;
+  min-height: 100%;
+  max-width: 1000px;
+  width: 100%;
+  padding: 10px 0;
+  margin: auto;
 
   > section {
     padding: 24px;
@@ -568,7 +557,7 @@ textarea {
 
 .home-component {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 0.8fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 0.6fr));
   grid-template-rows: auto;
   grid-gap: 20px;
   align-items: center;
@@ -631,7 +620,7 @@ textarea {
 .card-title {
   font-size: 1.3em;
   font-weight: bold;
-  color: #6093f1 !important;
+  color: $base-color !important;
 }
 
 .post-component {
@@ -799,12 +788,6 @@ hr {
   border-radius: 5px;
   padding: 30px 10px;
 
-  h1 {
-    text-transform: uppercase;
-    margin-bottom: 15px;
-    color: $base-color;
-  }
-
   label {
     width: 90%;
     margin-bottom: 5px;
@@ -812,10 +795,6 @@ hr {
 
   input {
     padding: 5px 0;
-  }
-
-  textarea {
-    height: 200px;
   }
 
   input[type='file'] {
@@ -900,9 +879,13 @@ hr {
   }
 }
 
+.comments-component {
+  width: 600px;
+}
+
 .signin-component {
   @extend %flex-complete-center;
-  height: 92vh;
+  width: 100%;
   flex-direction: column;
 
   .signup-form {
@@ -1118,8 +1101,6 @@ hr {
 
 @media (max-width: 600px) {
   nav {
-    height: 10vh;
-    display: flex;
 
     .mobile-nav {
       display: flex;

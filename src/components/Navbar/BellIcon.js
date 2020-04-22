@@ -1,6 +1,6 @@
 import React from "react";
 
-const BellIcon = ({
+const BellIcon = React.memo(({
   width = '100%', 
   numberOfNotifications = 0, 
 }) => {
@@ -83,6 +83,6 @@ const BellIcon = ({
       }
     </svg>
   );
-}
+});
 
 export default BellIcon;

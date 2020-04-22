@@ -1,3 +1,5 @@
+rules_version = "2";
+
 service firebase.storage {
   match /b/{bucket}/o {
   	match /users/{image} {
@@ -24,6 +26,9 @@ service firebase.storage {
           || request.resource.contentType.matches('image/png')
           && request.resource.size < 8 * 1024 * 1024)
         )
+    }
+    match /blog_posts_images/resized/{images} {
+      allow read, write;
     }
   }
 }

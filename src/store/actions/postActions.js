@@ -1,6 +1,7 @@
 import { customAlphabet } from 'nanoid/non-secure';
 import { CREATE_POST_SUCCESS, SET_ERRORS } from '../types';
 import { isEmpty } from '../../utils/validators';
+import shortid from 'shortid';
 
 export const createPost = (post) => {
   return (dispatch, getState, { getFirebase }) => {
@@ -64,13 +65,14 @@ export const createPost = (post) => {
 export const handleUploadCoverImage = (props) => {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
-    const { imageData, setProgress, setCoverImageURL } = props;
+    const { image, setProgress, setCoverImageURL } = props;
+    const randomFilename = shortid.generate()
 
     const postImageRef = firebase
       .storage()
       .ref(`blog_posts_images`)
-      .child(imageData.name)
-      .put(imageData);
+      .child(randomFilename)
+      .put(image);
 
     postImageRef.on(
       'state_changed',
@@ -87,9 +89,10 @@ export const handleUploadCoverImage = (props) => {
         firebase
           .storage()
           .ref(`blog_posts_images`)
-          .child(imageData.name)
+          .child(randomFilename)
           .getDownloadURL()
           .then((url) => {
+            console.log(url)
             setCoverImageURL(url);
           });
         dispatch({ type: 'UPLOAD_POST_IMAGE_SUCCESS' });

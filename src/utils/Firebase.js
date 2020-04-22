@@ -2,7 +2,6 @@ import firebase from '@firebase/app';
 import '@firebase/firestore';
 import '@firebase/auth';
 import '@firebase/storage';
-import '@firebase/performance';
 
 export const firebaseConfig = {
     apiKey: "AIzaSyD6XOMzFR2aUtJGmqy5C3r4Eu_C4L5Pl9g",
@@ -15,11 +14,6 @@ export const firebaseConfig = {
     measurementId: "G-T5LP4QP26P"
 };
 
-
 firebase.initializeApp(firebaseConfig);
-firebase.performance();
-
-export const auth = firebase.auth();
-export const firestore = firebase.firestore();
 
 export default firebase;

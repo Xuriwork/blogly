@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import { isLoaded } from 'react-redux-firebase';
 import Loading from '../../utils/Loading';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
-export const Profile = (props, ownProps) => {
+export const Profile = React.memo((props, ownProps) => {
     const profile = useSelector(state => state.firebase.profile);
 
     if (!isLoaded(profile)) {
@@ -13,7 +13,6 @@ export const Profile = (props, ownProps) => {
     }
     
     return (
-        <div className='main'>
             <div className='profile-page-component'>
                 <div className='upper-container'>
                     <div className='image-container'>
@@ -27,7 +26,7 @@ export const Profile = (props, ownProps) => {
                 <div className='lower-container'>
                     <div>
                         <h3>{profile.usertag}</h3> 
-                        <p style={{ marginBottom: '5px' }}>Joined on {moment(profile.createdAt.toDate()).format('LL')}</p>
+                        <p style={{ marginBottom: '5px' }}>Joined on {dayjs(profile.createdAt.toDate()).format('DD-MM-YYYY')}</p>
                         <p style={{ width: '250px' }}>{profile.bio || 'No bio info'}</p>
                     </div>
                     <div>
@@ -35,9 +34,8 @@ export const Profile = (props, ownProps) => {
                     </div>
                 </div>
             </div>
-        </div>
     )
-}
+});
 
 const mapStateToProps = (state) => {
     return {

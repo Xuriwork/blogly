@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import { sendPasswordResetEmail } from '../../store/actions/userActions';
 import { ErrorCircle } from '@styled-icons/boxicons-solid/ErrorCircle';
 
-const ForgotPassword = (props) => {
+export const ForgotPassword = React.memo((props) => {
   const { auth, errors, loading } = props;
   const { register, handleSubmit } = useForm();
 
@@ -39,7 +39,7 @@ const ForgotPassword = (props) => {
       </form>
     </div>
   );
-};
+});
 
 const mapStateToProps = (state) => {
   return {

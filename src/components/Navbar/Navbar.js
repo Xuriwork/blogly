@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { signOut } from '../../store/actions/userActions';
-import moment from 'moment';
-
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import BellIcon from './BellIcon';
 import Message from '../../assets/images/messagingicon.svg';
 import BloglyIcon from '../../assets/images/BloglyIcon.svg';
@@ -11,7 +11,9 @@ import HamburgerMenu from 'react-hamburger-menu';
 import CheeseburgerMenu from 'cheeseburger-menu';
 import { DarkLightModeContext } from '../../utils/DarkLightModeContext';
 
-const Navbar = (props) => {
+dayjs.extend(relativeTime);
+
+export const Navbar = React.memo((props) => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const handleToggleTheme = useContext(DarkLightModeContext);
   const { auth, notifications } = props;
@@ -87,8 +89,8 @@ const Navbar = (props) => {
             <Link to='/sign-up' className='sign-up'>
               <span>Sign Up</span>
             </Link>
-            <label id='switch' style={{ marginLeft: 20 }}>
-              <input type='checkbox' onChange={handleToggleTheme} id='slider' />
+            <label htmlFor='slider' className='switch' style={{ marginLeft: 20 }}>
+              <input type='checkbox' id='slider' aria-label='slider' onChange={handleToggleTheme} />
               <span className='slider round'></span>
             </label>
           </React.Fragment>
@@ -117,7 +119,7 @@ const Navbar = (props) => {
                     {notification.author} {notification.content}
                     <br />
                     <span className='key-info'>
-                      {moment(notification.timestamp.toDate()).fromNow()}
+                      {dayjs(notification.timestamp.toDate()).fromNow()}
                     </span>
                   </span>
                 ))}
@@ -134,11 +136,12 @@ const Navbar = (props) => {
                     {'@' + auth.displayName}
                   </Link>
                   <span className='dropdown-items'>
-                    <label id='switch' style={{ marginLeft: -5 }}>
+                    <label htmlFor='slider' className='switch' style={{ marginLeft: -5 }}>
                       <input
-                        type='checkbox'
+                        type='checkbox' 
+                        id='slider' 
+                        aria-label='slider'
                         onChange={handleToggleTheme}
-                        id='slider'
                       />
                       <span className='slider round'></span>
                     </label>
@@ -166,11 +169,12 @@ const Navbar = (props) => {
         <div className='overlay-content'>
           {auth.isEmpty ? (
             <React.Fragment>
-              <label id='switch' style={{ marginBottom: '10px' }}>
+              <label htmlFor='mobile-slider' className='switch' style={{ marginBottom: 10 }}>
                 <input
                   type='checkbox'
+                  id='mobile-slider' 
+                  aria-label='mobile-slider'
                   onChange={handleToggleTheme}
-                  id='mobile-slider'
                 />
                 <span className='slider round'></span>
               </label>
@@ -216,7 +220,7 @@ const Navbar = (props) => {
       </CheeseburgerMenu>
     </nav>
   );
-};
+});
 
 const mapStateToProps = (state) => {
   return {

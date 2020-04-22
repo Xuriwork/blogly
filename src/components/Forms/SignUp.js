@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import { signUp } from '../../store/actions/userActions';
 import { ErrorCircle } from '@styled-icons/boxicons-solid/ErrorCircle';
 
-const SignUp = (props) => {
+export const SignUp = React.memo((props) => {
   const { auth, history } = props;
   const { register, handleSubmit, watch, errors } = useForm();
   const password = useRef({});
@@ -80,7 +80,7 @@ const SignUp = (props) => {
       </form>
     </div>
   );
-};
+});
 
 const mapStateToProps = (state) => {
   return {

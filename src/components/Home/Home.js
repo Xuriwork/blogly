@@ -1,57 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
-
-import { useFirestore } from 'react-redux-firebase';
-import Loading from '../utils/Loading';
+import Loading from '../../utils/Loading';
 import IronImage from 'react-image-lazy-load-component';
-import PostImagePlaceholderLightMode from '../assets/images/LazyLoadPlaceholderLightMode.png';
-import PostImagePlaceholderDarkMode from '../assets/images/LazyLoadPlaceholderDarkMode.png';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
 
-const Home = () => {
-  const firestore = useFirestore();
-  const [loading, setLoading] = useState(true);
-  const [posts, setPosts] = useState([]);
- 
-  useEffect(() => {
-
-    let unsubscribe = firestore
-    .collection('posts')
-    .orderBy('createdAt', 'desc')
-    .onSnapshot(snapshot => {
-      let _posts = [];
-      snapshot.forEach(postSnapshot => {
-        _posts.push(postSnapshot.data())
-      });
-      setPosts(_posts);
-      setLoading(false);
-    }, (error) => {
-        console.error(error);
-    });
-    return () => unsubscribe();
-
-  }, [firestore])
-
-
-  const PostImagePlaceholder = () => {
-  const theme = localStorage.getItem('theme');
-
-    switch (theme) {
-      case 'dark-mode' : 
-        return PostImagePlaceholderDarkMode;
-      case 'light-mode' : 
-        return PostImagePlaceholderLightMode;
-      default : 
-        return PostImagePlaceholderLightMode;
-    }
-  }
+export const Home = React.memo(({loading, posts, PostImagePlaceholder}) => {
 
   if (loading) {
     return <Loading />
   };
   
   return (
-    <main className='main'>
       <div className='home-component'>
       {posts && posts.map(post => (
           <span key={post.postId}>
@@ -70,7 +31,7 @@ const Home = () => {
                     fontSize: '0.7em', 
                     textTransform: 'uppercase', 
                     fontWeight: '100' 
-                  }}>{moment(post.createdAt?.toDate()).fromNow()}</span>
+                  }}>{dayjs(post.createdAt?.toDate()).fromNow()}</span>
                 </span>
                 <p 
                   style={{ 
@@ -93,8 +54,7 @@ const Home = () => {
           </span>
         ))}
       </div>
-    </main>
   );
-};
+});
 
 export default Home;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export const PostLikes = ({ postLikes, likedPost, likePost, unlikePost }) => {
+export const PostLikes = React.memo(({ postLikes, likedPost, likePost, unlikePost }) => {
   const [likeButtonDisabled, setLikeButtonDisabled] = useState(likedPost);
 
   useEffect(() => {
@@ -42,4 +42,4 @@ export const PostLikes = ({ postLikes, likedPost, likePost, unlikePost }) => {
       )}
     </div>
   );
-};
+});
