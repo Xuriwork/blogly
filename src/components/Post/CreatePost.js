@@ -3,6 +3,7 @@ import JoditEditor from 'jodit-react';
 import { Modal } from '../../utils/Modal';
 import { Progress } from 'react-sweet-progress';
 import { ErrorCircle } from '@styled-icons/boxicons-solid/ErrorCircle';
+import 'react-sweet-progress/lib/style.css';
 
 export const CreatePost = React.memo((props) => {
 

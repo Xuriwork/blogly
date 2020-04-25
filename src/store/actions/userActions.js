@@ -17,7 +17,6 @@ export const signIn = ({ creds, history }) => {
       .signInWithEmailAndPassword(email, password)
       .then(() => {
         history.push('/');
-        window.location.reload(true);
       })
       .catch((error) => {
         if (error.code === 'auth/user-not-found') {

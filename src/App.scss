@@ -74,10 +74,10 @@ $main-font-family: Barlow, sans-serif;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
   background: $base-color;
   border: 0;
-  border-bottom: 2px solid #3d6bc0;
+  border-bottom: 2px solid #1975d1;
   cursor: pointer;
-  -webkit-box-shadow: inset 0 -2px #3d6bc0;
-  box-shadow: inset 0 -2px #3d6bc0;
+  -webkit-box-shadow: inset 0 -2px #1975d1;
+  box-shadow: inset 0 -2px #1975d1;
 }
 
 %blue-3d-button-hover {
@@ -108,7 +108,7 @@ $main-font-family: Barlow, sans-serif;
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 8px;
 }
 ::-webkit-scrollbar-track {
   background: #3c65b348;
@@ -414,10 +414,10 @@ main {
   display: flex;
   align-items: center;
   flex-direction: column;
-  min-height: 100%;
+  height: auto;
   max-width: 1000px;
   width: 100%;
-  padding: 10px 0;
+  min-height: 100%;
   margin: auto;
 
   > section {
@@ -564,6 +564,7 @@ main {
   justify-content: center;
   width: 90%;
   margin: 20px 0;
+  height: auto;
 
   p {
     margin-top: 10px;
@@ -625,6 +626,7 @@ main {
 
 .post-component {
   max-width: 700px;
+  width: 100%;
   height: auto;
   border: 1px solid #74747444;
   border-radius: 5px;
@@ -783,6 +785,7 @@ hr {
   max-width: 90%;
   width: 600px;
   min-height: 700px;
+  margin: auto 0;
   flex-direction: column;
   border: 1px solid #afafad;
   border-radius: 5px;
@@ -880,13 +883,15 @@ hr {
 }
 
 .comments-component {
-  width: 600px;
+  max-width: 600px;
+  width: 95%;
 }
 
 .signin-component {
   @extend %flex-complete-center;
   width: 100%;
   flex-direction: column;
+  margin: auto 0;
 
   .signup-form {
     div {
@@ -956,6 +961,7 @@ hr {
   grid-template-rows: 150px 250px;
   border-radius: 10px;
   overflow: hidden;
+  margin: auto 0;
 
   .upper-container {
     @extend %flex-complete-center;
@@ -1114,9 +1120,9 @@ hr {
     display: none !important;
   }
 
-  .main {
+  main {
     > section {
-      padding: 5px;
+      padding: 8px;
       height: 100%;
     }
   }

@@ -14,9 +14,9 @@ import { DarkLightModeContext } from '../../utils/DarkLightModeContext';
 dayjs.extend(relativeTime);
 
 export const Navbar = React.memo((props) => {
+  const { auth, notifications } = props;
   const [mobileMenu, setMobileMenu] = useState(false);
   const handleToggleTheme = useContext(DarkLightModeContext);
-  const { auth, notifications } = props;
 
   useEffect(() => {
     const theme = localStorage.getItem('theme');
@@ -62,7 +62,7 @@ export const Navbar = React.memo((props) => {
   return (
     <nav>
       <div className='mobile-nav'>
-        <Link to='/'>
+        <Link to='/' aria-label='home'>
           <img className='site-logo' src={BloglyIcon} alt='Blogly Icon' />
         </Link>
         <HamburgerMenu
@@ -77,7 +77,7 @@ export const Navbar = React.memo((props) => {
           animationDuration={0.2}
         />
       </div>
-      <Link to='/'>
+      <Link to='/' aria-label='home'>
         <img className='site-logo desktop' src={BloglyIcon} alt='Blogly Icon' />
       </Link>
       <div className='right-nav-bar desktop'>

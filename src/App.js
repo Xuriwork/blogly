@@ -23,7 +23,7 @@ export const App = React.memo((props) => {
   const history = createBrowserHistory();
 
   return (
-    <div>
+    <>
       <Router history={history}>
         <Navbar />
         <main>
@@ -49,7 +49,7 @@ export const App = React.memo((props) => {
           </Switch>
         </main>
       </Router>
-    </div>
+    </>
   );
 });
 
