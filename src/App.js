@@ -15,6 +15,7 @@ import ForgotPassword from './components/Forms/ForgotPassword';
 import Profile from './components/Profile/Profile';
 import EditProfile from './components/Profile/EditProfile';
 import Settings from './components/Settings';
+import CreatePostImageDropzone from './components/Post/CreatePostImageDropzone';
 
 import { createBrowserHistory } from 'history';
 import { UserIsAuthenticated } from './utils/ProtectedRoutes';
@@ -35,6 +36,7 @@ export const App = React.memo((props) => {
               path='/create-post'
               component={UserIsAuthenticated(CreatePostContainer)}
             />
+            <Route path='/create-post-upload-image' component={UserIsAuthenticated(CreatePostImageDropzone)} />
             <Route path='/profile' component={UserIsAuthenticated(Profile)} />
             <Route
               path='/edit-profile'
