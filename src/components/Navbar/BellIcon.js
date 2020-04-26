@@ -1,6 +1,6 @@
 import React from "react";
 
-const BellIcon = ({
+const BellIcon = React.memo(({
   width = '100%', 
   numberOfNotifications = 0, 
 }) => {
@@ -66,7 +66,7 @@ const BellIcon = ({
         x='265'
         y='180'
         fill='#fff'
-        fontFamily="'BerlinSansFB-Reg', 'Berlin Sans FB', sans-serif"
+        fontFamily="'Noto Sans', sans-serif"
         fontSize='200' 
       >
         {numberOfNotifications}
@@ -75,7 +75,7 @@ const BellIcon = ({
         x='310'
         y='180'
         fill='#fff'
-        fontFamily="'BerlinSansFB-Reg', 'Berlin Sans FB', sans-serif"
+        fontFamily="'Noto Sans', sans-serif"
         fontSize='200' 
       > 
       {numberOfNotifications !== 0 ? (numberOfNotifications) : null}
@@ -83,6 +83,6 @@ const BellIcon = ({
       }
     </svg>
   );
-}
+});
 
 export default BellIcon;

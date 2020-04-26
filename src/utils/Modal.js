@@ -1,28 +1,35 @@
 import React, { useState } from 'react';
 
-export const Modal = (props) => {
+export const Modal = React.memo((props) => {
 
+    const body = document.body;
     const [isVisible, setVisible] = useState(false);
 
     const openModalHandler = () => {
+        body.style.overflow = 'hidden';
         setVisible(true);
-    }
+    };
 
     const closeModalHandler = () => {
+        body.style.overflow = 'auto';
         setVisible(false);
-    }
+    };
 
     const actionHandler = () => {
+        if (props.commentId && props.authorId) {
+            props.buttonAction(props.commentId, props.authorId);
+            return closeModalHandler();
+        }
         props.buttonAction();
         closeModalHandler();
-    }
+    };
 
     window.onclick = (event) => {
         const modal = document.getElementById('modal')
         if (event.target === modal) {
-            setVisible(false);
-        }
-    }
+            closeModalHandler();
+        };
+    };
 
     return (
         <span>
@@ -50,4 +57,4 @@ export const Modal = (props) => {
             </>
         </span>
     )
-}
+});
