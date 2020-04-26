@@ -1,0 +1,54 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /posts/{post} {
+      allow read;
+      allow write: 
+      	if isAuthenticated()
+        && request.resource.data.title is string 
+        && request.resource.data.title.size() >= 5 
+        && request.resource.data.title.size() < 150 
+        && request.resource.data.body is string
+        && request.resource.data.coverImageURL != null;
+      allow update: if isAuthenticated()
+      	&& exists(/databases/$(database)/documents/users/$(request.auth.uid)/likes/$(post)).data.liked == !false
+        && (request.resource.data.likes == 1 || request.resource.data.likes == request.resource.data.likes + 1);
+   
+      match /comments/{comment} {
+      	allow read;
+      	allow write: if isAuthenticated() 
+        && request.resource.data.content != null 
+        && request.resource.data.content != '' 
+        && request.resource.data.content.size() > 2;
+        allow delete: if request.auth.uid == resource.data.authorId;
+    	}
+   }
+    match /users/{userId} {
+    	allow read;
+      allow write: if isAuthenticated() && ifOwner(userId) && request.resource.data != '';
+      allow update: if isAuthenticated() && ifOwner(userId);
+    }
+    match /users/{userId}/likes/{post} {
+    	allow update: if ifOwner(userId);
+    	allow write: if ifOwner(userId);
+    }
+    match /notifications/{notification} {
+      allow read: if isAuthenticated();
+    }
+    match /likes/{like} {
+    	allow read: if true;
+      allow write, update: if isAuthenticated();
+    }
+
+    // Functions
+    
+    function isAuthenticated() {
+    	return request.auth != null;
+    }
+    
+    function ifOwner(userId) {
+    	return request.auth.uid == userId;
+    }
+    
+  }
+}
