@@ -1,52 +1,58 @@
 import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import './App.scss';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import 'notyf/notyf.min.css';
 
 import Navbar from './components/Navbar/Navbar';
-import Home from './components/Home';
-import Post from './components/Post/Post';
-import Comments from './components/Comments/Comments';
-import CreatePost from './components/Post/CreatePost';
+import HomeContainer from './components/Home/HomeContainer';
+import PostContainer from './components/Post/PostContainer';
+import CommentsContainer from './components/Comments/CommentsContainer';
+import CreatePostContainer from './components/Post/CreatePostContainer';
 import NotFound from './components/NotFound';
 import SignIn from './components/Forms/SignIn';
 import SignUp from './components/Forms/SignUp';
+import ForgotPassword from './components/Forms/ForgotPassword';
 import Profile from './components/Profile/Profile';
 import EditProfile from './components/Profile/EditProfile';
 import Settings from './components/Settings';
+import CreatePostImageDropzone from './components/Post/CreatePostImageDropzone';
 
 import { createBrowserHistory } from 'history';
-import { UserIsAuthenticated } from './helpers/ProtectedRoutes';
+import { UserIsAuthenticated } from './utils/ProtectedRoutes';
 
-const App = (props) => {
-
+export const App = React.memo((props) => {
   const history = createBrowserHistory();
-  toast.configure({ pauseOnHover: false });
 
-    return (
-          <>
+  return (
+    <>
+      <Router history={history}>
+        <Navbar />
+        <main>
+          <Switch>
+            <Route exact path='/' component={HomeContainer} />
+            <Route path='/sign-in' component={SignIn} />
+            <Route path='/sign-up' component={SignUp} />
+            <Route
+              path='/create-post'
+              component={UserIsAuthenticated(CreatePostContainer)}
+            />
+            <Route path='/create-post-upload-image' component={UserIsAuthenticated(CreatePostImageDropzone)} />
+            <Route path='/profile' component={UserIsAuthenticated(Profile)} />
+            <Route
+              path='/edit-profile'
+              component={UserIsAuthenticated(EditProfile)}
+            />
+            <Route path='/404' component={NotFound} />
+            <Route path='/p/:postId/comments' component={CommentsContainer} />
+            <Route path='/settings' component={UserIsAuthenticated(Settings)} />
+            <Route path='/p/:postId' exact component={PostContainer} />
+            <Route path='/forgot-password' component={ForgotPassword} />
+            <Route path='*' exact={true} component={NotFound} />
+          </Switch>
+        </main>
+      </Router>
+    </>
+  );
+});
 
-            <Router history={history}>
-            <Navbar />
-              <Switch>
-                <Route exact path='/' component={Home} />
-                <Route path='/sign-in' component={SignIn} />
-                <Route path='/sign-up' component={SignUp} />
-                <Route path='/create-post' component={UserIsAuthenticated(CreatePost)} />
-                <Route path='/profile' component={UserIsAuthenticated(Profile)} />
-                <Route path='/edit-profile' component={UserIsAuthenticated(EditProfile)} />
-                <Route path='/404' component={NotFound} />
-                <Route path='/:slug/comments' component={Comments} />
-                <Route path='/settings' component={UserIsAuthenticated(Settings)} />
-                <Route path='/p/:slug' exact component={Post} />
-                <Route path='*' exact={true} component={NotFound} />
-              </Switch>
-            </Router>
-
-          </>
-    );
-}
-
-
-  export default App;
+export default App;

@@ -1,8 +1,8 @@
-const initState = {
+const initialState = {
     updateProfileError: null,
 }
 
-const updateProfileReducer = (state = initState, action) => {
+const updateProfileReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'UPDATE_PROFILE' : 
             return { 
@@ -10,7 +10,7 @@ const updateProfileReducer = (state = initState, action) => {
                 updateProfileError: null,
             };
         case 'UPDATE_PROFILE_ERROR' : 
-            console.log('UPDATE_PROFILE_ERROR', action.payload);
+            console.error('UPDATE_PROFILE_ERROR', action.payload);
             return {
                 ...state,
                 updateProfileError: action.payload,
@@ -21,7 +21,7 @@ const updateProfileReducer = (state = initState, action) => {
                 updateProfileError: null,
             }
         case 'UPLOAD_PROFILE_PICTURE_ERROR' :
-            console.log('UPLOAD_PROFILE_PICTURE_ERROR', action.payload);
+            console.error('UPLOAD_PROFILE_PICTURE_ERROR', action.payload);
             return {
                 ...state,
                 updateProfileError: action.payload,

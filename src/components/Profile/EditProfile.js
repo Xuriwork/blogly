@@ -4,18 +4,17 @@ import { useForm } from 'react-hook-form';
 import { connect, useSelector } from 'react-redux';
 import { useFirebase, isLoaded } from 'react-redux-firebase';
 import FileUploader from 'react-firebase-file-uploader';
-import { updateProfileInfo, uploadProfilePicture } from '../../store/actions/updateProfileActions';
+import { updateProfileInfo, uploadProfilePicture } from '../../store/actions/profileActions';
 
 import { Upload } from '@styled-icons/heroicons-outline/Upload';
-import Loading from '../../helpers/Loading';
-import ProfilePlaceHolder from '../../assets/images/user.svg';
+import Loading from '../../utils/Loading';
 
-export const EditProfile = (props) => {
+export const EditProfile = React.memo((props) => {
     const { auth } = props;
 
     const firebase = useFirebase();
     const currentUser = auth.uid;
-    const userStorageRef = firebase.storage().ref(`user_profile_pictures/${currentUser}`);
+    const userStorageRef = firebase.storage().ref(`users/${currentUser}/user_profile_picture`);
     const profile = useSelector(state => state.firebase.profile);
     const { register, handleSubmit } = useForm();
 
@@ -23,11 +22,11 @@ export const EditProfile = (props) => {
         props.updateProfileInfo(profileInfo);
     };
 
-    const handleUploadProfilePicture = async imageData => {
-        await props.uploadProfilePicture({imageData, currentUser, userStorageRef});
+    const handleUploadProfilePicture = async (imageName) => {
+        await props.uploadProfilePicture({imageName, userStorageRef});
     };
 
-    const handleImageUpload = () => {
+    const handleSelectProfilePicture = () => {
         const fileInput = document.getElementById('imageInput');
         fileInput.click();
     };
@@ -37,12 +36,11 @@ export const EditProfile = (props) => {
     };
 
     return (
-        <div className='main'>
             <div className='profile-page-component'>
                 <div className='upper-container'>
                     <div className='image-container'>
                         <img 
-                            src={profile.profilePictureURL ?? ProfilePlaceHolder} 
+                            src={profile.userImageURL} 
                             alt='profile' 
                             className='profile-picture'
                         />
@@ -62,13 +60,15 @@ export const EditProfile = (props) => {
                             accept='image/png, image/jpeg'
                             name='photo'
                             randomizeFilename
+                            maxHeight={90}
+                            maxWidth={90}
                             storageRef={userStorageRef}
                             onUploadSuccess={handleUploadProfilePicture} 
                             id='imageInput' 
                             hidden='hidden'
                         /> 
                         <div>
-                            <button onClick={handleImageUpload} className='lower-hierarchy-button-color'>
+                            <button onClick={handleSelectProfilePicture} className='lower-hierarchy-button-color'>
                                 <Upload size='20' title='Upload profile picture button' style={{ marginRight: '5px' }} />
                                 Upload Profile Picture
                             </button>
@@ -80,9 +80,8 @@ export const EditProfile = (props) => {
                     </div>
                 </div>
             </div>
-        </div>
     )
-}
+});
 
 const mapStateToProps = (state) => {
     return {
