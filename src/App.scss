@@ -258,7 +258,7 @@ nav {
     cursor: pointer;
   }
 
-  .overlay-content {
+  .mobile-overlay-content {
     @extend %flex-complete-center;
     flex-direction: column;
     height: 100%;

@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { ErrorCircle } from '@styled-icons/boxicons-solid/ErrorCircle';
 import { Error } from '@styled-icons/boxicons-solid/Error';
 import ProfilePlaceHolder from '../../assets/images/user.svg';
-import { Modal } from '../../utils/Modal';
 import Loading from '../../utils/Loading';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
+
+
+const Modal = lazy(() => import('../../utils/Modal'));
 
 export const Comments = React.memo((props) => {
 
@@ -87,24 +89,26 @@ export const Comments = React.memo((props) => {
             className='commentText-span'
             style={{ justifyContent: 'flex-end' }}>
             {auth.uid === comment.commentData.authorId ? (
-              <Modal
-                buttonActionClassName='delete-button'
-                visibleButtonClassName='delete-button'
-                modalContentHeaderBackgroundColor='#fa4949'
-                title='Confirm'
-                modalContent='Are you sure you want to delete this comment?'
-                emoji={
-                  <Error
-                    size='30'
-                    color='#f53d3d'
-                    style={{ marginRight: 10 }}
-                  />
-                }
-                buttonActionName='Delete' 
-                commentId={comment.commentId}
-                authorId={comment.commentData.authorId}
-                buttonAction={deleteComment}
-              />
+              <Suspense fallback={<Loading />}>
+                <Modal
+                  buttonActionClassName='delete-button'
+                  visibleButtonClassName='delete-button'
+                  modalContentHeaderBackgroundColor='#fa4949'
+                  title='Confirm'
+                  modalContent='Are you sure you want to delete this comment?'
+                  emoji={
+                    <Error
+                      size='30'
+                      color='#f53d3d'
+                      style={{ marginRight: 10 }}
+                    />
+                  }
+                  buttonActionName='Delete' 
+                  commentId={comment.commentId}
+                  authorId={comment.commentData.authorId}
+                  buttonAction={deleteComment}
+                />
+              </Suspense>
             ) : null}
           </span>
         </div>

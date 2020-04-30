@@ -166,7 +166,7 @@ export const Navbar = React.memo((props) => {
         )}
       </div>
       <CheeseburgerMenu isOpen={mobileMenu} closeCallback={closeMenu}>
-        <div className='overlay-content'>
+        <div className='mobile-overlay-content'>
           {auth.isEmpty ? (
             <React.Fragment>
               <label htmlFor='mobile-slider' className='switch' style={{ marginBottom: 10 }}>

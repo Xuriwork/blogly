@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import JoditEditor from 'jodit-react';
-import { Modal } from '../../utils/Modal';
 import { Progress } from 'react-sweet-progress';
 import { ErrorCircle } from '@styled-icons/boxicons-solid/ErrorCircle';
 import 'react-sweet-progress/lib/style.css';
+import Loading from '../../utils/Loading';
+
+const Modal = lazy(() => import('../../utils/Modal'));
 
 export const CreatePost = React.memo((props) => {
 
@@ -153,6 +155,7 @@ export const CreatePost = React.memo((props) => {
             onBlur={(newContent) => setBodyContent(newContent)}
           />
         </div>
+        <Suspense fallback={<Loading />}>
         <Modal
           buttonActionClassName='approve-button'
           modalContentHeaderBackgroundColor='#23d48a'
@@ -162,6 +165,7 @@ export const CreatePost = React.memo((props) => {
           buttonActionName='Create'
           buttonAction={handlePublishPost}
         />
+        </Suspense>
       </div>
     </>
   );

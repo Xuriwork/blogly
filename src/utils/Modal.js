@@ -58,3 +58,5 @@ export const Modal = React.memo((props) => {
         </span>
     )
 });
+
+export default Modal;
