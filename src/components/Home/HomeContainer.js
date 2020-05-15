@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import Home  from './Home';
+import { connect } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
-import PostImagePlaceholderLightMode from '../../assets/images/LazyLoadPlaceholderLightMode.png';
-import PostImagePlaceholderDarkMode from '../../assets/images/LazyLoadPlaceholderDarkMode.png';
 
-export const HomeContainer = () => {
+import Home from './Home';
+import { useTheme } from '../../hooks/useTheme';
+import { handleFavoritePost, handleUnfavoritePost } from '../../store/actions/userActions';
+
+export const HomeContainer = ({ auth, user, handleFavoritePost, handleUnfavoritePost }) => {
   const firestore = useFirestore();
   const [posts, setPosts] = useState([]);
+  const [featuredPost, setFeaturedPost] = useState();
   const [loading, setLoading] = useState(true);
+  const { PostImagePlaceholder } = useTheme();
 
   useEffect(() => {
     let unsubscribe = firestore
@@ -19,7 +23,9 @@ export const HomeContainer = () => {
           snapshot.forEach((postSnapshot) => {
             _posts.push(postSnapshot.data());
           });
+          const _featuredPost = _posts.shift();
           setPosts(_posts);
+          setFeaturedPost(_featuredPost);
           setLoading(false);
         },
         (error) => {
@@ -29,22 +35,39 @@ export const HomeContainer = () => {
     return () => unsubscribe();
   }, [firestore]);
 
-  const PostImagePlaceholder = () => {
-    const theme = localStorage.getItem('theme');
+  const favoritePost = (postId, postTitle) => handleFavoritePost(postId, postTitle);
+  const unfavoritePost = (postId, postTitle) => handleUnfavoritePost(postId, postTitle);
 
-    switch (theme) {
-      case 'dark-mode':
-        return PostImagePlaceholderDarkMode;
-      case 'light-mode':
-        return PostImagePlaceholderLightMode;
-      default:
-        return PostImagePlaceholderLightMode;
-    }
+  const checkUserBlogmarks = (postId) => {
+    return user.blogmarks.filter(blogmark => blogmark.postId === postId);
   };
 
   return (
-    <Home loading={loading} posts={posts} PostImagePlaceholder={PostImagePlaceholder} />
+    <Home
+      loading={loading}
+      posts={posts}
+      featuredPost={featuredPost}
+      PostImagePlaceholder={PostImagePlaceholder}
+      checkUserBlogmarks={checkUserBlogmarks}
+      handleFavoritePost={favoritePost}
+      handleUnfavoritePost={unfavoritePost}
+      auth={auth.isEmpty}
+    />
   );
 };
 
-export default HomeContainer;
+const mapStateToProps = (state) => {
+  return {
+    auth: state.firebase.auth,
+    user: state.userReducer,
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    handleFavoritePost: (postId, postTitle) => dispatch(handleFavoritePost(postId, postTitle)),
+    handleUnfavoritePost: (postId, postTitle) => dispatch(handleUnfavoritePost(postId, postTitle)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeContainer);

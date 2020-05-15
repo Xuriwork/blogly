@@ -124,8 +124,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    handleUploadCoverImage: (imageData) =>
-      dispatch(handleUploadCoverImage(imageData)),
+    handleUploadCoverImage: (imageData) => dispatch(handleUploadCoverImage(imageData)),
     createPost: (post) => dispatch(createPost(post)),
   };
 };

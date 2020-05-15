@@ -1,9 +1,8 @@
-@import url('https://fonts.googleapis.com/css?family=Barlow|Raleway|Noto+Sans&display=swap');
-
 * {
   margin: 0;
   padding: 0;
   text-decoration: none;
+  list-style-type: none;
 }
 
 :root {
@@ -20,12 +19,19 @@
   --dark-mode-modal-bg: #363b59;
   --light-mode-modal-bg: #fff;
   --light-mode-input-bg: #f3f3f4;
-  --dark-mode-input-bg: #4c4951;
+  --dark-mode-input-bg: #3d3b41;
   --light-mode-input-color: #353535;
   --dark-mode-input-color: #fff;
   --light-mode-input-border: 1px solid #c6c9c9;
+  --dark-mode-card-input-border: 1px solid #b9b9b97c;
   --dark-mode-input-border: 1px solid #9c9c9c57;
-  --dark-mode-jodit-input-bg: #48454D;
+  --dark-mode-jodit-input-bg: #48454d;
+  --light-mode-post-card-button: #e1e1f5da;
+  --dark-mode-post-card-button: #e1e1f54f;
+  --light-mode-blogmark-header: #eff1f2;
+  --light-mode-blogmark-body: #fffffff8;
+  --dark-mode-blogmark-header: #373f47;
+  --dark-mode-blogmark-body: #515d6eb0;
 }
 
 .light-mode {
@@ -38,6 +44,9 @@
   --input-bg: var(--light-mode-input-bg);
   --input-color: var(--light-mode-input-color);
   --input-border: var(--light-mode-input-border);
+  --post-card-button: var(--light-mode-post-card-button);
+  --blogmark-header: var(--light-mode-blogmark-header);
+  --blogmark-body: var(--light-mode-blogmark-body);
 }
 
 .dark-mode {
@@ -50,16 +59,26 @@
   --input-bg: var(--dark-mode-input-bg);
   --input-color: var(--dark-mode-input-color);
   --input-border: var(--dark-mode-card-input-border);
+  --post-card-button: var(--dark-mode-post-card-button);
+  --blogmark-header: var(--dark-mode-blogmark-header);
+  --blogmark-body: var(--dark-mode-blogmark-body);
 }
 
-$base-color: #1E90FF;
+$base-color: #1e90ff;
 $button-hover-color: #2089f1;
 $main-font-family: Barlow, sans-serif;
 
-%flex-complete-center {
+%flex-center-column {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+}
+
+%flex-center-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 %blue-3d-button {
@@ -119,6 +138,10 @@ $main-font-family: Barlow, sans-serif;
   border: 3px solid $base-color;
 }
 
+.hidden-desktop {
+  display: none;
+}
+
 body {
   background: var(--bg);
   width: 100%;
@@ -132,6 +155,7 @@ label,
 span,
 button,
 em,
+li,
 a {
   font-family: $main-font-family;
   color: var(--text);
@@ -142,7 +166,7 @@ p {
   color: var(--text);
 }
 
-button {
+button, .button {
   cursor: pointer;
   padding: 8px 15px;
   border: none;
@@ -174,7 +198,7 @@ button {
 }
 
 .usertag-span-home {
-  color: #a5a6a6;
+  color: #303133;
   font-size: 0.8em;
   display: flex;
   align-items: center;
@@ -183,25 +207,28 @@ button {
 }
 
 .error-message {
-  @extend %flex-complete-center;
+  @extend %flex-center-row;
   color: #fff;
   background-color: rgb(248, 125, 125);
   border: 1px solid #a11f1f;
   padding: 8px 15px;
-  margin: 20px 0px;
+  margin: 10px auto;
   border-radius: 5px;
   font-size: 1em;
   font-family: $main-font-family;
   max-width: 90%;
 }
 
-.notyf, .window-title {
+.notyf,
+.window-title {
   font-family: 'Noto Sans', sans-serif;
 }
 
 nav {
-  @extend %flex-complete-center;
+  @extend %flex-center-row;
+  position: fixed;
   height: 75px;
+  z-index: 3;
   width: 100%;
   background: var(--nav-bg);
   padding: 0px 40px;
@@ -221,18 +248,16 @@ nav {
   }
 
   .right-nav-bar {
-    @extend %flex-complete-center;
+    @extend %flex-center-row;
     margin-left: auto;
 
     .sign-up {
-      span {
-        color: #fff;
-      }
+      margin-left: 10px;
+      color: #fff;
     }
   }
 
-  .right-nav-bar img,
-  dropdown img {
+  .right-nav-bar img, dropdown img {
     margin-left: 30px;
 
     &:nth-of-type(1) {
@@ -245,7 +270,6 @@ nav {
   }
 
   button {
-    margin-right: 20px;
     color: #1a202c;
 
     &:hover {
@@ -259,12 +283,60 @@ nav {
   }
 
   .mobile-overlay-content {
-    @extend %flex-complete-center;
-    flex-direction: column;
+    @extend %flex-center-column;
     height: 100%;
     background-color: var(--bg);
     font-size: 2em;
     line-height: 1.5;
+  }
+
+  .search-component-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+
+    input {
+      height: 30px;
+      width: 260px;
+      background-color: var(--input-bg);
+      color: var(--input-color);
+      opacity: 0.9;
+      border: none;
+      padding: 0 10px;
+      font-size: 1rem;
+      font-family: $main-font-family;
+      border-radius: 5px;
+      box-sizing: border-box;
+
+    }
+  }
+
+  .ais-Hits {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background-color: #fff;
+    color: #27292d;
+    width: 260px;
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: 2px;
+
+    li {
+      cursor: pointer;
+      line-height: 1.5;
+      
+      &:hover {
+        text-decoration: underline;
+        
+      }
+    }
+  }
+
+  mark {
+    background-color: #8aa6e7;
+    color: #fff;
   }
 }
 
@@ -414,11 +486,16 @@ main {
   display: flex;
   align-items: center;
   flex-direction: column;
-  height: 100%;
-  max-height: calc(100% - 75px);
-  max-width: 1000px;
+  height: auto;
+  max-width: 800px;
   width: 100%;
   margin: auto;
+  position: relative;
+  top: 75px;
+
+  > div {
+    margin: 20px 0;
+  }
 
   > section {
     padding: 24px;
@@ -429,7 +506,7 @@ main {
 
 .modal {
   position: fixed;
-  z-index: 4;
+  z-index: 10;
   left: 0;
   top: 0;
   min-width: 100%;
@@ -478,6 +555,9 @@ main {
       padding: 2px 15px;
     }
 
+    .modal-header {
+    }
+
     h3 {
       color: #fff;
       font-family: 'Noto Sans';
@@ -485,7 +565,7 @@ main {
     }
 
     .modal-content {
-      @extend %flex-complete-center;
+      @extend %flex-center-row;
       padding: 10px 0px;
       box-sizing: border-box;
       width: 100%;
@@ -556,8 +636,89 @@ main {
 }
 
 .home-component {
+  @extend %flex-center-column;
+  width: 100%;
+}
+
+.home-component-featured-post {
+  background: var(--card-bg);
+  transition: background 800ms ease-in-out, transform 300ms;
+  width: 90%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0px 4px 7px rgba(0, 0, 0, 0.15);
+
+  .featured-post-content {
+    padding: 30px 15px;
+
+    > div {
+      margin-left: 45px;
+
+      .post-bottom {
+        display: flex;
+
+        > span {
+          display: flex;
+          align-items: center;
+
+          &:nth-of-type(1) {
+            margin-right: 10px;
+          }
+
+          > span {
+            margin-left: 5px;
+          }
+        }
+
+        img {
+          width: 20px;
+          margin-right: 5px;
+        }
+
+        button {
+          margin-left: auto;
+          background-color: var(--post-card-button);
+        }
+      }
+    }
+
+    .usertag-span-home {
+      img {
+        @extend %profile-picture-size-35;
+      }
+
+      > span {
+        margin-left: 10px;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-top: 5px;
+      color: var(--text);
+      font-weight: 400;
+
+      &:hover {
+        color: $base-color;
+      }
+    }
+  }
+
+  .featured-post-img {
+    width: 100%;
+    height: 320px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 10px 10px 0 0;
+  }
+}
+
+.home-component-posts-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 0.6fr));
+  grid-template-columns: repeat(auto-fill, minmax(220px, 0.6fr));
   grid-template-rows: auto;
   grid-gap: 20px;
   align-items: center;
@@ -573,14 +734,20 @@ main {
 
 .card {
   background: var(--card-bg);
-  transition: background 800ms ease-in-out, transform 300ms;
-  box-shadow: 0px 4px 7px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 250px 260px;
-  overflow: hidden;
+  grid-template-rows: 200px 230px;
   align-items: center;
+  overflow: hidden;
+  box-shadow: 0px 4px 7px rgba(0, 0, 0, 0.15);
+  transition: background 800ms ease-in-out, transform 300ms;
+
+  .card-link,
+  span {
+    width: 100%;
+    height: 100%;
+  }
 
   img {
     width: 100%;
@@ -616,12 +783,38 @@ main {
     display: inline-block;
     margin-top: 12px;
   }
-}
 
-.card-title {
-  font-size: 1.3em;
-  font-weight: bold;
-  color: $base-color !important;
+  .card-title {
+    a {
+      display: block;
+    }
+
+    h3 {
+      font-weight: 400;
+      font-size: 1.3em;
+      color: var(--text);
+
+      &:hover {
+        color: $base-color;
+      }
+    }
+
+    span {
+      font-size: 0.85em;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+  }
+
+  .post-bottom {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      margin-left: auto;
+      background-color: var(--post-card-button);
+    }
+  }
 }
 
 .post-component {
@@ -635,19 +828,37 @@ main {
   overflow: hidden;
   background-color: var(--card-bg);
 
-  div:nth-of-type(1) {
+  .post-image-container {
     overflow: hidden;
 
-    img {
+    span {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
     }
   }
 
   .post-content {
     padding: 50px;
     position: relative;
+
+    h1 {
+      font-weight: 400;
+    }
+
+    .post-body {
+      &::selection {
+        background-color: rgba(30, 143, 255, 0.616);
+      }
+      &::-moz-selection {
+        background-color: rgba(30, 143, 255, 0.616);
+      }
+    }
 
     .more-info-dots {
       width: 25px;
@@ -716,7 +927,7 @@ hr {
 }
 
 .long-container {
-  @extend %flex-complete-center;
+  @extend %flex-center-column;
   width: 100%;
   height: auto;
   background-color: var(--card-bg);
@@ -724,9 +935,8 @@ hr {
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.06);
   border: 1px solid #74747444;
   border-radius: 5px;
-  margin-top: 10px;
+  margin-bottom: 10px;
   font-family: $main-font-family;
-  flex-direction: column;
 
   .profile-picture {
     @extend %profile-picture-size-30;
@@ -781,12 +991,11 @@ hr {
 }
 
 .create-post-component {
-  @extend %flex-complete-center;
+  @extend %flex-center-column;
   max-width: 90%;
   width: 600px;
   min-height: 700px;
-  margin: auto 0;
-  flex-direction: column;
+  margin: auto;
   border: 1px solid #afafad;
   border-radius: 5px;
   padding: 30px 10px;
@@ -849,19 +1058,19 @@ hr {
 }
 
 .not-found-component {
-  @extend %flex-complete-center;
-  height: 93vh;
+  @extend %flex-center-column;
+  min-height: calc(100vh - 75px);
+  margin: 0;
   width: 100%;
-  flex-direction: column;
   text-align: center;
 
   h1 {
-    font-size: 4.5em;
+    font-size: 4em;
     color: #46aef7;
   }
 
   h2 {
-    font-size: 1.5em;
+    font-size: 1.2em;
   }
 }
 
@@ -888,10 +1097,13 @@ hr {
 }
 
 .signin-component {
-  @extend %flex-complete-center;
+  margin: 0;
+  min-height: calc(100vh - 75px);
   width: 100%;
+  display: flex;
   flex-direction: column;
-  margin: auto 0;
+  justify-content: center;
+  align-items: center;
 
   .signup-form {
     div {
@@ -915,8 +1127,7 @@ hr {
     }
 
     div {
-      @extend %flex-complete-center;
-      flex-direction: column;
+      @extend %flex-center-column;
 
       label {
         margin-bottom: 5px;
@@ -958,13 +1169,12 @@ hr {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
   width: 95%;
   display: grid;
-  grid-template-rows: 150px 250px;
+  grid-template-rows: 150px auto;
   border-radius: 10px;
   overflow: hidden;
-  margin: auto 0;
 
   .upper-container {
-    @extend %flex-complete-center;
+    @extend %flex-center-row;
     background: $base-color;
   }
 
@@ -983,10 +1193,10 @@ hr {
   }
 
   .lower-container {
-    @extend %flex-complete-center;
     padding: 20px;
     padding-top: 40px;
     display: grid;
+    justify-items: center;
     text-align: center;
 
     div:nth-child(1) {
@@ -1007,17 +1217,16 @@ hr {
   button {
     background-color: $base-color;
     color: #fff;
-    border: 1px solid $base-color !important;
+    border: 1px solid $base-color;
   }
 }
 
 .settings-component {
-  flex-direction: column;
-  @extend %flex-complete-center;
+  @extend %flex-center-column;
   width: 100%;
 
   .profile-picture-section {
-    @extend %flex-complete-center;
+    @extend %flex-center-row;
     margin-bottom: 20px;
     width: 100%;
 
@@ -1037,12 +1246,12 @@ hr {
   }
 
   > div {
-    @extend %flex-complete-center;
-    flex-direction: column;
+    @extend %flex-center-column;
     align-items: flex-start;
   }
 
-  input, textarea {
+  input,
+  textarea {
     border-bottom: 2px solid #68ade6;
 
     &:disabled {
@@ -1052,7 +1261,7 @@ hr {
 
   input,
   textarea,
-  label {
+  label:not(label.switch) {
     max-width: 500px;
     width: 100%;
   }
@@ -1105,15 +1314,56 @@ hr {
   }
 }
 
+.blogmarks-component {
+  width: 100%;
+
+  h1, ul {
+    width: 700px;
+    max-width: 95%;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-weight: 500;
+    background-color: var(--blogmark-header);
+    border-top: var(--input-border);
+    border-left: var(--input-border);
+    border-right: var(--input-border);
+    padding: 8px 10px;
+    box-sizing: border-box;
+    border-radius: 5px 5px 0 0;
+  }
+
+  ul {
+    border-left: var(--input-border);
+    border-right: var(--input-border);
+    box-sizing: border-box;
+    border-radius: 0 0 5px 5px;
+  }
+
+  li {
+    background-color: var(--blogmark-body);
+    color: var(--text);
+    font-weight: 500;
+    font-size: 1.4em;
+    padding: 8px;
+    box-sizing: border-box;
+    border-bottom: var(--input-border);
+    
+    &:nth-last-child(1) {
+      border-radius: 0 0 5px 5px;
+    }
+  }
+}
+
 .create-post-image-dropdown-component {
-  @extend %flex-complete-center;
+  @extend %flex-center-row;
   height: 100%;
   width: 100%;
 
   > div {
-    @extend %flex-complete-center;
-    flex-direction: column;
-    border: dashed 1px #A5A5A5;
+    @extend %flex-center-column;
+    border: dashed 1px #a5a5a5;
     width: 100%;
     height: 450px;
     margin: auto;
@@ -1125,23 +1375,50 @@ hr {
 
   p {
     font-size: 1.1em;
-    color: #A5A5A5;
+    color: #a5a5a5;
   }
 
   button {
     width: 160px;
   }
-
 }
 
-@media (max-width: 600px) {
+@media (max-width: 720px) {
   nav {
+    button {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 650px) {
+
+  .hidden-mobile {
+    display: none !important;
+  }
+
+  .hidden-desktop {
+    display: initial;
+  }
+
+  .hamburger-menu-container {
+    margin-left: 20px;
+  }
+
+  nav {
+    padding: 0px 25px;
 
     .mobile-nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
       width: 100%;
+    }
+    
+    .search-component-container { 
+      input, .ais-Hits { 
+        width: 190px;
+      }
     }
   }
 
@@ -1153,6 +1430,37 @@ hr {
     > section {
       padding: 8px;
       height: 100%;
+    }
+  }
+
+  .home-component-featured-post {
+    width: 100%;
+  }
+
+  .home-component-posts-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    > span:not(:nth-last-of-type(1)) {
+      margin-bottom: 20px;
+    }
+
+    .card {
+      grid-template-rows: none;
+      border-radius: initial;
+
+      .card-link {
+        display: none;
+      }
+    }
+
+  }
+  .home-component-featured-post {
+    border-radius: initial;
+
+    .featured-post-img  {
+      border-radius: initial;
     }
   }
 
@@ -1196,7 +1504,7 @@ hr {
   $bounce_height: 30px;
 
   .wrap {
-    @extend %flex-complete-center;
+    @extend %flex-center-column;
     height: 100vh;
   }
 

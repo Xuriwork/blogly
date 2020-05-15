@@ -41,7 +41,7 @@ export const Modal = React.memo((props) => {
                     className='modal' 
                 >
                     <div className='modal-content-container'>
-                        <div style={{ backgroundColor: props.modalContentHeaderBackgroundColor }}>
+                        <div className='modal-header' style={{ backgroundColor: props.modalContentHeaderBackgroundColor }}>
                             <h3>{props.title}</h3>
                             <span className='close' onClick={closeModalHandler}>&times;</span>
                         </div>

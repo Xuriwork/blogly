@@ -10,13 +10,8 @@ export const updateProfileInfo = ({ profileInfo, history }) => {
   return (dispatch, getState, { getFirebase }) => {
     const firestore = getFirebase().firestore();
     const userId = getState().firebase.auth.uid;
-    const userEmail = getState().firebase.auth.email;
     let userDetails = formatUserDetails(profileInfo);
     const user = getFirebase().auth().currentUser;
-    const credential = getFirebase().auth.EmailAuthProvider.credential(
-      userEmail,
-      profileInfo.currentPassword
-    );
 
     if (profileInfo.currentPassword.trim() === '') return true;
 

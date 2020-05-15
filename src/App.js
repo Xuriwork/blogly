@@ -12,6 +12,7 @@ import NotFound from './components/NotFound';
 import SignIn from './components/Forms/SignIn';
 import SignUp from './components/Forms/SignUp';
 import ForgotPassword from './components/Forms/ForgotPassword';
+import BlogmarksContainer from './components/Blogmarks/BlogmarksContainer';
 import Profile from './components/Profile/Profile';
 import EditProfile from './components/Profile/EditProfile';
 import Settings from './components/Settings';
@@ -45,6 +46,7 @@ export const App = React.memo((props) => {
             <Route path='/404' component={NotFound} />
             <Route path='/p/:postId/comments' component={CommentsContainer} />
             <Route path='/settings' component={UserIsAuthenticated(Settings)} />
+            <Route path='/blogmarks' component={UserIsAuthenticated(BlogmarksContainer)} />
             <Route path='/p/:postId' exact component={PostContainer} />
             <Route path='/forgot-password' component={ForgotPassword} />
             <Route path='*' exact={true} component={NotFound} />

@@ -54,7 +54,7 @@ export const CreatePost = React.memo((props) => {
   };
 
   return (
-    <>
+    <div>
       {errors !== null ? (
         <span className='error-message'>
           <ErrorCircle size='30' title='error' style={{ marginRight: 5 }} />
@@ -167,7 +167,7 @@ export const CreatePost = React.memo((props) => {
         />
         </Suspense>
       </div>
-    </>
+    </div>
   );
 });
 

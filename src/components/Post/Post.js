@@ -2,7 +2,8 @@ import React from 'react';
 import { isLoaded, isEmpty } from 'react-redux-firebase';
 import { Redirect, Link } from 'react-router-dom';
 
-import IronImage from 'react-image-lazy-load-component';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+
 import Loading from '../../utils/Loading';
 import { PostMoreActionsModal } from './PostMoreActionsModal';
 import { PostLikes } from './PostLikes';
@@ -23,11 +24,11 @@ const Post = React.memo((props) => {
     <>
       <section>
         <div className='post-component'>
-          <div>
-            <IronImage
+          <div className='post-image-container'>
+            <LazyLoadImage
               src={post.coverImageURL}
-              alt={post.coverImageAlt}
-              placeholder={PostImagePlaceholder()}
+              alt={post.coverImageAlt} 
+              placeholderSrc={PostImagePlaceholder}
             />
           </div>
           <div className='post-content'>
@@ -43,7 +44,7 @@ const Post = React.memo((props) => {
               <PostMoreActionsModal auth={auth} post={post} />
             </div>
             <em>{post.datePretty}</em>
-            <p>{post.body}</p>
+            <p className='post-body'>{post.body}</p>
           </div>
           <PostLikes
             postLikes={post.likeCount}

@@ -2,6 +2,7 @@ import {
   PASSWORD_RESET_EMAIL_SENT,
   SET_UNAUTHENTICATED,
   SET_USER_POSTS,
+  SET_USER_BLOGMARKS,
   SET_USER_LIKES,
   SET_ERRORS,
 } from '../types';
@@ -61,7 +62,7 @@ export const signUp = ({ creds, history }) => {
     let userId;
     firestore
       .collection('users')
-      .where('usertag', '==', newUser.usertag)
+      .where('username', '==', newUser.username)
       .get()
       .then((doc) => {
         if (doc.exists) {
@@ -92,6 +93,7 @@ export const signUp = ({ creds, history }) => {
           username: newUser.username,
           userImageURL: defaultUserProfileImagePath,
           createdAt: new Date(),
+          blogmarks: []
         };
         return firestore.collection('users').doc(userId).set(userInfo);
       })
@@ -189,14 +191,56 @@ export const getUserData = () => {
           .where('userId', '==', userId)
           .onSnapshot((docs) => {
             userData.likes = [];
+
             docs.forEach((doc) => {
               userData.likes.push(doc.data());
             });
             dispatch({ type: SET_USER_LIKES, payload: userData.likes });
           })
       })
+      .then(() => {
+        return firestore
+          .collection('users')
+          .doc(userId)
+          .onSnapshot((doc) => {
+            userData.blogmarks = [];
+            const blogmarks = doc.data().blogmarks;
+            userData.blogmarks.push(...blogmarks);
+            dispatch({ type: SET_USER_BLOGMARKS, payload: userData.blogmarks });
+          })
+      })
       .catch((error) => {
         console.error(error);
       });
   };
+};
+
+export const handleFavoritePost = (postId, postTitle) => {
+  return (dispatch, getState, { getFirebase }) => {
+    const firebase = getFirebase();
+    const firestore = getFirebase().firestore();
+    const userId = getState().firebase.auth.uid;
+
+    firestore
+    .collection('users')
+    .doc(userId)
+    .update({
+      blogmarks: firebase.firestore.FieldValue.arrayUnion({postId, postTitle})
+    })
+  }
+};
+
+export const handleUnfavoritePost = (postId, postTitle) => {
+  return (dispatch, getState, { getFirebase }) => {
+    const firebase = getFirebase();
+    const firestore = getFirebase().firestore();
+    const userId = getState().firebase.auth.uid;
+
+    firestore
+    .collection('users')
+    .doc(userId)
+    .update({
+      blogmarks: firebase.firestore.FieldValue.arrayRemove({postId, postTitle})
+    })
+  }
 };

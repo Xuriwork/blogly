@@ -1,13 +1,14 @@
 import React from 'react';
 import { useSelector, connect } from 'react-redux';
 import { useFirestoreConnect } from 'react-redux-firebase';
-import PostImagePlaceholderLightMode from '../../assets/images/LazyLoadPlaceholderLightMode.png';
-import PostImagePlaceholderDarkMode from '../../assets/images/LazyLoadPlaceholderDarkMode.png';
+
 import { likePost, unlikePost } from '../../store/actions/postActions';
 import Post from './Post';
+import { useTheme } from '../../hooks/useTheme';
 
 export const PostContainer = React.memo((props) => {
   const { auth } = props;
+  const { PostImagePlaceholder } = useTheme();
 
   const likedPost = () => {
     if (
@@ -29,19 +30,6 @@ export const PostContainer = React.memo((props) => {
     ({ firestore: { data } }) =>
       data.posts && data.posts[props.match.params.postId]
   );
-
-  const PostImagePlaceholder = () => {
-    const theme = localStorage.getItem('theme');
-
-    switch (theme) {
-      case 'dark-mode':
-        return PostImagePlaceholderDarkMode;
-      case 'light-mode':
-        return PostImagePlaceholderLightMode;
-      default:
-        return PostImagePlaceholderDarkMode;
-    }
-  };
 
   const handleLikePost = () => {
     if (auth.isEmpty) return;

@@ -1,42 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="utf-8" />
-      <link rel="icon" type="image/svg+xml" href="%PUBLIC_URL%/favicon.svg" />
-      <link rel="alternate icon" href="%PUBLIC_URL%/favicon.ico" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <meta name="theme-color" content="#000000" />
-      <meta name="description" content="Blogging site" />
-      <link rel="apple-touch-icon" href="%PUBLIC_URL%/bloglyicon192x192.png" />
-      <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-      <link
-         rel="preconnect"
-         href="https://storage.googleapis.com"
-         crossorigin
-      />
-      <link
-         rel="preconnect"
-         href="https://firebasestorage.googleapis.com"
-         crossorigin
-      />
-      <link
-         rel="preconnect"
-         href="https://firestore.googleapis.com"
-         crossorigin
-      />
-      <title>Blogly</title>
-   </head>
-   <body class="light-mode">
-      <noscript>You need to enable JavaScript to run this app.</noscript>
-      <div id="root"></div>
-      <script>
-         if (
-            typeof window !== 'undefined' &&
-            typeof window.process === 'object' &&
-            window.process.type === 'renderer'
-         ) {
-            require('../src/renderer.js');
-         }
-      </script>
-   </body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="%PUBLIC_URL%/favicon.svg" />
+    <link rel="alternate icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Blogging site" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/bloglyicon192x192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="preconnect" href="https://storage.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://firebasestorage.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@100;400;500&family=Noto+Sans&family=Raleway:wght@500&display=swap" rel="stylesheet">
+    <title>Blogly</title>
+  </head>
+  <body class="light-mode">
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script>
+      if (
+        typeof window !== 'undefined' &&
+        typeof window.process === 'object' &&
+        window.process.type === 'renderer'
+      ) {
+        require('../src/renderer.js');
+      }
+    </script>
+  </body>
 </html>
