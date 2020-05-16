@@ -6,19 +6,14 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import Loading from '../../utils/Loading';
 import { PostMoreActionsModal } from './PostMoreActionsModal';
-import { PostLikes } from './PostLikes';
+import { LikePostButton } from './LikePostButton';
+import { MarkPostButton } from './MarkPostButton';
 
-const Post = React.memo((props) => {
+const Post = React.memo(({ auth, post, PostImagePlaceholder, postIsLiked, handleLikePost, handleUnlikePost, checkUserBlogmarks, handleUnmarkPost, handleMarkPost }) => {
 
-  const { auth, post, PostImagePlaceholder, likedPost, handleLikePost, handleUnlikePost } = props;
+  if (!isLoaded(post)) return <Loading />;
 
-  if (!isLoaded(post)) {
-    return <Loading />;
-  }
-
-  if (isEmpty(post)) {
-    return <Redirect to='/404' />;
-  }
+  if (isEmpty(post)) return <Redirect to='/404' />;
 
   return (
     <>
@@ -46,12 +41,21 @@ const Post = React.memo((props) => {
             <em>{post.datePretty}</em>
             <p className='post-body'>{post.body}</p>
           </div>
-          <PostLikes
-            postLikes={post.likeCount}
-            likedPost={likedPost()}
-            likePost={handleLikePost}
-            unlikePost={handleUnlikePost}
-          />
+          <div className='post-footer'>
+            <LikePostButton
+              postLikes={post.likeCount}
+              postIsLiked={postIsLiked}
+              likePost={handleLikePost}
+              unlikePost={handleUnlikePost}
+            />
+            <MarkPostButton 
+              checkUserBlogmarks={checkUserBlogmarks} 
+              postId={post.postId} 
+              postTitle={post.title}
+              handleUnmarkPost={handleUnmarkPost}
+              handleMarkPost={handleMarkPost}
+            />
+          </div>
         </div>
         <hr />
         <Link

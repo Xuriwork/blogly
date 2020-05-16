@@ -917,6 +917,16 @@ main {
     margin-left: 10px;
     padding: 4px 15px;
   }
+
+  .post-footer {
+    display: flex;
+    justify-content: space-between;
+
+    .mark-button {
+      border-radius: 5px 0 0 5px;
+      background-color: #fff;
+    }
+  }
 }
 
 hr {
@@ -1314,7 +1324,7 @@ hr {
   }
 }
 
-.blogmarks-component {
+.blogmarks-component, .user-posts-component {
   width: 100%;
 
   h1, ul {
@@ -1353,6 +1363,17 @@ hr {
     &:nth-last-child(1) {
       border-radius: 0 0 5px 5px;
     }
+  }
+
+  .user-posts-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    span {
+      font-size: 0.8em;
+    }
+
   }
 }
 
@@ -1494,6 +1515,12 @@ hr {
       button {
         margin-right: 0;
       }
+    }
+  }
+
+  .user-posts-component {
+    .user-posts-list li { 
+      font-size: 1.2em;
     }
   }
 }

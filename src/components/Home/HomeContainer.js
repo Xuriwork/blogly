@@ -4,9 +4,9 @@ import { useFirestore } from 'react-redux-firebase';
 
 import Home from './Home';
 import { useTheme } from '../../hooks/useTheme';
-import { handleFavoritePost, handleUnfavoritePost } from '../../store/actions/userActions';
+import { handleMarkPost, handleUnmarkPost } from '../../store/actions/userActions';
 
-export const HomeContainer = ({ auth, user, handleFavoritePost, handleUnfavoritePost }) => {
+export const HomeContainer = ({ auth, user, handleMarkPost, handleUnmarkPost }) => {
   const firestore = useFirestore();
   const [posts, setPosts] = useState([]);
   const [featuredPost, setFeaturedPost] = useState();
@@ -17,8 +17,7 @@ export const HomeContainer = ({ auth, user, handleFavoritePost, handleUnfavorite
     let unsubscribe = firestore
       .collection('posts')
       .orderBy('createdAt', 'desc')
-      .onSnapshot(
-        (snapshot) => {
+      .onSnapshot((snapshot) => {
           let _posts = [];
           snapshot.forEach((postSnapshot) => {
             _posts.push(postSnapshot.data());
@@ -27,20 +26,17 @@ export const HomeContainer = ({ auth, user, handleFavoritePost, handleUnfavorite
           setPosts(_posts);
           setFeaturedPost(_featuredPost);
           setLoading(false);
-        },
-        (error) => {
+        }, (error) => {
           console.error(error);
         }
       );
     return () => unsubscribe();
   }, [firestore]);
 
-  const favoritePost = (postId, postTitle) => handleFavoritePost(postId, postTitle);
-  const unfavoritePost = (postId, postTitle) => handleUnfavoritePost(postId, postTitle);
+  const markPost = (postId, postTitle) => handleMarkPost(postId, postTitle);
+  const unmarkPost = (postId, postTitle) => handleUnmarkPost(postId, postTitle);
 
-  const checkUserBlogmarks = (postId) => {
-    return user.blogmarks.filter(blogmark => blogmark.postId === postId);
-  };
+  const checkUserBlogmarks = (postId) => user.blogmarks.filter(blogmark => blogmark.postId === postId);
 
   return (
     <Home
@@ -49,8 +45,8 @@ export const HomeContainer = ({ auth, user, handleFavoritePost, handleUnfavorite
       featuredPost={featuredPost}
       PostImagePlaceholder={PostImagePlaceholder}
       checkUserBlogmarks={checkUserBlogmarks}
-      handleFavoritePost={favoritePost}
-      handleUnfavoritePost={unfavoritePost}
+      handleMarkPost={markPost}
+      handleUnmarkPost={unmarkPost}
       auth={auth.isEmpty}
     />
   );
@@ -65,8 +61,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    handleFavoritePost: (postId, postTitle) => dispatch(handleFavoritePost(postId, postTitle)),
-    handleUnfavoritePost: (postId, postTitle) => dispatch(handleUnfavoritePost(postId, postTitle)),
+    handleMarkPost: (postId, postTitle) => dispatch(handleMarkPost(postId, postTitle)),
+    handleUnmarkPost: (postId, postTitle) => dispatch(handleUnmarkPost(postId, postTitle)),
   };
 };
 

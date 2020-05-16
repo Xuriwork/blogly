@@ -154,14 +154,17 @@ export const Navbar = React.memo((props) => {
                     <span className='slider round'></span>
                   </label>
                 </span>
-                <Link to='/profile' className='dropdown-items'>
-                  Profile
-                </Link>
                 <Link to='/create-post' className='dropdown-items'>
                   Create Post
                 </Link>
+                <Link to='/profile' className='dropdown-items'>
+                  Profile
+                </Link>
                 <Link to='/blogmarks' className='dropdown-items'>
                   Blogmarks
+                </Link>
+                <Link to='/my-posts' className='dropdown-items'>
+                  My posts
                 </Link>
                 <Link to='/settings' className='dropdown-items'>
                   Settings

@@ -170,6 +170,7 @@ export const getUserData = () => {
               userData.posts = [];
               docs.forEach((doc) => {
                 userData.posts.push({
+                  title: doc.data().title,
                   body: doc.data().body,
                   author: doc.data().author,
                   authorProfilePictureURL: doc.data().authorProfilePictureURL,
@@ -215,7 +216,7 @@ export const getUserData = () => {
   };
 };
 
-export const handleFavoritePost = (postId, postTitle) => {
+export const handleMarkPost = (postId, postTitle) => {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
     const firestore = getFirebase().firestore();
@@ -230,7 +231,7 @@ export const handleFavoritePost = (postId, postTitle) => {
   }
 };
 
-export const handleUnfavoritePost = (postId, postTitle) => {
+export const handleUnmarkPost = (postId, postTitle) => {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
     const firestore = getFirebase().firestore();

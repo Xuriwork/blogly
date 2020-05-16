@@ -5,14 +5,11 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 
 import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 
 import Loading from '../../utils/Loading';
 
 import Heart from '../../assets/images/icons/Heart.svg';
 import Chat from '../../assets/images/icons/Chat.svg';
-
-dayjs.extend(relativeTime);
 
 export const Home = React.memo(
   ({
@@ -20,11 +17,12 @@ export const Home = React.memo(
     posts,
     featuredPost,
     PostImagePlaceholder,
-    handleFavoritePost,
-    handleUnfavoritePost,
+    handleMarkPost,
+    handleUnmarkPost,
     checkUserBlogmarks,
     auth,
   }) => {
+
     if (loading) return <Loading />;
 
     return (
@@ -51,7 +49,7 @@ export const Home = React.memo(
               <span>
                 <span>{featuredPost.author}</span>
                 <span>
-                  {dayjs(featuredPost.createdAt.toDate()).format('DD-MM-YYYY')}
+                  {dayjs(featuredPost.createdAt).format('DD-MM-YYYY')}
                 </span>
               </span>
             </span>
@@ -72,23 +70,13 @@ export const Home = React.memo(
                   <>
                     {checkUserBlogmarks(featuredPost.postId).length === 0 ? (
                       <button
-                        onClick={() =>
-                          handleFavoritePost(
-                            featuredPost.postId,
-                            featuredPost.title
-                          )
-                        }
+                        onClick={() => handleMarkPost(featuredPost.postId, featuredPost.title)}
                       >
                         Mark
                       </button>
                     ) : (
-                      <button
-                        onClick={() =>
-                          handleUnfavoritePost(
-                            featuredPost.postId,
-                            featuredPost.title
-                          )
-                        }
+                      <button 
+                        onClick={() => handleUnmarkPost(featuredPost.postId, featuredPost.title)}
                       >
                         Unmark
                       </button>
@@ -118,7 +106,7 @@ export const Home = React.memo(
                         <h3>{post.title}</h3>
                       </Link>
                       <span>
-                        {dayjs(post.createdAt.toDate()).format('DD-MM-YYYY')}
+                        {dayjs(post.createdAt).format('DD-MM-YYYY')}
                       </span>
                     </span>
                     <Link to={`/p/${post.postId}`}>
@@ -144,17 +132,13 @@ export const Home = React.memo(
                         <>
                           {checkUserBlogmarks(post.postId).length === 0 ? (
                             <button
-                              onClick={() =>
-                                handleFavoritePost(post.postId, post.title)
-                              }
+                              onClick={() => handleMarkPost(post.postId, post.title)}
                             >
                               Mark
                             </button>
                           ) : (
                             <button
-                              onClick={() =>
-                                handleUnfavoritePost(post.postId, post.title)
-                              }
+                              onClick={() => handleUnmarkPost(post.postId, post.title)}
                             >
                               Unmark
                             </button>
