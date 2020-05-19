@@ -455,7 +455,7 @@ nav {
 
 .key-info {
   color: $base-color !important;
-  font-weight: bold;
+  font-weight: 500;
 }
 
 input[type='text'],
@@ -923,8 +923,9 @@ main {
     justify-content: space-between;
 
     .mark-button {
-      border-radius: 5px 0 0 5px;
-      background-color: #fff;
+      border-radius: 0 5px 5px 0;
+      background-color: #fafaff;
+      border: 1px solid #31313144;
     }
   }
 }

@@ -5,6 +5,8 @@ import {
   SET_USER_BLOGMARKS,
   SET_USER_LIKES,
   SET_ERRORS,
+  LOADING_TRUE,
+  LOADING_FALSE
 } from '../types';
 import { validateUserSignUpData } from '../../utils/validators.js';
 
@@ -149,13 +151,14 @@ export const sendPasswordResetEmail = ({ email }) => {
 };
 
 export const getUserData = () => {
-  return (dispatch, getState, { getFirebase }) => {
+  return async (dispatch, getState, { getFirebase }) => {
+    dispatch({ type: LOADING_TRUE });
     const firestore = getFirebase().firestore();
     const userId = getState().firebase.auth.uid;
 
     let userData = {};
 
-    firestore
+    await firestore
       .collection('users')
       .doc(userId)
       .get()
@@ -213,6 +216,7 @@ export const getUserData = () => {
       .catch((error) => {
         console.error(error);
       });
+      dispatch({ type: LOADING_FALSE });
   };
 };
 

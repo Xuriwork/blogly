@@ -27,7 +27,7 @@ const uiReducer = (state = initialState, action) => {
     case LOADING_TRUE :
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     case LOADING_FALSE :
       return {

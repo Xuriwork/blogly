@@ -9,7 +9,6 @@ import {
 } from '../types';
 
 const initialState = {
-  loading: false,
   posts: [],
   likes: [],
   notifications: [],

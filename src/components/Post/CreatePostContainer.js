@@ -57,7 +57,7 @@ export const CreatePostContainer = React.memo((props) => {
         700,
         700,
         'JPEG',
-        100,
+        90,
         0,
         (uri) => {
           resolve(uri);
@@ -87,10 +87,7 @@ export const CreatePostContainer = React.memo((props) => {
   };
 
   const createPost = (data) => {
-    if (coverImageURL === null) {
-      setErrorMessage("Don't forget to upload a cover image");
-      return;
-    }
+    if (coverImageURL === null) return setErrorMessage("Don't forget to upload a cover image");
     props.createPost({ coverImageURL, ...data });
     props.history.push('/');
   };
@@ -109,6 +106,7 @@ export const CreatePostContainer = React.memo((props) => {
       selectedImageName={selectedImageName}
       handleSelectCoverImage={handleSelectCoverImage}
       handleUploadCoverImage={handleUploadCoverImage}
+      coverImageURL={coverImageURL}
       bodyContent={bodyContent}
       setBodyContent={setBodyContent}
       theme={theme}

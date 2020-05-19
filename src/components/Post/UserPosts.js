@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 export const UserPosts = ({ posts }) => {
-  console.log(posts);
   return (
     <div className='user-posts-component'>
       <h1>My posts ({posts.length}) </h1>

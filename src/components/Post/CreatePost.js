@@ -20,6 +20,7 @@ export const CreatePost = React.memo((props) => {
     handleSelectCoverImage, 
     handleUploadCoverImage,
     handlePublishPost,
+    coverImageURL,
     bodyContent,
     setBodyContent,
     theme
@@ -94,7 +95,8 @@ export const CreatePost = React.memo((props) => {
           <div style={{ marginBottom: '15px' }}>
             <button
               onClick={selectImageFile}
-              className='select-image-file-button'>
+              className='select-image-file-button'
+            >
               Select Cover Image
             </button>
             <span>{selectedImageName}</span>
@@ -134,14 +136,18 @@ export const CreatePost = React.memo((props) => {
             style={{ marginTop: '10px' }}
           />
         </label>
-        <label htmlFor='cover-image-alt-field'>
-          Cover image description <span>Required</span>
-        </label>
-        <input
-          name='coverImageAlt'
-          type='text'
-          ref={register({ required: true })}
-        />
+        {coverImageURL ? (
+          <>
+            <label htmlFor='cover-image-alt-field'>
+              Cover image description <span>Required</span>
+            </label>
+            <input
+              name='coverImageAlt'
+              type='text'
+              ref={register({ required: true })}
+            />
+          </>
+        ) : null}
         <label htmlFor='body-field'>
           Body <span>Required</span>
         </label>
@@ -156,15 +162,15 @@ export const CreatePost = React.memo((props) => {
           />
         </div>
         <Suspense fallback={<Loading />}>
-        <Modal
-          buttonActionClassName='approve-button'
-          modalContentHeaderBackgroundColor='#23d48a'
-          visibleButtonStyle={{ marginTop: 40 }}
-          title='Confirm'
-          modalContent='Confirmation to publish this blog post to the world.'
-          buttonActionName='Create'
-          buttonAction={handlePublishPost}
-        />
+          <Modal
+            buttonActionClassName='approve-button'
+            modalContentHeaderBackgroundColor='#23d48a'
+            visibleButtonStyle={{ marginTop: 40 }}
+            title='Confirm'
+            modalContent='Confirmation to publish this blog post to the world.'
+            buttonActionName='Create'
+            buttonAction={handlePublishPost}
+          />
         </Suspense>
       </div>
     </div>
