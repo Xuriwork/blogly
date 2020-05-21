@@ -1,13 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 import { connect, useSelector } from 'react-redux';
+
 import { useFirebase, isLoaded } from 'react-redux-firebase';
+import { useForm } from 'react-hook-form';
 import FileUploader from 'react-firebase-file-uploader';
+
 import { updateProfileInfo, uploadProfilePicture } from '../../store/actions/profileActions';
+import Loading from '../../utils/Loading';
 
 import { Upload } from '@styled-icons/heroicons-outline/Upload';
-import Loading from '../../utils/Loading';
 
 export const EditProfile = React.memo((props) => {
     const { auth } = props;
@@ -68,7 +70,11 @@ export const EditProfile = React.memo((props) => {
                             hidden='hidden'
                         /> 
                         <div>
-                            <button onClick={handleSelectProfilePicture} className='lower-hierarchy-button-color'>
+                            <button 
+                                onClick={handleSelectProfilePicture} 
+                                className='lower-hierarchy-button-color' 
+                                style={{ width: '100%' }}
+                            >
                                 <Upload size='20' title='Upload profile picture button' style={{ marginRight: '5px' }} />
                                 Upload Profile Picture
                             </button>

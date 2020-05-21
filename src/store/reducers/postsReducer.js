@@ -10,7 +10,6 @@ const initialState = {
   createPostError: null,
   posts: [],
   post: {},
-  loading: false,
 };
 
 const postsReducer = (state = initialState, action) => {
@@ -19,7 +18,6 @@ const postsReducer = (state = initialState, action) => {
       return {
         ...state,
         posts: action.payload,
-        loading: false,
       };
     case CREATE_POST_SUCCESS:
       return {

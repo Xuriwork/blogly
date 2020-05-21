@@ -31,3 +31,5 @@ yarn-error.log*
 
 firestore.rules
 firestore.indexes.json
+
+SearchComponent.js

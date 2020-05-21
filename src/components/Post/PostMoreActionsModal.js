@@ -3,7 +3,7 @@ import MoreInfoDots from '../../assets/images/more.svg';
 import { ReportProblem } from '@styled-icons/material/ReportProblem';
 import { Edit } from '@styled-icons/typicons/Edit';
 import { Twitter } from '@styled-icons/boxicons-logos/Twitter';
-import NotyfContext from '../../utils/NotyfContext';
+import NotyfContext from '../../context/NotyfContext';
 
 export const PostMoreActionsModal = React.memo(({ auth, post }) => {
 
@@ -14,19 +14,19 @@ export const PostMoreActionsModal = React.memo(({ auth, post }) => {
     const openModalHandler = () => {
         body.style.overflow = 'hidden';
         setVisible(true);
-    }
+    };
 
     const closeModalHandler = () => {
         body.style.overflow = 'auto';
         setVisible(false);
-    }
+    };
 
     window.onclick = (event) => {
         const modal = document.getElementById('modal')
         if (event.target === modal) {
             closeModalHandler();
         }
-    }
+    };
 
     const handleCopyURL = () => {
         const dummy = document.createElement('input'),
@@ -37,7 +37,7 @@ export const PostMoreActionsModal = React.memo(({ auth, post }) => {
         document.execCommand('copy');
         document.body.removeChild(dummy);
         notyf.success('Copied to clipboard 📋');
-    }
+    };
 
     const handleEditPost = () => notyf.error('Sorry I haven\'t got to this yet 🙄');
     const handleReportPost = () => notyf.error('Sorry I haven\'t got to this yet 🙄');
@@ -49,7 +49,7 @@ export const PostMoreActionsModal = React.memo(({ auth, post }) => {
         const params = 'menubar=no,toolbar=no,status=no,width=570,height=570';
         const shareToTwitterURL = `https://twitter.com/intent/tweet?url=${url}&text=${text}&hashtags=${hash_tags}`;
         window.open(shareToTwitterURL, 'NewWindow', params);
-    }
+    };
 
     return (
         <>

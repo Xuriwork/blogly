@@ -1,7 +1,10 @@
 import { customAlphabet } from 'nanoid/non-secure';
+import shortid from 'shortid';
+import slugify from '@sindresorhus/slugify';
+import toTitleCase from 'to-title-case';
+
 import { CREATE_POST_SUCCESS, SET_ERRORS } from '../types';
 import { isEmpty } from '../../utils/validators';
-import shortid from 'shortid';
 
 export const createPost = (post) => {
   return (dispatch, getState, { getFirebase }) => {
@@ -18,15 +21,12 @@ export const createPost = (post) => {
       });
     }
 
-    const slugify = post.title
-      .toLowerCase()
-      .trim()
-      .replace(/&/g, '-and-')
-      .replace(/[\s\W-]+/g, '-');
+    const formattedTitle = () => toTitleCase(post.title);
 
     const createSlug = () => {
+      const formattedTitle = slugify(post.title);
       const slugId = nanoid();
-      return `${slugify}-${slugId}`;
+      return `${formattedTitle}-${slugId}`;
     };
 
     const postId = createSlug();
@@ -36,7 +36,7 @@ export const createPost = (post) => {
       authorId: userId,
       authorProfilePictureURL,
       postId,
-      title: post.title,
+      title: formattedTitle,
       body: post.body,
       coverImageURL: post.coverImageURL,
       coverImageAlt: post.coverImageAlt,

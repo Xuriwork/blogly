@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { connect } from 'react-redux';
 import { useFirestore } from 'react-redux-firebase';
 import { useForm } from 'react-hook-form';
-import NotyfContext from '../../utils/NotyfContext';
+import NotyfContext from '../../context/NotyfContext';
 import {
   postComment,
   deleteComment,

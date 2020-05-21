@@ -8,7 +8,7 @@ import { Github } from '@styled-icons/boxicons-logos/Github';
 import { Upload } from '@styled-icons/heroicons-outline/Upload';
 import { updateProfileInfo } from '../store/actions/profileActions';
 import { uploadProfilePicture } from '../store/actions/profileActions';
-import { DarkLightModeContext } from '../utils/DarkLightModeContext';
+import { DarkLightModeContext } from '../context/DarkLightModeContext';
 
 export const Settings = React.memo((props) => {
   const { auth } = props;

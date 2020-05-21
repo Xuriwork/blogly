@@ -2,8 +2,11 @@ import {
   PASSWORD_RESET_EMAIL_SENT,
   SET_UNAUTHENTICATED,
   SET_USER_POSTS,
+  SET_USER_BLOGMARKS,
   SET_USER_LIKES,
   SET_ERRORS,
+  LOADING_TRUE,
+  LOADING_FALSE
 } from '../types';
 import { validateUserSignUpData } from '../../utils/validators.js';
 
@@ -61,7 +64,7 @@ export const signUp = ({ creds, history }) => {
     let userId;
     firestore
       .collection('users')
-      .where('usertag', '==', newUser.usertag)
+      .where('username', '==', newUser.username)
       .get()
       .then((doc) => {
         if (doc.exists) {
@@ -92,6 +95,7 @@ export const signUp = ({ creds, history }) => {
           username: newUser.username,
           userImageURL: defaultUserProfileImagePath,
           createdAt: new Date(),
+          blogmarks: []
         };
         return firestore.collection('users').doc(userId).set(userInfo);
       })
@@ -147,13 +151,14 @@ export const sendPasswordResetEmail = ({ email }) => {
 };
 
 export const getUserData = () => {
-  return (dispatch, getState, { getFirebase }) => {
+  return async (dispatch, getState, { getFirebase }) => {
+    dispatch({ type: LOADING_TRUE });
     const firestore = getFirebase().firestore();
     const userId = getState().firebase.auth.uid;
 
     let userData = {};
 
-    firestore
+    await firestore
       .collection('users')
       .doc(userId)
       .get()
@@ -168,6 +173,7 @@ export const getUserData = () => {
               userData.posts = [];
               docs.forEach((doc) => {
                 userData.posts.push({
+                  title: doc.data().title,
                   body: doc.data().body,
                   author: doc.data().author,
                   authorProfilePictureURL: doc.data().authorProfilePictureURL,
@@ -189,14 +195,57 @@ export const getUserData = () => {
           .where('userId', '==', userId)
           .onSnapshot((docs) => {
             userData.likes = [];
+
             docs.forEach((doc) => {
               userData.likes.push(doc.data());
             });
             dispatch({ type: SET_USER_LIKES, payload: userData.likes });
           })
       })
+      .then(() => {
+        return firestore
+          .collection('users')
+          .doc(userId)
+          .onSnapshot((doc) => {
+            userData.blogmarks = [];
+            const blogmarks = doc.data().blogmarks;
+            userData.blogmarks.push(...blogmarks);
+            dispatch({ type: SET_USER_BLOGMARKS, payload: userData.blogmarks });
+          })
+      })
       .catch((error) => {
         console.error(error);
       });
+      dispatch({ type: LOADING_FALSE });
   };
+};
+
+export const handleMarkPost = (postId, postTitle) => {
+  return (dispatch, getState, { getFirebase }) => {
+    const firebase = getFirebase();
+    const firestore = getFirebase().firestore();
+    const userId = getState().firebase.auth.uid;
+
+    firestore
+    .collection('users')
+    .doc(userId)
+    .update({
+      blogmarks: firebase.firestore.FieldValue.arrayUnion({postId, postTitle})
+    })
+  }
+};
+
+export const handleUnmarkPost = (postId, postTitle) => {
+  return (dispatch, getState, { getFirebase }) => {
+    const firebase = getFirebase();
+    const firestore = getFirebase().firestore();
+    const userId = getState().firebase.auth.uid;
+
+    firestore
+    .collection('users')
+    .doc(userId)
+    .update({
+      blogmarks: firebase.firestore.FieldValue.arrayRemove({postId, postTitle})
+    })
+  }
 };

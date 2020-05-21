@@ -1,15 +1,20 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { signOut } from '../../store/actions/userActions';
+
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import BellIcon from './BellIcon';
-import Message from '../../assets/images/messagingicon.svg';
-import BloglyIcon from '../../assets/images/BloglyIcon.svg';
 import HamburgerMenu from 'react-hamburger-menu';
 import CheeseburgerMenu from 'cheeseburger-menu';
-import { DarkLightModeContext } from '../../utils/DarkLightModeContext';
+
+import { signOut } from '../../store/actions/userActions';
+import { DarkLightModeContext } from '../../context/DarkLightModeContext';
+
+import BellIcon from './BellIcon';
+import SearchComponent from './SearchComponent';
+
+import Message from '../../assets/images/messagingicon.svg';
+import BloglyIcon from '../../assets/images/BloglyIcon.svg';
 
 dayjs.extend(relativeTime);
 
@@ -24,26 +29,14 @@ export const Navbar = React.memo((props) => {
     const mobileSlider = document.getElementById('mobile-slider');
 
     if (theme === 'dark-mode') {
-      if (slider) {
-        slider.checked = true;
-      }
-      if (mobileSlider) {
-        mobileSlider.checked = true;
-      }
-    }
+      if (slider) slider.checked = true;
+      if (mobileSlider) mobileSlider.checked = true;
+    };
 
-    document.addEventListener(
-      'click',
-      (event) => {
-        if (event.target.matches('#mobile-link')) {
-          setMobileMenu(false);
-          return;
-        }
-
-        return () => document.removeEventListener('click', event);
-      },
-      false
-    );
+    document.addEventListener('click', (event) => {
+      if (event.target.matches('#mobile-link')) setMobileMenu(false);
+      return () => document.removeEventListener('click', event);
+    },false);
   });
 
   const signOut = () => {
@@ -65,32 +58,42 @@ export const Navbar = React.memo((props) => {
         <Link to='/' aria-label='home'>
           <img className='site-logo' src={BloglyIcon} alt='Blogly Icon' />
         </Link>
-        <HamburgerMenu
-          isOpen={mobileMenu}
-          menuClicked={toggleMobile}
-          width={25}
-          height={16}
-          strokeWidth={2}
-          rotate={0}
-          color='var(--bg)'
-          borderRadius={0}
-          animationDuration={0.2}
-        />
+      </div>
+      <div className='hidden-desktop'>
+        <div className='hamburger-menu-container'>
+          <HamburgerMenu
+            isOpen={mobileMenu}
+            menuClicked={toggleMobile}
+            width={25}
+            height={16}
+            strokeWidth={2}
+            rotate={0}
+            color='var(--bg)'
+            borderRadius={0}
+            animationDuration={0.2}
+          />
+        </div>
       </div>
       <Link to='/' aria-label='home'>
         <img className='site-logo desktop' src={BloglyIcon} alt='Blogly Icon' />
       </Link>
+      <SearchComponent />
       <div className='right-nav-bar desktop'>
         {auth.isEmpty ? (
           <React.Fragment>
-            <Link to='/sign-in'>
-              <button>Sign In</button>
-            </Link>
-            <Link to='/sign-up' className='sign-up'>
-              <span>Sign Up</span>
-            </Link>
-            <label htmlFor='slider' className='switch' style={{ marginLeft: 20 }}>
-              <input type='checkbox' id='slider' aria-label='slider' onChange={handleToggleTheme} />
+            <Link to='/sign-in' className='button'>Sign In</Link>
+            <Link to='/sign-up' className='sign-up'>Sign Up</Link>
+            <label
+              htmlFor='slider'
+              className='switch'
+              style={{ marginLeft: 20 }}
+            >
+              <input
+                type='checkbox'
+                id='slider'
+                aria-label='slider'
+                onChange={handleToggleTheme}
+              />
               <span className='slider round'></span>
             </label>
           </React.Fragment>
@@ -113,7 +116,8 @@ export const Navbar = React.memo((props) => {
               </span>
               <div
                 className='dropdown-content'
-                style={{ width: '220px', fontSize: '0.7em' }}>
+                style={{ width: '220px', fontSize: '0.7em' }}
+              >
                 {notifications?.map((notification) => (
                   <span key={notification.id} className='dropdown-items'>
                     {notification.author} {notification.content}
@@ -131,48 +135,63 @@ export const Navbar = React.memo((props) => {
                 alt='Profile'
                 className='profile-picture'
               />
-                <div className='dropdown-content'>
-                  <Link to='/profile' className='dropdown-items key-info'>
-                    {'@' + auth.displayName}
-                  </Link>
-                  <span className='dropdown-items'>
-                    <label htmlFor='slider' className='switch' style={{ marginLeft: -5 }}>
-                      <input
-                        type='checkbox' 
-                        id='slider' 
-                        aria-label='slider'
-                        onChange={handleToggleTheme}
-                      />
-                      <span className='slider round'></span>
-                    </label>
-                  </span>
-                  <Link to='/profile' className='dropdown-items'>
-                    Profile
-                  </Link>
-                  <Link to='/blogmarks' className='dropdown-items'>
-                    Blogmarks
-                  </Link>
-                  <Link to='/settings' className='dropdown-items'>
-                    Settings
-                  </Link>
-                  <span
-                    className='dropdown-items sign-out-link'
-                    onClick={signOut}>
-                    Sign Out
-                  </span>
-                </div>
+              <div className='dropdown-content'>
+                <Link to='/profile' className='dropdown-items key-info'>
+                  {'@' + auth.displayName}
+                </Link>
+                <span className='dropdown-items'>
+                  <label
+                    htmlFor='slider'
+                    className='switch'
+                    style={{ marginLeft: '-5px' }}
+                  >
+                    <input
+                      type='checkbox'
+                      id='slider'
+                      aria-label='slider'
+                      onChange={handleToggleTheme}
+                    />
+                    <span className='slider round'></span>
+                  </label>
+                </span>
+                <Link to='/create-post' className='dropdown-items'>
+                  Create Post
+                </Link>
+                <Link to='/profile' className='dropdown-items'>
+                  Profile
+                </Link>
+                <Link to='/blogmarks' className='dropdown-items'>
+                  Blogmarks
+                </Link>
+                <Link to='/my-posts' className='dropdown-items'>
+                  My posts
+                </Link>
+                <Link to='/settings' className='dropdown-items'>
+                  Settings
+                </Link>
+                <span
+                  className='dropdown-items sign-out-link'
+                  onClick={signOut}
+                >
+                  Sign Out
+                </span>
+              </div>
             </div>
           </React.Fragment>
         )}
       </div>
       <CheeseburgerMenu isOpen={mobileMenu} closeCallback={closeMenu}>
-        <div className='overlay-content'>
+        <div className='mobile-overlay-content'>
           {auth.isEmpty ? (
             <React.Fragment>
-              <label htmlFor='mobile-slider' className='switch' style={{ marginBottom: 10 }}>
+              <label
+                htmlFor='mobile-slider'
+                className='switch'
+                style={{ marginBottom: 10 }}
+              >
                 <input
                   type='checkbox'
-                  id='mobile-slider' 
+                  id='mobile-slider'
                   aria-label='mobile-slider'
                   onChange={handleToggleTheme}
                 />
@@ -211,7 +230,8 @@ export const Navbar = React.memo((props) => {
               <span
                 className='sign-out-link'
                 id='mobile-link'
-                onClick={signOut}>
+                onClick={signOut}
+              >
                 Sign Out
               </span>
             </>

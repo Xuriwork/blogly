@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from 'react';
 
-export const PostLikes = React.memo(({ postLikes, likedPost, likePost, unlikePost }) => {
-  const [likeButtonDisabled, setLikeButtonDisabled] = useState(likedPost);
+export const LikePostButton = React.memo(({ postLikes, postIsLiked, likePost, unlikePost }) => {
+  const [likeButtonDisabled, setLikeButtonDisabled] = useState(postIsLiked);
 
   useEffect(() => {
-    if (likedPost) {
+    if (postIsLiked) {
       setLikeButtonDisabled(true);
     }
-  }, [likedPost])
+  }, [postIsLiked])
 
   const handleLikePost = () => {
     setLikeButtonDisabled(true);
     likePost();
-  }
+  };
 
   const handleUnlikePost = () => {
     setLikeButtonDisabled(false);
     unlikePost();
-  }
+  };
 
   return (
     <div className='like-component'>
-      {likedPost ? (
+      {postIsLiked ? (
         <button disabled={!likeButtonDisabled} onClick={handleUnlikePost}>
           <span role='img' aria-label='like button'>
             😀{' '}

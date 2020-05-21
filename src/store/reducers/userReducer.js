@@ -1,5 +1,6 @@
 import {
   SET_USER_POSTS,
+  SET_USER_BLOGMARKS,
   SET_USER_LIKES,
   SET_USER_NOTIFICATIONS,
   MARK_NOTIFICATIONS_READ,
@@ -8,10 +9,10 @@ import {
 } from '../types';
 
 const initialState = {
-  loading: false,
   posts: [],
   likes: [],
   notifications: [],
+  blogmarks: [],
 };
 
 const userReducer = (state = initialState, action) => {
@@ -20,6 +21,11 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         likes: action.payload
+      };
+      case SET_USER_BLOGMARKS : 
+      return {
+        ...state,
+        blogmarks: action.payload
       };
     case SET_USER_POSTS : 
       return {
