@@ -106,8 +106,12 @@ export const Settings = React.memo((props) => {
             disabled
           />
           <label>Bio</label>
-          <textarea name='bio' ref={register} defaultValue={profile.bio} />
-          <span>Let the world know who you are.</span>
+          <textarea 
+            name='bio' 
+            ref={register} 
+            defaultValue={profile.bio} 
+            placeholder='Let the world know who you are.'
+          />
           <h3>Online presence</h3>
           <hr />
           <label>Personal website</label>
