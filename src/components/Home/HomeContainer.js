@@ -5,6 +5,7 @@ import { useFirestore } from 'react-redux-firebase';
 import Home from './Home';
 import { useTheme } from '../../hooks/useTheme';
 import { handleMarkPost, handleUnmarkPost } from '../../store/actions/userActions';
+import Loading from '../../utils/Loading';
 
 export const HomeContainer = ({ auth, user, handleMarkPost, handleUnmarkPost }) => {
   const firestore = useFirestore();
@@ -37,6 +38,8 @@ export const HomeContainer = ({ auth, user, handleMarkPost, handleUnmarkPost }) 
   const unmarkPost = (postId, postTitle) => handleUnmarkPost(postId, postTitle);
 
   const checkUserBlogmarks = (postId) => user.blogmarks.filter(blogmark => blogmark.postId === postId);
+
+  if (loading) return <Loading />;
 
   return (
     <Home

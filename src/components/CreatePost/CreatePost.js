@@ -1,13 +1,17 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useContext } from 'react';
+
 import JoditEditor from 'jodit-react';
 import { Progress } from 'react-sweet-progress';
 import { ErrorCircle } from '@styled-icons/boxicons-solid/ErrorCircle';
-import 'react-sweet-progress/lib/style.css';
+
 import Loading from '../../utils/Loading';
+import { DarkLightModeContext } from '../../context/DarkLightModeContext';
+
+import 'react-sweet-progress/lib/style.css';
 
 const Modal = lazy(() => import('../../utils/Modal'));
 
-export const CreatePost = React.memo((props) => {
+export const CreatePost = (props) => {
 
   const { 
     errorMessage, 
@@ -22,9 +26,10 @@ export const CreatePost = React.memo((props) => {
     handlePublishPost,
     coverImageURL,
     bodyContent,
-    setBodyContent,
-    theme
+    setBodyContent
   } = props;
+
+  const { theme } = useContext(DarkLightModeContext);
 
   const config = {
     readonly: false,
@@ -175,6 +180,6 @@ export const CreatePost = React.memo((props) => {
       </div>
     </div>
   );
-});
+};
 
 export default CreatePost;

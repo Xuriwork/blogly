@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { CreatePost } from './CreatePost';
+import React, { useState } from 'react';
+
 import { connect } from 'react-redux';
 import Resizer from 'react-image-file-resizer';
 import { useForm } from 'react-hook-form';
-import {
-  createPost,
-  handleUploadCoverImage,
-} from '../../store/actions/postActions';
+
+import { CreatePost } from './CreatePost';
+import { createPost, handleUploadCoverImage } from '../../store/actions/postActions';
 
 export const CreatePostContainer = React.memo((props) => {
   const { handleSubmit, register, errors } = useForm();
@@ -16,16 +15,6 @@ export const CreatePostContainer = React.memo((props) => {
   const [image, setImage] = useState(null);
   const [selectedImageName, setSelectedImageName] = useState(null);
   const [progress, setProgress] = useState(0);
-  const [theme, setTheme] = React.useState('');
-
-  useEffect(() => {
-    const localStorageTheme = localStorage.getItem('theme');
-    if (localStorageTheme) {
-      if (localStorageTheme === 'dark-mode') {
-        setTheme('dark');
-      }
-    }
-  }, [theme])
 
   const selectImageFile = () => {
     const fileInput = document.getElementById('coverImageInput');
@@ -109,7 +98,6 @@ export const CreatePostContainer = React.memo((props) => {
       coverImageURL={coverImageURL}
       bodyContent={bodyContent}
       setBodyContent={setBodyContent}
-      theme={theme}
     />
   );
 });

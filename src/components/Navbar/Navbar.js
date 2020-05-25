@@ -13,15 +13,13 @@ import { DarkLightModeContext } from '../../context/DarkLightModeContext';
 import BellIcon from './BellIcon';
 import SearchComponent from './SearchComponent';
 
-import Message from '../../assets/images/messagingicon.svg';
 import BloglyIcon from '../../assets/images/BloglyIcon.svg';
 
 dayjs.extend(relativeTime);
 
-export const Navbar = React.memo((props) => {
-  const { auth, notifications } = props;
+export const Navbar = React.memo(({ auth, notifications, signOut }) => {
   const [mobileMenu, setMobileMenu] = useState(false);
-  const handleToggleTheme = useContext(DarkLightModeContext);
+  const { handleToggleTheme } = useContext(DarkLightModeContext);
 
   useEffect(() => {
     const theme = localStorage.getItem('theme');
@@ -39,8 +37,8 @@ export const Navbar = React.memo((props) => {
     },false);
   });
 
-  const signOut = () => {
-    props.signOut();
+  const handleSignOut = () => {
+    signOut();
     setMobileMenu(false);
   };
 
@@ -99,14 +97,9 @@ export const Navbar = React.memo((props) => {
           </React.Fragment>
         ) : (
           <React.Fragment>
-            <Link to='/create-post'>
+            <Link to='/create-post' style={{ marginRight: '30px' }}>
               <button>Create post</button>
             </Link>
-            <img
-              src={Message}
-              alt='Message Icon'
-              style={{ marginRight: '30px' }}
-            />
             <div className='dropdown'>
               <span>
                 <BellIcon
@@ -171,7 +164,7 @@ export const Navbar = React.memo((props) => {
                 </Link>
                 <span
                   className='dropdown-items sign-out-link'
-                  onClick={signOut}
+                  onClick={handleSignOut}
                 >
                   Sign Out
                 </span>
@@ -230,7 +223,7 @@ export const Navbar = React.memo((props) => {
               <span
                 className='sign-out-link'
                 id='mobile-link'
-                onClick={signOut}
+                onClick={handleSignOut}
               >
                 Sign Out
               </span>

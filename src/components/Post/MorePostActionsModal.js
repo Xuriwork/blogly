@@ -1,15 +1,20 @@
 import React, { useState, useContext } from 'react';
-import MoreInfoDots from '../../assets/images/more.svg';
+
 import { ReportProblem } from '@styled-icons/material/ReportProblem';
 import { Edit } from '@styled-icons/typicons/Edit';
 import { Twitter } from '@styled-icons/boxicons-logos/Twitter';
+
 import NotyfContext from '../../context/NotyfContext';
+import ReportPost from './ReportPost';
+
+import MoreInfoDots from '../../assets/images/more.svg';
 
 export const PostMoreActionsModal = React.memo(({ auth, post }) => {
 
     const body = document.body;
     const [isVisible, setVisible] = useState(false);
     const notyf = useContext(NotyfContext);
+    const [reportPost, setReportPost] = useState(false);
 
     const openModalHandler = () => {
         body.style.overflow = 'hidden';
@@ -24,8 +29,9 @@ export const PostMoreActionsModal = React.memo(({ auth, post }) => {
     window.onclick = (event) => {
         const modal = document.getElementById('modal')
         if (event.target === modal) {
+            setReportPost(false);
             closeModalHandler();
-        }
+        };
     };
 
     const handleCopyURL = () => {
@@ -39,8 +45,8 @@ export const PostMoreActionsModal = React.memo(({ auth, post }) => {
         notyf.success('Copied to clipboard 📋');
     };
 
-    const handleEditPost = () => notyf.error('Sorry I haven\'t got to this yet 🙄');
-    const handleReportPost = () => notyf.error('Sorry I haven\'t got to this yet 🙄');
+    const handleEditPost = () => notyf.error('Sorry I haven\'t got to this yet');
+    const handleReportPost = () => setReportPost(true);
 
     const ShareToTwitter = () => {
         const text = encodeURIComponent('Check out this post on Blogly:');
@@ -65,20 +71,26 @@ export const PostMoreActionsModal = React.memo(({ auth, post }) => {
                 id='modal' 
                 className='modal' 
             >
-                <div className='modal-content-container' style={{ maxWidth: 280 }}>
+                <div className='modal-content-container'>
                     <div style={{ backgroundColor: '#4e85eb' }}>
                         <h3>More actions</h3>
                         <span className='close' onClick={closeModalHandler}>&times;</span>
                     </div>
-                    <div className='modal-content' style={{ flexDirection: 'column', width: 'auto' }}>
-                        {
-                            (!auth.isEmpty && post.authorId === auth.uid) ?
-                            <span onClick={handleEditPost}><Edit size='20' /> Edit Post</span> : null
-                        }
-                        <span onClick={handleCopyURL} role='img' aria-label='copy to clipboard'>📋 Copy URL</span>
-                        <span onClick={ShareToTwitter}><Twitter size='20' color='#1DA1F2' />Share to Twitter</span>
-                        <span onClick={handleReportPost}><ReportProblem size='20' title='report post' /> Report this post</span>
-                    </div>
+                    {
+                        !reportPost ? 
+                            <div className='modal-content' style={{ flexDirection: 'column', width: 'auto' }}>
+                                {
+                                    (!auth.isEmpty && post.authorId === auth.uid) &&
+                                    <span onClick={handleEditPost}><Edit size='20' /> Edit Post</span>
+                                }
+                                <span onClick={handleCopyURL} role='img' aria-label='copy to clipboard'>📋 Copy URL</span>
+                                <span onClick={ShareToTwitter}><Twitter size='20' color='#1DA1F2' />Share to Twitter</span>
+                                {
+                                    (auth.isEmpty || post.authorId ===! auth.uid) &&
+                                    <span onClick={handleReportPost} className='report-port-span'><ReportProblem size='20' title='report post' /> Report this post</span>
+                                }
+                            </div> : <ReportPost postId={post.postId} closeModalHandler={closeModalHandler} />
+                    }
                 </div>
             </div>
             </>

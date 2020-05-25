@@ -14,7 +14,7 @@ export const Settings = React.memo((props) => {
   const { auth } = props;
   const { register, handleSubmit } = useForm();
   const profile = useSelector((state) => state.firebase.profile);
-  const handleToggleTheme = useContext(DarkLightModeContext);
+  const { handleToggleTheme } = useContext(DarkLightModeContext);
 
   const userStorageRef = useFirebase()
     .storage()

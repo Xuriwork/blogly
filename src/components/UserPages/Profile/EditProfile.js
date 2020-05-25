@@ -6,8 +6,8 @@ import { useFirebase, isLoaded } from 'react-redux-firebase';
 import { useForm } from 'react-hook-form';
 import FileUploader from 'react-firebase-file-uploader';
 
-import { updateProfileInfo, uploadProfilePicture } from '../../store/actions/profileActions';
-import Loading from '../../utils/Loading';
+import { updateProfileInfo, uploadProfilePicture } from '../../../store/actions/profileActions';
+import Loading from '../../../utils/Loading';
 
 import { Upload } from '@styled-icons/heroicons-outline/Upload';
 

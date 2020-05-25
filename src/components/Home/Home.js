@@ -6,8 +6,6 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 
 import dayjs from 'dayjs';
 
-import Loading from '../../utils/Loading';
-
 import Heart from '../../assets/images/icons/Heart.svg';
 import Chat from '../../assets/images/icons/Chat.svg';
 
@@ -22,8 +20,6 @@ export const Home = React.memo(
     checkUserBlogmarks,
     auth,
   }) => {
-
-    if (loading) return <Loading />;
 
     return (
       <div className='home-component'>
@@ -69,15 +65,11 @@ export const Home = React.memo(
                 {!auth ? (
                   <>
                     {checkUserBlogmarks(featuredPost.postId).length === 0 ? (
-                      <button
-                        onClick={() => handleMarkPost(featuredPost.postId, featuredPost.title)}
-                      >
+                      <button onClick={() => handleMarkPost(featuredPost.postId, featuredPost.title)}>
                         Mark
                       </button>
                     ) : (
-                      <button 
-                        onClick={() => handleUnmarkPost(featuredPost.postId, featuredPost.title)}
-                      >
+                      <button onClick={() => handleUnmarkPost(featuredPost.postId, featuredPost.title)}>
                         Unmark
                       </button>
                     )}

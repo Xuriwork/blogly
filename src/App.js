@@ -1,28 +1,32 @@
 import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
-import './App.scss';
-import 'notyf/notyf.min.css';
+
+import axios from 'axios';
 
 import Navbar from './components/Navbar/Navbar';
 import HomeContainer from './components/Home/HomeContainer';
 import PostContainer from './components/Post/PostContainer';
 import CommentsContainer from './components/Comments/CommentsContainer';
-import CreatePostContainer from './components/Post/CreatePostContainer';
+import CreatePostContainer from './components/CreatePost/CreatePostContainer';
 import NotFound from './components/NotFound';
 import SignIn from './components/Forms/SignIn';
 import SignUp from './components/Forms/SignUp';
 import ForgotPassword from './components/Forms/ForgotPassword';
-import BlogmarksContainer from './components/Blogmarks/BlogmarksContainer';
-import UserPostsContainer from './components/Post/UserPostsContainer';
-import Profile from './components/Profile/Profile';
-import EditProfile from './components/Profile/EditProfile';
+import BlogmarksContainer from './components/UserPages/Blogmarks/BlogmarksContainer';
+import UserPostsContainer from './components/UserPages/UserPosts/UserPostsContainer';
+import Profile from './components/UserPages/Profile/Profile';
+import EditProfile from './components/UserPages/Profile/EditProfile';
 import Settings from './components/Settings';
-import CreatePostImageDropzone from './components/Post/CreatePostImageDropzone';
 
 import { createBrowserHistory } from 'history';
 import { UserIsAuthenticated } from './utils/ProtectedRoutes';
 
-export const App = React.memo((props) => {
+import 'notyf/notyf.min.css';
+import './App.scss';
+
+axios.defaults.baseURL = 'https://us-central1-blogly-xuri.cloudfunctions.net/api';
+
+export const App = () => {
   const history = createBrowserHistory();
 
   return (
@@ -34,16 +38,9 @@ export const App = React.memo((props) => {
             <Route exact path='/' component={HomeContainer} />
             <Route path='/sign-in' component={SignIn} />
             <Route path='/sign-up' component={SignUp} />
-            <Route
-              path='/create-post'
-              component={UserIsAuthenticated(CreatePostContainer)}
-            />
-            <Route path='/create-post-upload-image' component={UserIsAuthenticated(CreatePostImageDropzone)} />
+            <Route path='/create-post' component={UserIsAuthenticated(CreatePostContainer)} />
             <Route path='/profile' component={UserIsAuthenticated(Profile)} />
-            <Route
-              path='/edit-profile'
-              component={UserIsAuthenticated(EditProfile)}
-            />
+            <Route path='/edit-profile' component={UserIsAuthenticated(EditProfile)}/>
             <Route path='/404' component={NotFound} />
             <Route path='/p/:postId/comments' component={CommentsContainer} />
             <Route path='/settings' component={UserIsAuthenticated(Settings)} />
@@ -57,6 +54,6 @@ export const App = React.memo((props) => {
       </Router>
     </>
   );
-});
+};
 
 export default App;

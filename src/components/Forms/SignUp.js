@@ -20,14 +20,14 @@ export const SignUp = React.memo((props) => {
   }
 
   return (
-    <div className='signin-component'>
+    <div className='sign-in-component'>
       {props.errors ? (
         <span className='error-message'>
           <ErrorCircle size='30' title='error' style={{ marginRight: 5 }} />
           {props.errors}
         </span>
       ) : null}
-      <form className='signup-form' onSubmit={handleSubmit(handleSignUp)}>
+      <form className='sign-up-form' onSubmit={handleSubmit(handleSignUp)}>
         <div>
           <label>Username</label>
           <input
@@ -40,14 +40,10 @@ export const SignUp = React.memo((props) => {
               pattern: /^[a-z0-9_-]{3,25}$/i,
             })}
           />
-          <span className='error-span'>
-            {errors.username && errors.username.message}
-          </span>
+          {errors.username && <span className='error-span'>{errors.username.message}</span>}
           <label>Email Address</label>
           <input type='email' name='email' ref={register({ required: {value: true, message: 'Email Address is required'} })} />
-          <span className='error-span'>
-            {errors.email && errors.email.message}
-          </span>
+          {errors.email && <span className='error-span'>{errors.email.message}</span>}
           <label>Password</label>
           <input
             type='password'
@@ -57,9 +53,7 @@ export const SignUp = React.memo((props) => {
               minLength: { value: 8, message: 'Password must be at least 8 characters' } 
               })}
           />
-          <span className='error-span'>
-            {errors.password && errors.password.message}
-          </span>
+          {errors.password && <span className='error-span'>{errors.password.message}</span>}
           <label>Confirm Password</label>
           <input
             type='password'
@@ -70,9 +64,7 @@ export const SignUp = React.memo((props) => {
                 value === password.current || 'Passwords do not match',
             })}
           />
-          <span className='error-span'>
-            {errors.confirmPassword && errors.confirmPassword.message}
-          </span>
+          {errors.confirmPassword && <span className='error-span'>{errors.confirmPassword.message}</span>}
           <button style={{ marginTop: '15px' }}>
             Sign Up
           </button>

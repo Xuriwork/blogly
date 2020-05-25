@@ -50,10 +50,7 @@ export const CommentsContainer = React.memo((props) => {
   }, [firestore, postId]);
 
   const postComment = async ({ content }) => {
-    if (auth.isEmpty) {
-      notyf.error('You are not authenticated 😕');
-      return;
-    }
+    if (auth.isEmpty) return notyf.error('You are not authenticated 😕');
     await props.postComment({ content, postId });
     reset();
   };
@@ -62,21 +59,16 @@ export const CommentsContainer = React.memo((props) => {
     const currentUserId = auth.uid;
     const commentUserId = authorId;
 
-    if (!comments) {
-      return;
-    }
+    if (!comments) return;
 
     if (currentUserId !== commentUserId) {
-      notyf.error("That's not your comment");
-      return;
-    }
+      return notyf.error('That\'s not your comment');
+    };
 
     props.deleteComment({ commentId, authorId, postId });
   };
 
-  const back = () => {
-    history.push(`/p/${postId}`);
-  };
+  const back = () => history.push(`/p/${postId}`);
 
   return (
     <Comments
@@ -88,7 +80,7 @@ export const CommentsContainer = React.memo((props) => {
       handleSubmit={handleSubmit}
       postTitle={postTitle}
       commentError={commentError}
-      postComment={postComment}
+      postComment={postComment} 
       deleteComment={deleteComment}
     />
   );

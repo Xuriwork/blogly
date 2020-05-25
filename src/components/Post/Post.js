@@ -5,7 +5,7 @@ import { Redirect, Link } from 'react-router-dom';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import Loading from '../../utils/Loading';
-import { PostMoreActionsModal } from './PostMoreActionsModal';
+import { PostMoreActionsModal } from './MorePostActionsModal';
 import { LikePostButton } from './LikePostButton';
 import { MarkPostButton } from './MarkPostButton';
 
@@ -21,8 +21,8 @@ const Post = React.memo(
     handleUnmarkPost,
     handleMarkPost,
   }) => {
-    if (!isLoaded(post)) return <Loading />;
 
+    if (!isLoaded(post)) return <Loading />;
     if (isEmpty(post)) return <Redirect to='/404' />;
 
     return (

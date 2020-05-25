@@ -65,7 +65,7 @@
 }
 
 $base-color: #1e90ff;
-$button-hover-color: #2089f1;
+$button-hover-base-color: #2089f1;
 $main-font-family: Barlow, sans-serif;
 
 %flex-center-column {
@@ -81,8 +81,7 @@ $main-font-family: Barlow, sans-serif;
   justify-content: center;
 }
 
-%blue-3d-button {
-  position: relative;
+%primary-blue-button {
   vertical-align: top;
   width: 70%;
   height: 50px;
@@ -93,22 +92,15 @@ $main-font-family: Barlow, sans-serif;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
   background: $base-color;
   border: 0;
-  border-bottom: 2px solid #1975d1;
-  cursor: pointer;
-  -webkit-box-shadow: inset 0 -2px #1975d1;
-  box-shadow: inset 0 -2px #1975d1;
-}
 
-%blue-3d-button-hover {
-  top: 1px;
-  outline: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
+  &:hover:not([disabled]) {
+    background-color: $button-hover-base-color;
+  }
 
-%blue-3d-button-disabled {
-  background-color: #4e85ebb6;
-  border-bottom: 2px solid #1d30556e;
+  &:disabled {
+    background-color: #4e85ebb6;
+    border-bottom: 2px solid #1d30556e;
+  }
 }
 
 %profile-picture-size-35 {
@@ -168,11 +160,11 @@ p {
 
 button, .button {
   cursor: pointer;
-  padding: 8px 15px;
   border: none;
   border-radius: 5px;
   background-color: #fff;
   font-size: 0.9em;
+  padding: 8px 15px;
 }
 
 .profile-picture {
@@ -250,6 +242,10 @@ nav {
   .right-nav-bar {
     @extend %flex-center-row;
     margin-left: auto;
+
+    a {
+      color: #1a202c;
+    }
 
     .sign-up {
       margin-left: 10px;
@@ -472,9 +468,14 @@ textarea {
   font-size: 1rem;
   font-family: $main-font-family;
   margin-bottom: 0.8rem;
-  border-radius: 5px;
+  border-bottom: 2px solid #68ade6;
+  border-radius: 2px;
   box-sizing: border-box;
   resize: none;
+
+  &:disabled {
+    border-bottom: none;
+  }
 }
 
 .input-width {
@@ -555,9 +556,6 @@ main {
       padding: 2px 15px;
     }
 
-    .modal-header {
-    }
-
     h3 {
       color: #fff;
       font-family: 'Noto Sans';
@@ -585,16 +583,69 @@ main {
         margin: 4px 0;
         font-size: 1.1em;
 
+        svg {
+          margin-right: 5px;
+        }
+
+        &.report-port-span {
+          color: #f53d3d;
+        }
+        
         &:hover {
           cursor: pointer;
         }
+      }
 
-        &:nth-last-child(1) {
-          color: #f53d3d;
+    }
+
+    .report-post-component {
+      padding: 20px;
+      form {
+        @extend %flex-center-column;
+        
+        label {
+          text-align: left;
+          width: 100%;
+        }
+        
+        input, textarea, button {
+          width: 100%;
         }
 
-        svg {
-          margin-right: 5px;
+        button {
+          margin: 0;
+          margin-top: 10px;
+        }
+
+        .radio-group {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          margin-bottom: 10px;
+
+          > div {
+            display: flex;
+            width: 100%;
+
+            input[type=radio] {
+              background-color: red !important;
+              width: auto;
+              margin-right: 10px;
+            }
+          }
+        }
+
+        .error-message-text {
+          color: #f53d3d;
+          width: 100%;
+          text-align: left;
+          margin: 0;
+          padding: 0;
+          font-size: 0.9rem;
+        }
+
+        textarea {
+          margin: 0;
         }
       }
     }
@@ -1033,7 +1084,7 @@ hr {
     font-size: 1.1em;
 
     &:hover {
-      background-color: $button-hover-color;
+      background-color: $button-hover-base-color;
     }
   }
 
@@ -1107,10 +1158,9 @@ hr {
   width: 95%;
 }
 
-.signin-component {
-  margin: 0;
-  min-height: calc(100vh - 75px);
+.sign-in-component {
   width: 100%;
+  margin: 40px 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1128,13 +1178,13 @@ hr {
     max-width: 600px;
     padding: 50px 0;
     border-bottom: 0 none;
-    box-shadow: 0 1px 5px rgba(150, 150, 150, 0.4);
+    box-shadow: 0 1px 5px rgba(189, 189, 189, 0.308);
     border-radius: 5px;
 
     .error-span {
       width: 70%;
       color: #f53d3d;
-      margin-bottom: 15px;
+      margin-bottom: 5px;
     }
 
     div {
@@ -1142,12 +1192,12 @@ hr {
 
       label {
         margin-bottom: 5px;
+        margin-top: 10px;
       }
 
       input {
-        border: var(--input-border);
         line-height: 2.6;
-        margin-bottom: 0;
+        margin-bottom: 0rem;
       }
 
       input,
@@ -1155,20 +1205,12 @@ hr {
         width: 70%;
       }
 
-      p {
-        font-size: 0.9em;
+      a {
+        color: #608ceb;
       }
 
       button {
-        @extend %blue-3d-button;
-
-        &:hover:not([disabled]) {
-          @extend %blue-3d-button-hover;
-        }
-
-        &:disabled {
-          @extend %blue-3d-button-disabled;
-        }
+        @extend %primary-blue-button;
       }
     }
   }
@@ -1259,15 +1301,6 @@ hr {
   > div {
     @extend %flex-center-column;
     align-items: flex-start;
-  }
-
-  input,
-  textarea {
-    border-bottom: 2px solid #68ade6;
-
-    &:disabled {
-      border-bottom: none;
-    }
   }
 
   input,
@@ -1375,6 +1408,61 @@ hr {
       font-size: 0.8em;
     }
 
+  }
+}
+
+.message-room-component {
+  width: 100%;
+  height: 100%;
+
+  .message-list {
+    background-color: #4747479d;
+    width: 100%;
+    min-height: 100%;
+    height: 750px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+
+    span {
+      color: #fff; 
+      background-color: #7b91f1;
+      box-sizing: border-box;
+      width: auto;
+      padding: 5px 20px;
+      margin: 0 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+  }
+
+  .message-input-container {
+    background-color: #6161619d;
+    display: flex;
+    flex-direction:row;
+    align-items: center;
+    padding: 2px;
+    position: relative;
+
+    input {
+      margin: 0;
+      flex-grow: 2;
+      width: 100%;
+      height: 35px;
+      border: none;
+    }
+
+    button {
+      width: 100px;
+      height: 30px;
+      position: absolute;
+      right: 5px;
+      color: #3f4249;
+    }
+  }
+
+  .message-input {
+    margin-top: 20px;
   }
 }
 

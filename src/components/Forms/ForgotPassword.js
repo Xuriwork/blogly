@@ -18,7 +18,7 @@ export const ForgotPassword = React.memo((props) => {
   }
 
   return (
-    <div className='signin-component'>
+    <div className='sign-in-component'>
       {errors ? (
         <span className='error-message'>
           <ErrorCircle size='30' title='error' style={{ marginRight: 5 }} />

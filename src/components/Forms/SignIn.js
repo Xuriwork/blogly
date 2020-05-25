@@ -18,7 +18,7 @@ export const SignIn = React.memo((props) => {
   }
 
   return (
-    <div className='signin-component'>
+    <div className='sign-in-component'>
       {errors ? (
         <span className='error-message'>
           <ErrorCircle size='30' title='error' style={{ marginRight: 5 }} />
@@ -32,18 +32,11 @@ export const SignIn = React.memo((props) => {
           <label>Password</label>
           <input type='password' name='password' ref={register} />
           <span style={{ marginBottom: '15px', width: '70%' }}>
-            <p>
-              Forget your password?{' '}
-              <Link
-                to='/forgot-password'
-                style={{
-                  fontWeight: 'bold',
-                  color: '#f55353',
-                  cursor: 'pointer',
-                }}>
-                Click here
-              </Link>
-            </p>
+            <Link
+              to='/forgot-password'
+              className='forgot-password-link'>
+              Forgot password?
+            </Link>
           </span>
           <button disabled={loading}>Sign In</button>
         </div>

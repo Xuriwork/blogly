@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import { isLoaded } from 'react-redux-firebase';
-import Loading from '../../utils/Loading';
+import Loading from '../../../utils/Loading';
 import dayjs from 'dayjs';
 
 export const Profile = React.memo((props, ownProps) => {
